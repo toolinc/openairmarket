@@ -27,6 +27,7 @@
         <slf4j.version>1.7.2</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <!-- persistence -->
+        <persistence.version>2.2</persistence.version>
         <hibernate.version>5.3.1.Final</hibernate.version>
         <h2.version>1.4.197</h2.version>
         <!-- testing -->
@@ -75,6 +76,11 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-tcnative-boringssl-static</artifactId>
                 <version>${netty.tcnative.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>${persistence.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
