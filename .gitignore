@@ -2,3 +2,5 @@
 *.iml
 java/target/
 java/common/target/
+java/common/microservice/target
+java/common/microservice/branch-server/target
