@@ -22,7 +22,21 @@
         <enforcer.plugin.version>1.4.1</enforcer.plugin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.openairmarket</groupId>
+                <artifactId>common</artifactId>
+                <version>${openairmarket.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+        <dependency>
+            <groupId>com.openairmarket</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty</artifactId>
