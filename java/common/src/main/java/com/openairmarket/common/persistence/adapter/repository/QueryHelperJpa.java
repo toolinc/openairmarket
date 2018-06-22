@@ -77,15 +77,15 @@ public final class QueryHelperJpa<CQ, R> {
    *
    * @param <T> the type that will be use to create the {@code QueryContainer}.
    * @param entityManager the instance that will be use to create the {@code CriteriaQuery}.
-   * @param clase the class that will be use to create the {@code CriteriaQuery} and the {@code
+   * @param clazz the class that will be use to create the {@code CriteriaQuery} and the {@code
    *     Root}.
    * @return new instance
    */
   public static final <T> QueryHelperJpa<Long, T> newQueryCounter(
-      EntityManager entityManager, Class<T> clase) {
-    QueryHelperJpa<Long, T> qc = new QueryHelperJpa<>(entityManager, Long.class, clase);
-    qc.getQuery().select(qc.getBuilder().countDistinct(qc.getRoot()));
-    return qc;
+      EntityManager entityManager, Class<T> clazz) {
+    QueryHelperJpa<Long, T> qhj = new QueryHelperJpa<>(entityManager, Long.class, clazz);
+    qhj.getQuery().select(qhj.getBuilder().countDistinct(qhj.getRoot()));
+    return qhj;
   }
 
   /**
@@ -93,13 +93,13 @@ public final class QueryHelperJpa<CQ, R> {
    *
    * @param <T> the type that will be use to create the {@code QueryContainer}.
    * @param entityManager the instance that will be use to create the {@code CriteriaQuery}.
-   * @param clase the class that will be use to create the {@code CriteriaQuery} and the {@code
+   * @param clazz the class that will be use to create the {@code CriteriaQuery} and the {@code
    *     Root}.
    * @return new instance
    */
   public static final <T> QueryHelperJpa<T, T> newQuery(
-      EntityManager entityManager, Class<T> clase) {
-    return new QueryHelperJpa<>(entityManager, clase, clase);
+      EntityManager entityManager, Class<T> clazz) {
+    return new QueryHelperJpa<>(entityManager, clazz, clazz);
   }
 
   private static final void assertArgumentNotNull(Object anObject, String aMessage) {

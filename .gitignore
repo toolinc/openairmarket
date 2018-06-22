@@ -4,3 +4,13 @@ java/target/
 java/common/target/
 java/microservice/target
 java/microservice/branch-server/target/
+../.DS_Store
+.DS_Store
+common/.DS_Store
+common/src/.DS_Store
+common/src/main/.DS_Store
+common/src/main/java/.DS_Store
+common/src/main/java/com/.DS_Store
+common/src/main/java/com/openairmarket/.DS_Store
+common/src/main/java/com/openairmarket/common/.DS_Store
+

@@ -2,6 +2,7 @@ package com.openairmarket.common.persistence.domain.model;
 
 import static com.google.common.base.Preconditions.checkState;
 
+import com.openairmarket.common.domain.model.DomainModel;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -14,7 +15,7 @@ import javax.persistence.Version;
  * @param <K> Specifies the type of id of the entity.
  */
 @MappedSuperclass
-public abstract class DomainObject<K extends Serializable> implements Serializable {
+public abstract class DomainObject<K extends Serializable> implements DomainModel {
   private static final long serialVersionUID = 1L;
 
   protected DomainObject() {}
