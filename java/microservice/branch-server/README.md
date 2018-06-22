@@ -161,5 +161,7 @@ implemented ([java](https://grpc.io/docs/tutorials/basic/java.html)).
    ```
 7. Test your service using curl:
    ```
-   curl --header "Content-Type: application/json" --request POST --data '{"name": "Hola"}' http://localhost:8080/v1/hello
+   curl --header "Content-Type: application/json"\
+    --request POST --data '{"name": "Hola"}' \
+    http://localhost:8080/v1/hello
    ```
