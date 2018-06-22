@@ -1,4 +1,4 @@
-package com.openairmarket.common.domain.model;
+package com.openairmarket.common.persistence.domain.model;
 
 import java.io.Serializable;
 
