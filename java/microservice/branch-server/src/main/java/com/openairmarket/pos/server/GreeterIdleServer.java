@@ -41,11 +41,6 @@ public class GreeterIdleServer extends AbstractIdleService {
     server.shutdown();
   }
 
-  /** Await termination on the main thread since the grpc library uses daemon threads. */
-  public void blockUntilShutdown() throws InterruptedException {
-    server.awaitTermination();
-  }
-
   private void printUsage() {
     String msg =
         parser.describeOptions(

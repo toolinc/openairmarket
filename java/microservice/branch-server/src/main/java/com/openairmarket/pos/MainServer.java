@@ -38,6 +38,7 @@ public class MainServer {
           }
 
           public void failure(Service service) {
+            System.err.println("Unable to start the server: " + service.toString());
             System.exit(1);
           }
         },
