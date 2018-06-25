@@ -2,6 +2,7 @@
 *.iml
 java/target/
 java/common/target/
+java/etl/target/
 java/microservice/target
 java/microservice/branch-server/target/
 ../.DS_Store
