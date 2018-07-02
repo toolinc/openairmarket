@@ -1,0 +1,78 @@
+body {
+    background-color: #008080;
+    color: white;
+    font-size: 1.6em;
+}
+
+#container {
+    padding-top: 40px;
+    width: 100%;
+}
+
+#container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+    text-align: center;
+}
+
+.user-form {
+    padding-top: inherit;
+}
+
+p#tagline {
+    color: rgba(255,255,255,.6);
+    margin: 12px 0px 0px 0px;
+}
+
+#tagname {
+    color: #f08080;
+    margin: 30px 0px 0px 0px;
+    font-size: 1.2em;
+}
+
+#signin {
+    background-color: #f08080; /* Coral */
+    /*background-color: #66b2b2; !* Teal *!*/
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+#signin:hover {
+    cursor: pointer;
+    opacity: .9;
+}
+
+.ninja {
+    opacity: .8;
+    max-height: 140px;
+}
+
+.tiny-link {
+    font-size: .7em;
+    padding: 0px 12px 0px 0px;
+}
+
+h1, p {
+    margin: 0px 0px;
+}
+
+#footer {
+    font-size: .6em;
+    color: rgba(255, 255, 255, 0.6);
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.nav-bar-img {
+    max-height: 40px;
+}

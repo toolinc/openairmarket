@@ -1,0 +1,245 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #FAFAFA;
+    color: rgba(0,0,0,0.8);
+    padding-bottom: 84px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Signika', sans-serif;
+}
+
+
+header {
+    background-color: #FF5A3B;
+    /*padding: 10px;*/
+    margin-bottom: 20px;
+    width: 100%;
+    border-bottom: 20px solid #E55136;
+    color: white;
+}
+
+header .description {
+    max-width: 450px;
+    color: rgba(255, 255, 255, 0.6);
+}
+header .black, .black {
+    color: rgba(0,0,0,0.8);
+}
+
+.saved-places {
+    color: rgba(0,0,0,0.6);
+}
+
+.no-saved-places {
+    font-size: .9em;
+    color: rgba(0,0,0,0.4);
+}
+
+.no-saved-places p {
+    max-width: 220px;
+}
+
+.location-icon {
+    float: right;
+}
+
+.location-hours {
+    float: right;
+    margin-right: 7%;
+}
+
+.location-site {
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-reviews {
+    clear: both;
+}
+
+header .ninja {
+    /*max-height: 150px;*/
+    opacity: .8;
+}
+
+a {
+    padding: 8px 12px;
+    text-decoration: none;
+}
+
+a.place-entry-link, a.saved-place-entry-link {
+    padding: 8px 0px;
+    color: #FF5A3B;
+}
+
+a.place-entry-link {
+    font-size: .8em;
+}
+
+a.saved-place-entry-link {
+    font-size: 1em;
+}
+
+a.place-entry-link:hover, a.saved-place-entry-link:hover {
+    color: #E55136;
+}
+
+nav {
+    width: 100%;
+}
+
+nav ul {
+    text-align: right;
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+}
+
+.link {
+    color: rgba(255, 255, 255, 0.6);
+    padding-right: 0px;
+}
+
+.link:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.place-entry-link-divider {
+    padding: 0px 4px;
+}
+
+button {
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+    box-shadow: none;
+    border-radius: 2px;
+    padding: 8px 12px;
+    margin-right: 8px;
+    font-size: 1em;
+    font-weight: 700;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #E55136;
+}
+
+button:focus {
+    outline: none;
+}
+
+.place-entry {
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 4px 12px 24px 24px;
+    margin: 20px 0px;
+    max-width: 600px;
+    position: relative;
+    background-color: white;
+    border-radius: 2px;
+}
+
+.place-entry:hover {
+    border: 1px solid rgba(0,0,0,0.12);
+}
+
+.saved-place-entry {
+    margin: 0px;
+    font-size: .8em;
+    border-top: 1px solid #ededed;
+    padding: 12px 8px;
+}
+
+.saved-place-entry p {
+    margin: 0px;
+}
+
+.saved-place-name {
+    font-weight: 900;
+}
+
+.saved-place-entry p.saved-place-address {
+    margin-bottom: 4px;
+}
+
+.place-info {
+    width: 75%;
+}
+
+.place-more-info {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.place-info h4 {
+    margin-bottom: 0px;
+}
+
+.place-info p {
+    margin-top: 8px;
+}
+
+.place-entry-favorite {
+    width: 25%;
+    display: flex;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    justify-content: center;
+}
+
+.icon-heart {
+    align-self: center;
+    color: black;
+    font-size: 1.8em;
+    color: rgba(0,0,0,0.45);
+}
+
+.icon-heart:hover {
+    color: #FF5A3B;
+}
+
+#spinner {
+    margin-top: 24px;
+    text-align: center;
+    color: rgba(0,0,0,0.4);
+    font-size: 1em;
+}
+
+#spin-gif {
+    margin-left: 44%;
+    margin-top: 20px;
+    opacity: .7;
+
+}
+
+@media handheld, only screen and (max-width: 767px) {
+    #spinner {
+        text-align: center;
+        color: rgba(0,0,0,0.4);
+        font-size: 1em;
+    }
+
+    #spin-gif {
+        margin-top: 20px;
+        margin-left: 44%;
+        opacity: .5;
+    }
+}
+
+.heading {
+    font-family: 'Droid Serif', Georgia, Times, serif;
+}
+
+.header {
+    grid-area: header;
+}
+
+/*header.MuiAppBar-colorPrimary-9{*/
+    /*background-color: #006767;*/
+/*}*/

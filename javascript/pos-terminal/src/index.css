@@ -1,0 +1,112 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.close-create-contact {
+  display: block;
+  width: 60px;
+  height: 60px;
+  background-image: url('./icons/arrow-back.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 30px;
+  font-size: 0;
+}
+
+.create-contact-form {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.create-contact-details {
+  margin-left: 20px;
+}
+
+.create-contact-avatar-input {
+  min-width: 60px;
+  height: 60px;
+  background-color: white;
+  background-image: url('./icons/person.svg');
+  background-size: 42px 42px;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+}
+
+.create-contact-details input {
+  width: 100%;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  font-size: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: 0;
+}
+
+.create-contact-details input::placeholder {
+  color: #f08080;
+}
+
+
+.create-contact-details button {
+  margin-top: 20px;
+  padding: 10px;
+  text-transform: uppercase;
+  font-size: inherit;
+  border: none;
+  outline: 0;
+}
+
+header {
+  /*max-height: 150px;*/
+  border-bottom-color: lightcoral;
+}
+
+header.MuiAppBar-colorPrimary-9{
+  background-color: #006767;
+}
+
+.nav-bar-img {
+  opacity: .8;
+  max-height: 40px;
+  padding-right: 10px;
+}
+
+header .black, .black {
+  color: rgba(0,0,0,0.8);
+}
+
+.MuiTabs-flexContainer-953{
+  display: grid;
+}
+
+@media only screen and (device-width:768px)and (orientation:landscape){
+  #containerApp{
+    height: 772px;
+  }
+
+}
+
+@media print {
+  button {
+    display: none !important;
+  }
+
+  main {
+    display: none !important;
+  }
+
+  header {
+    display: none !important;
+  }
+
+  #menu {
+    display: none !important;
+  }
+
+}
