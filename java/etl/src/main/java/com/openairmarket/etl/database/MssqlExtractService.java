@@ -108,18 +108,14 @@ public final class MssqlExtractService implements ExtractService {
    * @param sql the statement to execute
    */
   private void executeUpdate(String sql) {
-    Statement statement = null;
-    try {
+    try (Statement statement = getConnection().createStatement()) {
       logger.atFiner().log(String.format("Executing the script [%s].", sql));
-      statement = getConnection().createStatement();
       int rows = statement.executeUpdate(sql);
       logger.atInfo().log(String.format("Affected rows [%d].", rows));
     } catch (SQLException exc) {
       String message = String.format("An error occurred while executing the sql [%s].", sql);
       logger.atSevere().log(message, exc);
       throw new IllegalStateException(message, exc);
-    } finally {
-      close(statement);
     }
   }
 
@@ -131,29 +127,15 @@ public final class MssqlExtractService implements ExtractService {
    * @param fileName the name of the csv file
    */
   private void executeQuery(String sql, String outputPath, String fileName) {
-    Statement statement = null;
-    ResultSet resultSet = null;
-    CsvFileWritter csvFile = null;
-    try {
-      statement = getConnection().createStatement();
-      resultSet = statement.executeQuery(sql);
-      csvFile = createCsvFile(outputPath, fileName);
+    try (Statement statement = getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        CsvFileWritter csvFile = createCsvFile(outputPath, fileName)) {
       csvFile.open();
       csvFile.write(resultSet, true);
-    } catch (SQLException exc) {
+    } catch (SQLException | IOException exc) {
       String message = String.format("An error occurred while executing the sql [%s].", sql);
       logger.atSevere().log(message, exc);
       throw new IllegalStateException(message, exc);
-    } catch (IOException exc) {
-      String message =
-          String.format(
-              "An error occurred while writing in csv file [%s%s].", outputPath, fileName);
-      logger.atSevere().log(message, exc);
-      throw new IllegalStateException(message, exc);
-    } finally {
-      close(resultSet);
-      close(statement);
-      close(csvFile);
     }
   }
 
@@ -167,11 +149,15 @@ public final class MssqlExtractService implements ExtractService {
 
   private Connection getConnection() {
     if (connection == null) {
-      try {
-        this.connection = checkNotNull(dataSource.getConnection());
-      } catch (SQLException e) {
-        throw new IllegalStateException(
-            String.format("Unable to acquire a connection [%s].", e.getMessage()), e);
+      synchronized (MssqlExtractService.class) {
+        if (connection == null) {
+          try {
+            this.connection = checkNotNull(dataSource.getConnection());
+          } catch (SQLException e) {
+            throw new IllegalStateException(
+                String.format("Unable to acquire a connection [%s].", e.getMessage()), e);
+          }
+        }
       }
     }
     return connection;
@@ -184,12 +170,6 @@ public final class MssqlExtractService implements ExtractService {
       } catch (Exception exc) {
         logger.atWarning().log("An error occurred while closing the statement.", exc);
       }
-    }
-  }
-
-  private void close(CsvFile csvFile) {
-    if (csvFile != null) {
-      csvFile.close();
     }
   }
 }
