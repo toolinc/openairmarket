@@ -5,9 +5,9 @@ import com.google.devtools.common.options.OptionsParser;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.openairmarket.etl.database.DatabaseOptions;
+import com.openairmarket.etl.database.DatabaseServicesModule;
 import com.openairmarket.etl.database.JdbcDataSourceConfiguration;
 import com.openairmarket.etl.database.MssqlExtractService;
-import com.openairmarket.etl.inject.DatabaseServicesModule;
 
 public final class Main {
 

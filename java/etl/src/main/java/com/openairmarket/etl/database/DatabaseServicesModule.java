@@ -1,4 +1,4 @@
-package com.openairmarket.etl.inject;
+package com.openairmarket.etl.database;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -10,16 +10,12 @@ import com.google.inject.Scopes;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.openairmarket.etl.ExtractService;
 import com.openairmarket.etl.TransformationService;
-import com.openairmarket.etl.database.H2DataBaseHelper;
-import com.openairmarket.etl.database.H2TransformationService;
-import com.openairmarket.etl.database.JdbcDataSourceConfiguration;
-import com.openairmarket.etl.database.MssqlExtractService;
+import com.openairmarket.etl.database.BindingAnnotations.CharSet;
+import com.openairmarket.etl.database.BindingAnnotations.CsvWriter;
+import com.openairmarket.etl.database.BindingAnnotations.H2;
+import com.openairmarket.etl.database.BindingAnnotations.MsSql;
 import com.openairmarket.etl.file.CsvFile.CsvConfiguration;
 import com.openairmarket.etl.file.SqlScriptReader;
-import com.openairmarket.etl.inject.BindingAnnotations.CharSet;
-import com.openairmarket.etl.inject.BindingAnnotations.CsvWriter;
-import com.openairmarket.etl.inject.BindingAnnotations.H2;
-import com.openairmarket.etl.inject.BindingAnnotations.MsSql;
 import java.beans.PropertyVetoException;
 import javax.inject.Singleton;
 import javax.sql.DataSource;

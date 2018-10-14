@@ -126,9 +126,6 @@ public class Pipelines {
   @XmlElement(required = true)
   protected Conversions conversions;
 
-  @XmlElement(required = true)
-  protected Validations validations;
-
   /**
    * Gets the value of the pipeline property.
    *
@@ -221,24 +218,6 @@ public class Pipelines {
    */
   public void setConversions(Conversions value) {
     this.conversions = value;
-  }
-
-  /**
-   * Gets the value of the validations property.
-   *
-   * @return possible object is {@link Validations }
-   */
-  public Validations getValidations() {
-    return validations;
-  }
-
-  /**
-   * Sets the value of the validations property.
-   *
-   * @param value allowed object is {@link Validations }
-   */
-  public void setValidations(Validations value) {
-    this.validations = value;
   }
 
   /**
@@ -485,8 +464,6 @@ public class Pipelines {
     @XmlElement(required = true)
     protected Transformations transformations;
 
-    protected com.openairmarket.etl.pipeline.model.Validations validations;
-
     /**
      * Gets the value of the extracts property.
      *
@@ -521,24 +498,6 @@ public class Pipelines {
      */
     public void setTransformations(Transformations value) {
       this.transformations = value;
-    }
-
-    /**
-     * Gets the value of the validations property.
-     *
-     * @return possible object is {@link com.openairmarket.etl.pipeline.model.Validations }
-     */
-    public com.openairmarket.etl.pipeline.model.Validations getValidations() {
-      return validations;
-    }
-
-    /**
-     * Sets the value of the validations property.
-     *
-     * @param value allowed object is {@link com.openairmarket.etl.pipeline.model.Validations }
-     */
-    public void setValidations(com.openairmarket.etl.pipeline.model.Validations value) {
-      this.validations = value;
     }
   }
 
@@ -592,77 +551,6 @@ public class Pipelines {
         preValidation = new ArrayList<PreValidation>();
       }
       return this.preValidation;
-    }
-
-    /**
-     * Gets the value of the path property.
-     *
-     * @return possible object is {@link String }
-     */
-    public String getPath() {
-      return path;
-    }
-
-    /**
-     * Sets the value of the path property.
-     *
-     * @param value allowed object is {@link String }
-     */
-    public void setPath(String value) {
-      this.path = value;
-    }
-  }
-
-  /**
-   * Java class for anonymous complex type.
-   *
-   * <p>The following schema fragment specifies the expected content contained within this class.
-   *
-   * <pre>
-   * &lt;complexType&gt;
-   *   &lt;complexContent&gt;
-   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-   *       &lt;sequence&gt;
-   *         &lt;element name="validation" type="{http://www.config.domain.pipeline.workday.corp.google.com}validation" maxOccurs="unbounded"/&gt;
-   *       &lt;/sequence&gt;
-   *       &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
-   *     &lt;/restriction&gt;
-   *   &lt;/complexContent&gt;
-   * &lt;/complexType&gt;
-   * </pre>
-   */
-  @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(
-      name = "",
-      propOrder = {"validation"})
-  public static class Validations {
-
-    @XmlElement(required = true)
-    protected List<Validation> validation;
-
-    @XmlAttribute(name = "path", required = true)
-    protected String path;
-
-    /**
-     * Gets the value of the validation property.
-     *
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-     * modification you make to the returned list will be present inside the JAXB object. This is
-     * why there is not a <CODE>set</CODE> method for the validation property.
-     *
-     * <p>For example, to add a new item, do as follows:
-     *
-     * <pre>
-     *    getValidation().add(newItem);
-     * </pre>
-     *
-     * <p>Objects of the following type(s) are allowed in the list {@link Validation }
-     */
-    public List<Validation> getValidation() {
-      if (validation == null) {
-        validation = new ArrayList<Validation>();
-      }
-      return this.validation;
     }
 
     /**

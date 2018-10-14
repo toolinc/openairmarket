@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlType;
   Extract.class,
   PreValidation.class,
   Input.class,
-  Conversion.class,
-  Validation.class
+  Conversion.class
 })
 public class Identifier {
 

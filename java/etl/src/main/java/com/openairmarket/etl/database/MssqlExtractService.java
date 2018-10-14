@@ -2,9 +2,9 @@ package com.openairmarket.etl.database;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.openairmarket.etl.inject.BindingAnnotations.CharSet;
-import static com.openairmarket.etl.inject.BindingAnnotations.CsvWriter;
-import static com.openairmarket.etl.inject.BindingAnnotations.MsSql;
+import static com.openairmarket.etl.database.BindingAnnotations.CharSet;
+import static com.openairmarket.etl.database.BindingAnnotations.CsvWriter;
+import static com.openairmarket.etl.database.BindingAnnotations.MsSql;
 
 import com.google.common.flogger.FluentLogger;
 import com.openairmarket.etl.ExtractService;

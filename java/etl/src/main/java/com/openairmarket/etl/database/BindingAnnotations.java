@@ -1,4 +1,4 @@
-package com.openairmarket.etl.inject;
+package com.openairmarket.etl.database;
 
 import com.google.inject.BindingAnnotation;
 import java.lang.annotation.ElementType;

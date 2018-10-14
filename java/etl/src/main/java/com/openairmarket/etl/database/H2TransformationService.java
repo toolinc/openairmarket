@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 /** Performs data transformation in h2 database based on a set of SQL scripts. */
 @Singleton
-public final class H2TransformationService implements TransformationService {
+final class H2TransformationService implements TransformationService {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final H2DataBaseHelper databaseHelper;

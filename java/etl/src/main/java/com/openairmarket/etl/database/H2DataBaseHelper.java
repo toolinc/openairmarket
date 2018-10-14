@@ -2,7 +2,7 @@ package com.openairmarket.etl.database;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.etl.inject.BindingAnnotations.H2;
+import com.openairmarket.etl.database.BindingAnnotations.H2;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

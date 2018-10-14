@@ -49,11 +49,6 @@ public class ObjectFactory {
     return new Transformations();
   }
 
-  /** Create an instance of {@link Validations } */
-  public Validations createValidations() {
-    return new Validations();
-  }
-
   /** Create an instance of {@link Inputs } */
   public Inputs createInputs() {
     return new Inputs();
@@ -94,11 +89,6 @@ public class ObjectFactory {
     return new Conversion();
   }
 
-  /** Create an instance of {@link Validation } */
-  public Validation createValidation() {
-    return new Validation();
-  }
-
   /** Create an instance of {@link Scripts } */
   public Scripts createScripts() {
     return new Scripts();
@@ -132,11 +122,6 @@ public class ObjectFactory {
   /** Create an instance of {@link Pipelines.Conversions } */
   public Pipelines.Conversions createPipelinesConversions() {
     return new Pipelines.Conversions();
-  }
-
-  /** Create an instance of {@link Pipelines.Validations } */
-  public Pipelines.Validations createPipelinesValidations() {
-    return new Pipelines.Validations();
   }
 
   /**
