@@ -6,8 +6,10 @@ import com.openairmarket.etl.TransformationService;
 import com.openairmarket.etl.file.SqlScriptReader;
 import java.io.IOException;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /** Performs data transformation in h2 database based on a set of SQL scripts. */
+@Singleton
 public final class H2TransformationService implements TransformationService {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();

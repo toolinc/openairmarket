@@ -53,47 +53,4 @@ public class BindingAnnotations {
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
   public @interface CsvWriter {}
-
-  /** Specifies the binding for SQL date substitution. */
-  public static class SQLDateSubstitution {
-
-    /**
-     * A {@link BindingAnnotation} for injecting a value that decides whether the substitution
-     * process will be executed or not.
-     */
-    @BindingAnnotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
-    public @interface Enabled {}
-
-    /** A {@link BindingAnnotation} for injecting the substitute date. */
-    @BindingAnnotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
-    public @interface Date {}
-
-    /** A {@link BindingAnnotation} for injecting the substitute date format. */
-    @BindingAnnotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
-    public @interface DateFormat {}
-
-    /**
-     * A {@link BindingAnnotation} for injecting the regular expression to find matches to
-     * substitute.
-     */
-    @BindingAnnotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
-    public @interface Regex {}
-
-    /**
-     * A {@link BindingAnnotation} for injecting an instance of {@code
-     * com.openairmarket.etl.model.DataPattern}
-     */
-    @BindingAnnotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
-    public @interface SubstitutionDataPattern {}
-  }
 }

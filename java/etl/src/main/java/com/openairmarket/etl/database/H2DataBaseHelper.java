@@ -9,9 +9,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.sql.DataSource;
 
 /** This database helper simplifies the interaction with H2 database. */
+@Singleton
 public final class H2DataBaseHelper {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();

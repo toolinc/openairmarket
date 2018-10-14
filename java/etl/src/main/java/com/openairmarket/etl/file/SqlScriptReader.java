@@ -1,31 +1,17 @@
 package com.openairmarket.etl.file;
 
-import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.etl.inject.BindingAnnotations.SQLDateSubstitution;
-import com.openairmarket.etl.model.DataPattern;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import javax.inject.Inject;
 
 /** Reads the content of a SQL script file. */
 public final class SqlScriptReader {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String NEW_LINE_APPENDER = "\n";
-  private final DataPattern dataPattern;
-  private final Boolean enabled;
-
-  @Inject
-  public SqlScriptReader(
-      @SQLDateSubstitution.SubstitutionDataPattern DataPattern dataPattern,
-      @SQLDateSubstitution.Enabled Boolean enabled) {
-    this.dataPattern = Preconditions.checkNotNull(dataPattern);
-    this.enabled = Preconditions.checkNotNull(enabled);
-  }
 
   /**
    * Reads the content of a script.
@@ -57,16 +43,12 @@ public final class SqlScriptReader {
     StringBuilder scripts = new StringBuilder();
     String line = bufferedReader.readLine();
     while (line != null) {
-      scripts.append(this.enabled ? replaceAll(line.trim()) : line.trim());
+      scripts.append(line.trim());
       scripts.append(appender);
       line = bufferedReader.readLine();
     }
     inputStreamReader.close();
     logger.atFine().log(String.format("Finish reading the content of the file [%s].", fileName));
     return scripts.toString();
-  }
-
-  private String replaceAll(String line) {
-    return dataPattern.regex().matcher(line).replaceAll(dataPattern.data());
   }
 }
