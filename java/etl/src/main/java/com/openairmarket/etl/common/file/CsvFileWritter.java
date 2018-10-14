@@ -46,7 +46,7 @@ public class CsvFileWritter implements CsvFile {
           CsvWriter.builder()
               .setWriter(writer)
               .setSeparator(csvConfiguration.textSeparator())
-              .setQuotechar(csvConfiguration.textDelimiter())
+              .setQuoteChar(csvConfiguration.textDelimiter())
               .build();
       logger.info(String.format("A csv file was created [%s]", getFileName()));
       writeHeader(csvFileConfiguration.header());

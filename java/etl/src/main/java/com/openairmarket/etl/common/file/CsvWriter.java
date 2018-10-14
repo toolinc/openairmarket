@@ -36,9 +36,9 @@ public abstract class CsvWriter implements Closeable {
 
   abstract char separator();
 
-  abstract char quotechar();
+  abstract char quoteChar();
 
-  abstract char escapechar();
+  abstract char escapeChar();
 
   abstract String lineEnd();
 
@@ -232,21 +232,21 @@ public abstract class CsvWriter implements Closeable {
       if (nextElement == null) {
         continue;
       }
-      if (quotechar() != NO_QUOTE_CHARACTER) {
-        sb.append(quotechar());
+      if (quoteChar() != NO_QUOTE_CHARACTER) {
+        sb.append(quoteChar());
         for (int j = 0; j < nextElement.length(); j++) {
           char nextChar = nextElement.charAt(j);
-          if (escapechar() != NO_ESCAPE_CHARACTER && nextChar == quotechar()) {
-            sb.append(escapechar()).append(nextChar);
-          } else if (escapechar() != NO_ESCAPE_CHARACTER && nextChar == escapechar()) {
-            sb.append(escapechar()).append(nextChar);
+          if (escapeChar() != NO_ESCAPE_CHARACTER && nextChar == quoteChar()) {
+            sb.append(escapeChar()).append(nextChar);
+          } else if (escapeChar() != NO_ESCAPE_CHARACTER && nextChar == escapeChar()) {
+            sb.append(escapeChar()).append(nextChar);
           } else {
             sb.append(nextChar);
           }
         }
       }
-      if (quotechar() != NO_QUOTE_CHARACTER) {
-        sb.append(quotechar());
+      if (quoteChar() != NO_QUOTE_CHARACTER) {
+        sb.append(quoteChar());
       }
     }
     sb.append(lineEnd());
@@ -272,14 +272,21 @@ public abstract class CsvWriter implements Closeable {
    */
   public static Builder builder() {
     return AutoValue_CsvWriter.builder()
-        .setEscapechar(Builder.ESCAPE_CHAR)
+        .setEscapeChar(Builder.ESCAPE_CHAR)
         .setSeparator(Builder.SEPARATOR)
-        .setQuotechar(Builder.QUOTE_CHAR)
+        .setQuoteChar(Builder.QUOTE_CHAR)
         .setLineEnd(Builder.END_LINE)
         .setCsvDefaultValue(Builder.DEFAULT_VALUE)
         .setTimestampFormatter(Builder.TIMESTAMP_FORMAT)
         .setDateFormatter(Builder.DATE_FORMAT);
   }
+
+  /**
+   * Creates a new instance of ${@link Builder} from the current instance.
+   *
+   * @return @return {@link Builder}.
+   */
+  public abstract Builder toBuilder();
 
   /** Constructs {@code CsvWriter} using a comma as a default separator. */
   @AutoValue.Builder
@@ -302,11 +309,11 @@ public abstract class CsvWriter implements Closeable {
 
     public abstract Builder setPrintWriter(PrintWriter printWriter);
 
-    public abstract Builder setEscapechar(char val);
+    public abstract Builder setEscapeChar(char val);
 
     public abstract Builder setSeparator(char val);
 
-    public abstract Builder setQuotechar(char val);
+    public abstract Builder setQuoteChar(char val);
 
     public abstract Builder setLineEnd(String val);
 
