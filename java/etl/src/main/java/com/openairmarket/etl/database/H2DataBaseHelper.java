@@ -82,11 +82,15 @@ public final class H2DataBaseHelper {
 
   private Connection getConnection() {
     if (this.connection == null) {
-      try {
-        this.connection = Preconditions.checkNotNull(dataSource.getConnection());
-      } catch (SQLException e) {
-        throw new IllegalStateException(
-            String.format("Unable to acquire a connection [%s].", e.getMessage()), e);
+      synchronized (H2DataBaseHelper.class) {
+        if (this.connection == null) {
+          try {
+            this.connection = Preconditions.checkNotNull(dataSource.getConnection());
+          } catch (SQLException e) {
+            throw new IllegalStateException(
+                String.format("Unable to acquire a connection [%s].", e.getMessage()), e);
+          }
+        }
       }
     }
     return this.connection;
