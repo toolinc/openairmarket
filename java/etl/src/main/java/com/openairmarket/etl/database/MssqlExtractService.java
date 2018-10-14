@@ -11,6 +11,7 @@ import com.openairmarket.etl.ExtractService;
 import com.openairmarket.etl.file.CsvFile;
 import com.openairmarket.etl.file.CsvFile.CsvFileConfiguration;
 import com.openairmarket.etl.file.CsvFileWritter;
+import com.openairmarket.etl.file.SqlScriptReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ public final class MssqlExtractService implements ExtractService {
   private final DataSource dataSource;
   private final CsvFile.CsvConfiguration csvConfiguration;
   private final String charset;
-  private final ScriptReader scriptReader;
+  private final SqlScriptReader sqlScriptReader;
   private Connection connection;
 
   @Inject
@@ -35,11 +36,11 @@ public final class MssqlExtractService implements ExtractService {
       @MsSql.DataSource DataSource dataSource,
       @CsvWriter CsvFile.CsvConfiguration csvConfiguration,
       @CharSet String charset,
-      ScriptReader scriptReader) {
+      SqlScriptReader sqlScriptReader) {
     this.dataSource = checkNotNull(dataSource);
     this.csvConfiguration = checkNotNull(csvConfiguration);
     this.charset = checkNotNull(charset);
-    this.scriptReader = checkNotNull(scriptReader);
+    this.sqlScriptReader = checkNotNull(sqlScriptReader);
   }
 
   @Override
@@ -74,7 +75,7 @@ public final class MssqlExtractService implements ExtractService {
   private String[] readSqlStatements(String scriptPath) {
     try {
       String msg = String.format("The script file [%s] is empty.", scriptPath);
-      String[] scripts = checkNotNull(scriptReader.readSqlStatements(scriptPath), msg);
+      String[] scripts = checkNotNull(sqlScriptReader.readSqlStatements(scriptPath), msg);
       checkState(scripts.length > 0, msg);
       return scripts;
     } catch (IOException exc) {

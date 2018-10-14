@@ -1,4 +1,4 @@
-package com.openairmarket.etl.database;
+package com.openairmarket.etl.file;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import javax.inject.Inject;
 
 /** Reads the content of a SQL script file. */
-public class ScriptReader {
+public final class SqlScriptReader {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String NEW_LINE_APPENDER = "\n";
@@ -20,7 +20,7 @@ public class ScriptReader {
   private final Boolean enabled;
 
   @Inject
-  public ScriptReader(
+  public SqlScriptReader(
       @SQLDateSubstitution.SubstitutionDataPattern DataPattern dataPattern,
       @SQLDateSubstitution.Enabled Boolean enabled) {
     this.dataPattern = Preconditions.checkNotNull(dataPattern);
