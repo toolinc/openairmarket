@@ -52,12 +52,12 @@ public interface CsvFile extends Closeable {
       Preconditions.checkState(fileName.trim().length() > 0, "File name cannot be empty.");
       Preconditions.checkNotNull(charset, "Char set is missing.");
       Preconditions.checkState(charset.trim().length() > 0, "Char set cannot be empty.");
-      if (Optional.of(header).isPresent()) {
+      if (Optional.ofNullable(header).isPresent()) {
         Preconditions.checkNotNull(header, "Header is missing.");
         Preconditions.checkState(header.trim().length() > 0, "Header cannot be empty.");
       }
       return new AutoValue_CsvFile_CsvFileConfiguration(
-          filePath, fileName, charset, Optional.of(header));
+          filePath, fileName, charset, Optional.ofNullable(header));
     }
   }
 }

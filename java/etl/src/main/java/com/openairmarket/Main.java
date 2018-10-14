@@ -6,6 +6,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.openairmarket.etl.database.DatabaseOptions;
 import com.openairmarket.etl.database.JdbcDataSourceConfiguration;
+import com.openairmarket.etl.database.MssqlExtractService;
 import com.openairmarket.etl.inject.DatabaseServicesModule;
 
 public final class Main {
@@ -28,6 +29,11 @@ public final class Main {
     final Injector injector =
         Guice.createInjector(
             new DatabaseServicesModule(createH2(dbOptions), createMsSql(dbOptions)));
+    MssqlExtractService extractService = injector.getInstance(MssqlExtractService.class);
+    extractService.extract(
+        "/Users/edgarrico/Documents/openairmarket/java/etl/target/pipeline/extract/extract_productos.sql",
+        "/Users/edgarrico/Documents/openairmarket/java/etl/target/pipeline/",
+        "productos.csv");
   }
 
   private static final JdbcDataSourceConfiguration createH2(DatabaseOptions dbOptions) {
