@@ -25,7 +25,6 @@ public final class H2TransformationService implements TransformationService {
   @Override
   public boolean transform(String... fileNames) {
     Preconditions.checkNotNull(fileNames, "The file names are null.");
-    databaseHelper.loadEnvironmentVariables();
     for (String fileName : fileNames) {
       databaseHelper.executeUpdate(readScript(fileName));
     }

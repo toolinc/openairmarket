@@ -80,7 +80,7 @@ public abstract class CsvReader implements Closeable {
    * @return {@link Builder}.
    */
   public static final Builder builder() {
-    return AutoValue_CsvReader.builder().setSkipLines(-1);
+    return new AutoValue_CsvReader.Builder().setSkipLines(-1);
   }
 
   /**

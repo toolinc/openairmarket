@@ -270,7 +270,7 @@ public abstract class CsvWriter implements Closeable {
    * @return {@link Builder}.
    */
   public static Builder builder() {
-    return AutoValue_CsvWriter.builder()
+    return new AutoValue_CsvWriter.Builder()
         .setEscapeChar(Builder.ESCAPE_CHAR)
         .setSeparator(Builder.SEPARATOR)
         .setQuoteChar(Builder.QUOTE_CHAR)

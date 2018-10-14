@@ -24,7 +24,7 @@ public interface CsvFile extends Closeable {
 
     public static CsvConfiguration create(char textDelimiter, char textSeparator) {
       Preconditions.checkState(
-          textDelimiter == textSeparator, "Text delimiter and separator cannot be the same.");
+          textDelimiter != textSeparator, "Text delimiter and separator cannot be the same.");
       return new AutoValue_CsvFile_CsvConfiguration(textDelimiter, textSeparator);
     }
   }

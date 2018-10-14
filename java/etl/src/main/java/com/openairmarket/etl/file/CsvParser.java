@@ -149,7 +149,7 @@ public abstract class CsvParser {
    * @return {@link Builder}.
    */
   public static final Builder builder() {
-    return AutoValue_CsvParser.builder()
+    return new AutoValue_CsvParser.Builder()
         .setEscape(Builder.ESCAPE)
         .setSeparator(Builder.SEPARATOR)
         .setQuoteChar(Builder.QUOTE_CHAR)

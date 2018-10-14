@@ -19,14 +19,14 @@ public final class DatabaseOptions extends OptionsBase {
       name = "h2User",
       help = "The user that will be used to open a connection with H2.",
       category = "startup",
-      defaultValue = "sa")
+      defaultValue = "root")
   public String h2User;
 
   @Option(
       name = "h2Pass",
       help = "The password that will be use to open a connection with H2.",
       category = "startup",
-      defaultValue = "sa")
+      defaultValue = "toor")
   public String h2Password;
 
   @Option(

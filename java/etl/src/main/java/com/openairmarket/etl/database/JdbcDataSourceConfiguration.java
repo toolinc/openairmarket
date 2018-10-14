@@ -1,6 +1,7 @@
 package com.openairmarket.etl.database;
 
 import com.google.auto.value.AutoValue;
+import com.openairmarket.etl.database.AutoValue_JdbcDataSourceConfiguration.Builder;
 
 /** Specifies the database configuration for jdbc connections. */
 @AutoValue
@@ -16,7 +17,9 @@ public abstract class JdbcDataSourceConfiguration {
 
   public abstract int maxPoolSize();
 
-  public abstract Builder builder();
+  public static final Builder builder() {
+    return new AutoValue_JdbcDataSourceConfiguration.Builder();
+  }
 
   @AutoValue.Builder
   public abstract static class Builder {

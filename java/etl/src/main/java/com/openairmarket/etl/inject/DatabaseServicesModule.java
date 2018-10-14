@@ -27,15 +27,13 @@ import javax.sql.DataSource;
 /** Bindings for the database services module. */
 public final class DatabaseServicesModule extends AbstractModule {
 
-  private static final String H2_DRIVER = "org.h2.Driver";
-  private static final String MSSQL_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
   private final JdbcDataSourceConfiguration mssqlConfiguration;
   private final JdbcDataSourceConfiguration h2Configuration;
 
   public DatabaseServicesModule(
-      JdbcDataSourceConfiguration mssqlConfiguration, JdbcDataSourceConfiguration h2Configuration) {
-    this.mssqlConfiguration = checkNotNull(mssqlConfiguration, "Missing MS-SQL configuration.");
+      JdbcDataSourceConfiguration h2Configuration, JdbcDataSourceConfiguration mssqlConfiguration) {
     this.h2Configuration = checkNotNull(h2Configuration, "Missing H2 configuration.");
+    this.mssqlConfiguration = checkNotNull(mssqlConfiguration, "Missing MS-SQL configuration.");
   }
 
   @Override
