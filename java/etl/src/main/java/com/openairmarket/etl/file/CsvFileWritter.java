@@ -1,4 +1,4 @@
-package com.openairmarket.etl.common.file;
+package com.openairmarket.etl.file;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
@@ -45,7 +45,7 @@ public final class CsvFileWritter implements CsvFile {
               .setQuoteChar(csvConfiguration.textDelimiter())
               .build();
       logger.atInfo().log(String.format("A csv file was created [%s]", getFileName()));
-      writeHeader(csvFileConfiguration.header());
+      writeHeader();
     } catch (IOException ex) {
       String message =
           String.format(
@@ -77,10 +77,13 @@ public final class CsvFileWritter implements CsvFile {
     csvWriter.writeAll(resultSet, flag);
   }
 
-  private void writeHeader(String header) {
-    if (csvFileConfiguration.header() != null && csvFileConfiguration.header().length() > 0) {
-      logger.atInfo().log(String.format("Writing the headers of the file [%s].", header));
-      String[] headers = header.trim().split("" + csvConfiguration.textSeparator());
+  private void writeHeader() {
+    if (csvFileConfiguration.header().isPresent()) {
+      logger.atInfo().log(
+          String.format(
+              "Writing the headers of the file [%s].", csvFileConfiguration.header().get()));
+      String[] headers =
+          csvFileConfiguration.header().get().split("" + csvConfiguration.textSeparator());
       write(headers);
     }
   }

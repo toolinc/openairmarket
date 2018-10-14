@@ -1,4 +1,4 @@
-package com.openairmarket.etl.common;
+package com.openairmarket.etl;
 
 /**
  * Specifies the contract for the extraction service which extracts information from a database

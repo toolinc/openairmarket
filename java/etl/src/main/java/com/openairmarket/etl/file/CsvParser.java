@@ -1,4 +1,4 @@
-package com.openairmarket.etl.common.file;
+package com.openairmarket.etl.file;
 
 import static com.google.common.base.Preconditions.checkState;
 

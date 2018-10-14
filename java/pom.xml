@@ -28,6 +28,7 @@
         <guice.version>4.1.0</guice.version>
         <flogger.version>0.3.1</flogger.version>
         <!-- persistence -->
+        <c3p0.version>0.9.1.2</c3p0.version>
         <persistence.version>2.2</persistence.version>
         <hibernate.version>5.3.1.Final</hibernate.version>
         <guice.persist.version>4.2.0</guice.persist.version>
@@ -115,6 +116,11 @@
                 <groupId>com.google.inject.extensions</groupId>
                 <artifactId>guice-persist</artifactId>
                 <version>${guice.persist.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>c3p0</groupId>
+                <artifactId>c3p0</artifactId>
+                <version>${c3p0.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>

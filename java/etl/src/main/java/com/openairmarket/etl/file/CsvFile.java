@@ -1,8 +1,9 @@
-package com.openairmarket.etl.common.file;
+package com.openairmarket.etl.file;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Preconditions;
 import java.io.Closeable;
+import java.util.Optional;
 
 /** Defines a csv file. */
 public interface CsvFile extends Closeable {
@@ -17,11 +18,11 @@ public interface CsvFile extends Closeable {
   @AutoValue
   abstract class CsvConfiguration {
 
-    abstract char textDelimiter();
+    public abstract char textDelimiter();
 
-    abstract char textSeparator();
+    public abstract char textSeparator();
 
-    static CsvConfiguration create(char textDelimiter, char textSeparator) {
+    public static CsvConfiguration create(char textDelimiter, char textSeparator) {
       Preconditions.checkState(
           textDelimiter == textSeparator, "Text delimiter and separator cannot be the same.");
       return new AutoValue_CsvFile_CsvConfiguration(textDelimiter, textSeparator);
@@ -35,15 +36,15 @@ public interface CsvFile extends Closeable {
   @AutoValue
   abstract class CsvFileConfiguration {
 
-    abstract String filePath();
+    public abstract String filePath();
 
-    abstract String fileName();
+    public abstract String fileName();
 
-    abstract String charset();
+    public abstract String charset();
 
-    abstract String header();
+    public abstract Optional<String> header();
 
-    static CsvFileConfiguration create(
+    public static CsvFileConfiguration create(
         String filePath, String fileName, String charset, String header) {
       Preconditions.checkNotNull(filePath, "File path is missing.");
       Preconditions.checkState(filePath.trim().length() > 0, "File path cannot be empty.");
@@ -51,9 +52,12 @@ public interface CsvFile extends Closeable {
       Preconditions.checkState(fileName.trim().length() > 0, "File name cannot be empty.");
       Preconditions.checkNotNull(charset, "Char set is missing.");
       Preconditions.checkState(charset.trim().length() > 0, "Char set cannot be empty.");
-      Preconditions.checkNotNull(header, "Header is missing.");
-      Preconditions.checkState(header.trim().length() > 0, "Header cannot be empty.");
-      return new AutoValue_CsvFile_CsvFileConfiguration(filePath, fileName, charset, header);
+      if (Optional.of(header).isPresent()) {
+        Preconditions.checkNotNull(header, "Header is missing.");
+        Preconditions.checkState(header.trim().length() > 0, "Header cannot be empty.");
+      }
+      return new AutoValue_CsvFile_CsvFileConfiguration(
+          filePath, fileName, charset, Optional.of(header));
     }
   }
 }
