@@ -10,24 +10,19 @@ import java.io.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Helper class for reading files in CSV format.
- *
- * @author Edgar Rico (edgarrico@google.com)
- */
+/** Helper class for reading files in CSV format. */
 @AutoValue
 public abstract class CsvReader implements Closeable {
 
   private static final Logger logger = LoggerFactory.getLogger(CsvReader.class);
+  private boolean hasNext = true;
+  private boolean linesSkiped;
 
   abstract BufferedReader bufferedReader();
 
   abstract CsvParser csvParser();
 
   abstract int skipLines();
-
-  private boolean hasNext = true;
-  private boolean linesSkiped;
 
   /**
    * Reads the next line from the buffer and converts to a string array.
@@ -85,14 +80,20 @@ public abstract class CsvReader implements Closeable {
    *
    * @return {@link Builder}.
    */
-  public abstract Builder builder();
+  public static final Builder builder() {
+    return AutoValue_CsvReader.builder().setSkipLines(-1);
+  }
+
+  /**
+   * Creates a new instance of ${@link Builder} from the current instance.
+   *
+   * @return @return {@link Builder}.
+   */
+  public abstract Builder toBuilder();
 
   /** Constructs {@code CsvReader} using a comma as a default separator. */
   @AutoValue.Builder
   public abstract static class Builder {
-
-    private int skipLines = -1;
-    private CsvParser csvParser;
 
     abstract CsvParser.Builder csvParserBuilder();
 

@@ -148,7 +148,7 @@ public abstract class CsvParser {
    *
    * @return {@link Builder}.
    */
-  public static Builder builder() {
+  public static final Builder builder() {
     return AutoValue_CsvParser.builder()
         .setEscape(Builder.ESCAPE)
         .setSeparator(Builder.SEPARATOR)

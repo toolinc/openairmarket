@@ -11,12 +11,8 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Defines a csv file writer.
- *
- * @author Edgar Rico (edgarrico@google.com)
- */
-public class CsvFileWritter implements CsvFile {
+/** Defines a csv file writer. */
+public final class CsvFileWritter implements CsvFile {
 
   private static final Logger logger = LoggerFactory.getLogger(CsvFileWritter.class);
   private final CsvFileConfiguration csvFileConfiguration;
@@ -31,8 +27,9 @@ public class CsvFileWritter implements CsvFile {
    */
   @Inject
   public CsvFileWritter(CsvConfiguration csvConfig, CsvFileConfiguration csvFileConfig) {
-    this.csvFileConfiguration = Preconditions.checkNotNull(csvFileConfig);
-    this.csvConfiguration = Preconditions.checkNotNull(csvConfig);
+    this.csvFileConfiguration =
+        Preconditions.checkNotNull(csvFileConfig, "Csv file configuration is missing.");
+    this.csvConfiguration = Preconditions.checkNotNull(csvConfig, "Csv configuration is missing.");
   }
 
   @Override
