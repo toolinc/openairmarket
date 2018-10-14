@@ -27,6 +27,7 @@
         <auto.version>1.6.2</auto.version>
         <guice.version>4.1.0</guice.version>
         <flogger.version>0.3.1</flogger.version>
+        <options.version>1.0.0</options.version>
         <!-- persistence -->
         <c3p0.version>0.9.1.2</c3p0.version>
         <persistence.version>2.2</persistence.version>
@@ -131,6 +132,11 @@
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>mssql-jdbc</artifactId>
                 <version>${mssql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pcj</groupId>
+                <artifactId>google-options</artifactId>
+                <version>${options.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.flogger</groupId>

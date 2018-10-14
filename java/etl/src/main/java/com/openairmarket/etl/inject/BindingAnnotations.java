@@ -9,11 +9,7 @@ import java.lang.annotation.Target;
 /** Binding annotations for configuration objects. */
 public class BindingAnnotations {
 
-  /**
-   * Specifies the binding for H2 database.
-   *
-   * @author edgarrico@google.com (Edgar Rico)
-   */
+  /** Specifies the binding for H2 database. */
   public static class H2 {
 
     /** A {@link BindingAnnotation} for injecting the h2 {@code javax.sql.DataSource}. */
@@ -93,7 +89,7 @@ public class BindingAnnotations {
 
     /**
      * A {@link BindingAnnotation} for injecting an instance of {@code
-     * com.google.corp.workday.common.services.database.domain.DataPattern}
+     * com.openairmarket.etl.model.DataPattern}
      */
     @BindingAnnotation
     @Retention(RetentionPolicy.RUNTIME)
