@@ -3,6 +3,7 @@ package com.openairmarket.etl.common.file;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.flogger.FluentLogger;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,14 +19,12 @@ import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** This File is used as Helper Class for WriteOperations in CSV files. */
 @AutoValue
 public abstract class CsvWriter implements Closeable {
 
-  private static final Logger logger = LoggerFactory.getLogger(CsvWriter.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final char NO_QUOTE_CHARACTER = '\u0000';
   private static final char NO_ESCAPE_CHARACTER = '\u0000';
   private static final String DECIMAL_ZERO = "0";
@@ -168,7 +167,7 @@ public abstract class CsvWriter implements Closeable {
         try {
           date = rs.getDate(colIndex);
         } catch (SQLException exc) {
-          logger.debug(exc.getMessage());
+          logger.atFiner().log(exc.getMessage());
         }
         if (date != null) {
           value = dateFormatter().format(date);

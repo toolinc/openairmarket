@@ -3,18 +3,17 @@ package com.openairmarket.etl.common.file;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.flogger.FluentLogger;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Helper class for reading files in CSV format. */
 @AutoValue
 public abstract class CsvReader implements Closeable {
 
-  private static final Logger logger = LoggerFactory.getLogger(CsvReader.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private boolean hasNext = true;
   private boolean linesSkiped;
 
@@ -71,7 +70,7 @@ public abstract class CsvReader implements Closeable {
     try {
       bufferedReader().close();
     } catch (IOException exc) {
-      logger.warn("Unable to close the buffer reader.", exc);
+      logger.atWarning().log("Unable to close the buffer reader.", exc);
     }
   }
 

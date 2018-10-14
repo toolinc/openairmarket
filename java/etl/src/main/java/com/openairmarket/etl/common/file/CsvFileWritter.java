@@ -1,6 +1,7 @@
 package com.openairmarket.etl.common.file;
 
 import com.google.common.base.Preconditions;
+import com.google.common.flogger.FluentLogger;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,13 +9,11 @@ import java.io.OutputStreamWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Defines a csv file writer. */
 public final class CsvFileWritter implements CsvFile {
 
-  private static final Logger logger = LoggerFactory.getLogger(CsvFileWritter.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final CsvFileConfiguration csvFileConfiguration;
   private final CsvConfiguration csvConfiguration;
   private CsvWriter csvWriter;
@@ -45,14 +44,14 @@ public final class CsvFileWritter implements CsvFile {
               .setSeparator(csvConfiguration.textSeparator())
               .setQuoteChar(csvConfiguration.textDelimiter())
               .build();
-      logger.info(String.format("A csv file was created [%s]", getFileName()));
+      logger.atInfo().log(String.format("A csv file was created [%s]", getFileName()));
       writeHeader(csvFileConfiguration.header());
     } catch (IOException ex) {
       String message =
           String.format(
               "Error while writing on file [%s%s]",
               csvFileConfiguration.filePath(), csvFileConfiguration.fileName());
-      logger.error(message, ex);
+      logger.atSevere().log(message, ex);
       throw new IllegalStateException(message, ex);
     }
   }
@@ -80,7 +79,7 @@ public final class CsvFileWritter implements CsvFile {
 
   private void writeHeader(String header) {
     if (csvFileConfiguration.header() != null && csvFileConfiguration.header().length() > 0) {
-      logger.info(String.format("Writing the headers of the file [%s].", header));
+      logger.atInfo().log(String.format("Writing the headers of the file [%s].", header));
       String[] headers = header.trim().split("" + csvConfiguration.textSeparator());
       write(headers);
     }

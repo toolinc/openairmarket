@@ -26,9 +26,7 @@
         <guava.version>20.0</guava.version>
         <auto.version>1.6.2</auto.version>
         <guice.version>4.1.0</guice.version>
-        <!-- logging -->
-        <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>2.11.1</log4j.version>
+        <flogger.version>0.3.1</flogger.version>
         <!-- persistence -->
         <persistence.version>2.2</persistence.version>
         <hibernate.version>5.3.1.Final</hibernate.version>
@@ -129,15 +127,16 @@
                 <version>${mssql.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
+                <groupId>com.google.flogger</groupId>
+                <artifactId>flogger</artifactId>
+                <version>${flogger.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j18-impl</artifactId>
-                <version>${log4j.version}</version>
+                <groupId>com.google.flogger</groupId>
+                <artifactId>flogger-log4j-backend</artifactId>
+                <version>${flogger.version}</version>
             </dependency>
+            <!-- Testing -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
