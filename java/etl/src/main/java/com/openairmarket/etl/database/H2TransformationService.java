@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.openairmarket.etl.TransformationService;
 import com.openairmarket.etl.file.SqlScriptReader;
-import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -24,26 +23,12 @@ public final class H2TransformationService implements TransformationService {
 
   @Override
   public boolean transform(String... fileNames) {
+    logger.atFiner().log("About to execute the following scripts [%s].", fileNames);
     Preconditions.checkNotNull(fileNames, "The file names are null.");
     for (String fileName : fileNames) {
-      databaseHelper.executeUpdate(readScript(fileName));
+      logger.atFiner().log("Executing the following script [%s].", fileName);
+      databaseHelper.executeUpdate(sqlScriptReader.readSqlScript(fileName));
     }
     return true;
-  }
-
-  /**
-   * Reads the content of a SQL script file.
-   *
-   * @param fileName the file that needs to be read
-   * @return the content of the specified file
-   */
-  private String readScript(String fileName) {
-    try {
-      return sqlScriptReader.readSqlScript(fileName);
-    } catch (IOException exc) {
-      String message = String.format("Unable to read the content of the file [%s].", fileName);
-      logger.atSevere().log(message, exc);
-      throw new IllegalStateException(message, exc);
-    }
   }
 }

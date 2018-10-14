@@ -73,16 +73,10 @@ public final class MssqlExtractService implements ExtractService {
    * @return a set of SQL statements.
    */
   private String[] readSqlStatements(String scriptPath) {
-    try {
-      String msg = String.format("The script file [%s] is empty.", scriptPath);
-      String[] scripts = checkNotNull(sqlScriptReader.readSqlStatements(scriptPath), msg);
-      checkState(scripts.length > 0, msg);
-      return scripts;
-    } catch (IOException exc) {
-      String message = String.format("An error occurred while reading the [%s].", scriptPath);
-      logger.atSevere().log(message, exc);
-      throw new IllegalStateException(message, exc);
-    }
+    String msg = String.format("The script file [%s] is empty.", scriptPath);
+    String[] scripts = checkNotNull(sqlScriptReader.readSqlStatements(scriptPath), msg);
+    checkState(scripts.length > 0, msg);
+    return scripts;
   }
 
   /** Specifies the type of sql statements. */

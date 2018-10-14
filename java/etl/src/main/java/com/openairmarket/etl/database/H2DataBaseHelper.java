@@ -38,9 +38,7 @@ public final class H2DataBaseHelper {
    * @param sql specifies the sql that will be executed.
    */
   public void executeUpdate(String sql) {
-    Statement statement = null;
-    try {
-      statement = getConnection().createStatement();
+    try (Statement statement = getConnection().createStatement()) {
       logger.atFiner().log(String.format("Starting the execution of the script [%s].", sql));
       int rows = statement.executeUpdate(sql);
       logger.atInfo().log(String.format("Affected rows [%d].", rows));
@@ -49,8 +47,6 @@ public final class H2DataBaseHelper {
       String message = String.format("An error occurred while executing the sql [%s].", sql);
       logger.atSevere().log(message, exc);
       throw new IllegalStateException(message, exc);
-    } finally {
-      close(statement);
     }
   }
 
@@ -62,11 +58,8 @@ public final class H2DataBaseHelper {
    */
   public String getColumnName(String tableName, int colIndex) {
     String columnName = null;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try {
-      statement = getConnection().createStatement();
-      resultSet = statement.executeQuery(String.format(SCHEMA_COLUMNS, tableName));
+    try (Statement statement = getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format(SCHEMA_COLUMNS, tableName))) {
       int columnCount = 1;
       while (resultSet.next()) {
         if (columnCount == colIndex) {
@@ -83,9 +76,6 @@ public final class H2DataBaseHelper {
               tableName, colIndex);
       logger.atSevere().log(message, exc);
       throw new IllegalStateException(message, exc);
-    } finally {
-      close(resultSet);
-      close(statement);
     }
     return columnName;
   }
@@ -100,25 +90,5 @@ public final class H2DataBaseHelper {
       }
     }
     return this.connection;
-  }
-
-  private void close(Statement statement) {
-    if (statement != null) {
-      try {
-        statement.close();
-      } catch (SQLException exc) {
-        logger.atWarning().log("An error occurred while closing the Statement.", exc);
-      }
-    }
-  }
-
-  private void close(ResultSet resultSet) {
-    if (resultSet != null) {
-      try {
-        resultSet.close();
-      } catch (SQLException exc) {
-        logger.atWarning().log("An error occurred while closing the ResultSet.", exc);
-      }
-    }
   }
 }

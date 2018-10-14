@@ -4,7 +4,6 @@ import com.google.common.flogger.FluentLogger;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /** Reads the content of a SQL script file. */
@@ -18,9 +17,8 @@ public final class SqlScriptReader {
    *
    * @param fileName the desired script
    * @return the content of the script
-   * @throws IOException If an I/O error occurs
    */
-  public String readSqlScript(String fileName) throws IOException {
+  public String readSqlScript(String fileName) {
     return readContent(fileName, NEW_LINE_APPENDER);
   }
 
@@ -29,26 +27,28 @@ public final class SqlScriptReader {
    *
    * @param fileName the desired script
    * @return a set of the statements found in the script
-   * @throws IOException If an I/O error occurs
    */
-  public String[] readSqlStatements(String fileName) throws IOException {
+  public String[] readSqlStatements(String fileName) {
     return readContent(fileName, NEW_LINE_APPENDER).split(";\n");
   }
 
-  private String readContent(String fileName, String appender) throws IOException {
-    logger.atFine().log(String.format("Reading the content of the file [%s].", fileName));
-    InputStream inputStream = new FileInputStream(fileName);
-    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+  private String readContent(String fileName, String appender) {
+    logger.atFiner().log(String.format("Reading the content of the file [%s].", fileName));
     StringBuilder scripts = new StringBuilder();
-    String line = bufferedReader.readLine();
-    while (line != null) {
-      scripts.append(line.trim());
-      scripts.append(appender);
-      line = bufferedReader.readLine();
+    try (InputStreamReader inputStreamReader =
+            new InputStreamReader(new FileInputStream(fileName));
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+      String line = bufferedReader.readLine();
+      while (line != null) {
+        scripts.append(line.trim());
+        scripts.append(appender);
+        line = bufferedReader.readLine();
+      }
+    } catch (IOException exc) {
+      logger.atSevere().log("Unable to read the content of the file: [%s]", fileName);
+      throw new IllegalStateException(exc);
     }
-    inputStreamReader.close();
-    logger.atFine().log(String.format("Finish reading the content of the file [%s].", fileName));
+    logger.atFiner().log(String.format("Finish reading the content of the file [%s].", fileName));
     return scripts.toString();
   }
 }
