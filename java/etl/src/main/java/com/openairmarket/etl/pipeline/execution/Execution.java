@@ -4,10 +4,10 @@ package com.openairmarket.etl.pipeline.execution;
 public interface Execution {
 
   /**
-   * Kickoff the execution of a particular flow.
+   * Kickoff the execution of a particular pipeline.
    *
-   * @param id specifies the desired workflow id that will be executed
-   * @throws ExecutionException in case of a failure or interruption of a {@code Flow}.
+   * @param id specifies the desired pipeline id that will be executed
+   * @throws ExecutionException in case of a failure or interruption of a {@code Execution}.
    */
   void execute(String id) throws ExecutionException;
 }
