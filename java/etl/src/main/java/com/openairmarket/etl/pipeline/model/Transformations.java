@@ -41,8 +41,6 @@ public class Transformations {
   @XmlElement(required = true)
   protected Inputs inputs;
 
-  protected PreValidations preValidations;
-
   @XmlElement(required = true)
   protected Conversions conversions;
 
@@ -62,24 +60,6 @@ public class Transformations {
    */
   public void setInputs(Inputs value) {
     this.inputs = value;
-  }
-
-  /**
-   * Gets the value of the preValidations property.
-   *
-   * @return possible object is {@link PreValidations }
-   */
-  public PreValidations getPreValidations() {
-    return preValidations;
-  }
-
-  /**
-   * Sets the value of the preValidations property.
-   *
-   * @param value allowed object is {@link PreValidations }
-   */
-  public void setPreValidations(PreValidations value) {
-    this.preValidations = value;
   }
 
   /**

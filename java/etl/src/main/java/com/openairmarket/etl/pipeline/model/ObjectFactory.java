@@ -54,11 +54,6 @@ public class ObjectFactory {
     return new Inputs();
   }
 
-  /** Create an instance of {@link PreValidations } */
-  public PreValidations createPreValidations() {
-    return new PreValidations();
-  }
-
   /** Create an instance of {@link Conversions } */
   public Conversions createConversions() {
     return new Conversions();
@@ -72,11 +67,6 @@ public class ObjectFactory {
   /** Create an instance of {@link Extract } */
   public Extract createExtract() {
     return new Extract();
-  }
-
-  /** Create an instance of {@link PreValidation } */
-  public PreValidation createPreValidation() {
-    return new PreValidation();
   }
 
   /** Create an instance of {@link Input } */

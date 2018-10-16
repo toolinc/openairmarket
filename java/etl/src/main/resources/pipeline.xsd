@@ -38,15 +38,6 @@
           <xs:attribute name="path" type="xs:string" use="required"/>
         </xs:complexType>
       </xs:element>
-      <xs:element name="preValidations">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="preValidation" type="preValidation" minOccurs="1"
-              maxOccurs="unbounded"/>
-          </xs:sequence>
-          <xs:attribute name="path" type="xs:string" use="required"/>
-        </xs:complexType>
-      </xs:element>
       <xs:element name="conversions">
         <xs:complexType>
           <xs:sequence>
@@ -68,7 +59,6 @@
   <xs:complexType name="transformations">
     <xs:sequence>
       <xs:element name="inputs" type="inputs"/>
-      <xs:element name="preValidations" type="preValidations" minOccurs="0"/>
       <xs:element name="conversions" type="conversions"/>
     </xs:sequence>
   </xs:complexType>
@@ -85,12 +75,6 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="preValidations">
-    <xs:sequence>
-      <xs:element name="preValidation" type="identifier" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="conversions">
     <xs:sequence>
       <xs:element name="conversion" type="identifier" maxOccurs="unbounded"/>
@@ -103,16 +87,6 @@
   </xs:complexType>
 
   <xs:complexType name="extract">
-    <xs:complexContent>
-      <xs:extension base="identifier">
-        <xs:sequence>
-          <xs:element name="scripts" type="scripts"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="preValidation">
     <xs:complexContent>
       <xs:extension base="identifier">
         <xs:sequence>

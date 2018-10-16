@@ -26,13 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "identifier")
-@XmlSeeAlso({
-  Pipelines.Pipeline.class,
-  Extract.class,
-  PreValidation.class,
-  Input.class,
-  Conversion.class
-})
+@XmlSeeAlso({Pipelines.Pipeline.class, Extract.class, Input.class, Conversion.class})
 public class Identifier {
 
   @XmlAttribute(name = "id", required = true)

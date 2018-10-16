@@ -520,38 +520,11 @@ public class Pipelines {
    * </pre>
    */
   @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(
-      name = "",
-      propOrder = {"preValidation"})
+  @XmlType(name = "")
   public static class PreValidations {
-
-    @XmlElement(required = true)
-    protected List<PreValidation> preValidation;
 
     @XmlAttribute(name = "path", required = true)
     protected String path;
-
-    /**
-     * Gets the value of the preValidation property.
-     *
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-     * modification you make to the returned list will be present inside the JAXB object. This is
-     * why there is not a <CODE>set</CODE> method for the preValidation property.
-     *
-     * <p>For example, to add a new item, do as follows:
-     *
-     * <pre>
-     *    getPreValidation().add(newItem);
-     * </pre>
-     *
-     * <p>Objects of the following type(s) are allowed in the list {@link PreValidation }
-     */
-    public List<PreValidation> getPreValidation() {
-      if (preValidation == null) {
-        preValidation = new ArrayList<PreValidation>();
-      }
-      return this.preValidation;
-    }
 
     /**
      * Gets the value of the path property.

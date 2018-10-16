@@ -16,7 +16,6 @@ public final class PipelineHelper {
   private final Pipelines pipelines;
   private final Map<String, Pipeline> pipeline;
   private final Map<String, Extract> extracts;
-  private final Map<String, PreValidation> preValidations;
   private final Map<String, Input> inputs;
   private final Map<String, Conversion> conversions;
 
@@ -26,7 +25,6 @@ public final class PipelineHelper {
     pipeline = createMap(pipelines.getPipeline());
     extracts = createMap(pipelines.getExtracts().getExtract());
     inputs = createMap(pipelines.getInputs().getInput());
-    preValidations = createMap(pipelines.getPreValidations().getPreValidation());
     conversions = createMap(pipelines.getConversions().getConversion());
   }
 
@@ -101,25 +99,6 @@ public final class PipelineHelper {
     List<Input> inputs = createList(inputIds, this.inputs);
     for (Input tmpInput : inputs) {
       builder.addAll(tmpInput.getScripts().getScript());
-    }
-    return builder.build();
-  }
-
-  /**
-   * Search for a particular all the pre-validation scripts of a pipelines.
-   *
-   * @param workflowId the identifier
-   * @return a list of {@code Script}.
-   */
-  public List<Script> getPreValidations(String workflowId) {
-    ImmutableList.Builder<Script> builder = ImmutableList.builder();
-    PreValidations prevalidation = getPipeline(workflowId).getTransformations().getPreValidations();
-    if (prevalidation != null) {
-      List<PreValidation> prevalidations =
-          createList(prevalidation.getPreValidation(), this.preValidations);
-      for (PreValidation tmpPrevalidation : prevalidations) {
-        builder.addAll(tmpPrevalidation.getScripts().getScript());
-      }
     }
     return builder.build();
   }
