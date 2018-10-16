@@ -44,15 +44,6 @@ public final class BindingAnnotations {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
     public @interface Output {}
-
-    /**
-     * A {@link com.google.inject.BindingAnnotation} for injecting the path in which the files will
-     * be stored temporally.
-     */
-    @BindingAnnotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
-    public @interface Temp {}
   }
 
   /**
