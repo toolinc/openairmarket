@@ -3,7 +3,7 @@ package com.openairmarket.etl.pipeline.step.impl;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.etl.pipeline.inject.BindingAnnotations.PhaseExecutors;
+import com.openairmarket.etl.pipeline.inject.BindingAnnotations.StepExecutors;
 import com.openairmarket.etl.pipeline.model.PipelineHelper;
 import com.openairmarket.etl.pipeline.model.Script;
 import com.openairmarket.etl.pipeline.step.InputStep;
@@ -22,7 +22,7 @@ public class InputStepImpl implements InputStep {
   @Inject
   public InputStepImpl(
       PipelineHelper pipelineHelper,
-      @PhaseExecutors.TransformationPoolThread StepExecutor stepExecutor) {
+      @StepExecutors.TransformationPoolThread StepExecutor stepExecutor) {
     this.pipelineHelper = checkNotNull(pipelineHelper, "PipelineHelper is missing.");
     this.stepExecutor = checkNotNull(stepExecutor, "StepExecutor is missing.");
   }

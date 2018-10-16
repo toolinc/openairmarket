@@ -7,7 +7,7 @@ import com.openairmarket.etl.pipeline.step.InputStep;
 import com.openairmarket.etl.pipeline.step.StepException;
 import javax.inject.Inject;
 
-/** Executes all the steps (extract, input, pre-validation, conversion) of a one pipeline. * */
+/** Executes all the steps (extract, input, conversion) of a one pipeline. * */
 public final class PlainPipelineRunner implements PipelineRunner {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();

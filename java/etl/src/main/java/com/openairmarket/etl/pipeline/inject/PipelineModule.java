@@ -8,7 +8,7 @@ import com.openairmarket.etl.ConversionService;
 import com.openairmarket.etl.ExtractService;
 import com.openairmarket.etl.database.H2DataBaseHelper;
 import com.openairmarket.etl.pipeline.inject.BindingAnnotations.Paths;
-import com.openairmarket.etl.pipeline.inject.BindingAnnotations.PhaseExecutors;
+import com.openairmarket.etl.pipeline.inject.BindingAnnotations.StepExecutors;
 import com.openairmarket.etl.pipeline.model.PipelineHelper;
 import com.openairmarket.etl.pipeline.model.Pipelines;
 import com.openairmarket.etl.pipeline.runner.ExtractPipelineRunner;
@@ -85,7 +85,7 @@ public class PipelineModule extends AbstractModule {
   }
 
   @Provides
-  @PhaseExecutors.TransformationPoolThread
+  @StepExecutors.TransformationPoolThread
   public StepExecutor providesConversionPoolThread(
       Provider<ConversionService> conversionServiceProvider,
       ExecutorService executorService,
@@ -94,7 +94,7 @@ public class PipelineModule extends AbstractModule {
   }
 
   @Provides
-  @PhaseExecutors.TransformationSingleThread
+  @StepExecutors.TransformationSingleThread
   public StepExecutor providesConversionSingleThread(
       Provider<ConversionService> transformationService, @Paths.Scripts String basePath) {
     return new ConversionStepExecutor(

@@ -3,7 +3,7 @@ package com.openairmarket.etl.pipeline.step.impl;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.etl.pipeline.inject.BindingAnnotations.PhaseExecutors;
+import com.openairmarket.etl.pipeline.inject.BindingAnnotations.StepExecutors;
 import com.openairmarket.etl.pipeline.model.PipelineHelper;
 import com.openairmarket.etl.pipeline.model.Script;
 import com.openairmarket.etl.pipeline.step.ExtractStep;
@@ -21,7 +21,7 @@ public class ExtractStepImpl implements ExtractStep {
 
   @Inject
   public ExtractStepImpl(
-      PipelineHelper pipelineHelper, @PhaseExecutors.Extraction StepExecutor stepExecutor) {
+      PipelineHelper pipelineHelper, @StepExecutors.Extraction StepExecutor stepExecutor) {
     this.pipelineHelper = checkNotNull(pipelineHelper, "PipelineHelper is missing.");
     this.stepExecutor = checkNotNull(stepExecutor, "StepExecutor is missing.");
   }

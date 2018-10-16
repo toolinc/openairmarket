@@ -6,7 +6,7 @@ public interface Step {
   /**
    * Kickoff the runner of a particular runner.
    *
-   * @param id specifies the desired workflow id that will be executed
+   * @param id specifies the desired workflow id that will be executed.
    * @throws StepException in case of a failure or interruption of a {@code PipelineRunner}.
    */
   void execute(String id) throws StepException;

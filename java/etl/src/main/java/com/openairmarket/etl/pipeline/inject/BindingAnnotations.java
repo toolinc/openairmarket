@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /** Binding annotations for configuration objects. */
 public final class BindingAnnotations {
 
-  /** Specifies the binding for all the paths for the migration services. */
+  /** Specifies the binding for all the paths for the pipeline. */
   public static class Paths {
 
     /** A {@link com.google.inject.BindingAnnotation} for injecting the configuration file path. */
@@ -57,9 +57,9 @@ public final class BindingAnnotations {
 
   /**
    * Specifies the binding for {@link com.openairmarket.etl.pipeline.step.StepExecutor} for the
-   * migration services.
+   * pipeline.
    */
-  public static class PhaseExecutors {
+  public static class StepExecutors {
 
     /**
      * A {@link com.google.inject.BindingAnnotation} for injecting the extraction phase executor.
@@ -68,15 +68,6 @@ public final class BindingAnnotations {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
     public @interface Extraction {}
-
-    /**
-     * A {@link com.google.inject.BindingAnnotation} for injecting the non db extraction phase
-     * executor.
-     */
-    @BindingAnnotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
-    public @interface NonDbExtraction {}
 
     /**
      * A {@link com.google.inject.BindingAnnotation} for injecting the transformation phase
