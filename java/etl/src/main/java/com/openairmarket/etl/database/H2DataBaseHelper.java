@@ -39,10 +39,10 @@ public final class H2DataBaseHelper {
    */
   public void executeUpdate(String sql) {
     try (Statement statement = getConnection().createStatement()) {
-      logger.atFiner().log(String.format("Starting the execution of the script [%s].", sql));
+      logger.atFiner().log(String.format("Starting the runner of the script [%s].", sql));
       int rows = statement.executeUpdate(sql);
       logger.atInfo().log(String.format("Affected rows [%d].", rows));
-      logger.atFiner().log(String.format("Finishing the execution of the script [%s].", sql));
+      logger.atFiner().log(String.format("Finishing the runner of the script [%s].", sql));
     } catch (SQLException exc) {
       String message = String.format("An error occurred while executing the sql [%s].", sql);
       logger.atSevere().log(message, exc);

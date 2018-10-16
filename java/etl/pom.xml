@@ -77,12 +77,12 @@
             <!--plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <execution>package</execution>
+                    <runner>
+                        <runner>package</runner>
                         <goals>
                             <goal>single</goal>
                         </goals>
-                    </execution>
+                    </runner>
                 </executions>
                 <configuration>
                     <archive>
@@ -100,12 +100,12 @@
                 <artifactId>jaxb2-maven-plugin</artifactId>
                 <version>2.4</version>
                 <executions>
-                    <execution>
+                    <runner>
                         <id>xjc</id>
                         <goals>
                             <goal>xjc</goal>
                         </goals>
-                    </execution>
+                    </runner>
                 </executions>
                 <configuration>
                     <packageName>com.openairmarket.etl.pipeline.model</packageName>

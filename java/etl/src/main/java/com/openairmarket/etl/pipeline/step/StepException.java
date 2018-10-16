@@ -2,7 +2,7 @@ package com.openairmarket.etl.pipeline.step;
 
 /**
  * Signals that a {@code Flow} was unable to complete. This type of exception is produced by failure
- * or interrupted execution of a {@code Flow}.
+ * or interrupted runner of a {@code Flow}.
  */
 public class StepException extends Exception {
 

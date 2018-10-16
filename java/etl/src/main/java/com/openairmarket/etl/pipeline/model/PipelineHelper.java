@@ -7,8 +7,10 @@ import com.google.inject.Inject;
 import com.openairmarket.etl.pipeline.model.Pipelines.Pipeline;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Singleton;
 
 /** Helper that provides all the particular elements of a pipelines given a specific identifier. */
+@Singleton
 public final class PipelineHelper {
 
   private final Pipelines pipelines;

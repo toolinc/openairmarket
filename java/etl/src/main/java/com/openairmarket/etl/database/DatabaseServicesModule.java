@@ -8,8 +8,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.openairmarket.etl.ConversionService;
 import com.openairmarket.etl.ExtractService;
-import com.openairmarket.etl.TransformationService;
 import com.openairmarket.etl.database.BindingAnnotations.CharSet;
 import com.openairmarket.etl.database.BindingAnnotations.CsvWriter;
 import com.openairmarket.etl.database.BindingAnnotations.H2;
@@ -42,7 +42,7 @@ public final class DatabaseServicesModule extends AbstractModule {
     bind(SqlScriptReader.class).in(Scopes.SINGLETON);
     bind(ExtractService.class).to(MssqlExtractService.class);
     bind(H2DataBaseHelper.class).in(Scopes.SINGLETON);
-    bind(TransformationService.class).to(H2TransformationService.class).in(Scopes.SINGLETON);
+    bind(ConversionService.class).to(H2ConversionService.class).in(Scopes.SINGLETON);
   }
 
   @Provides

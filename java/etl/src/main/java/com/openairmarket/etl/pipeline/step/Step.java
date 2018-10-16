@@ -4,10 +4,10 @@ package com.openairmarket.etl.pipeline.step;
 public interface Step {
 
   /**
-   * Kickoff the execution of a particular execution.
+   * Kickoff the runner of a particular runner.
    *
    * @param id specifies the desired workflow id that will be executed
-   * @throws StepException in case of a failure or interruption of a {@code Execution}.
+   * @throws StepException in case of a failure or interruption of a {@code PipelineRunner}.
    */
   void execute(String id) throws StepException;
 }

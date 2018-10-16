@@ -1,48 +1,41 @@
-package com.openairmarket.etl.pipeline.execution;
+package com.openairmarket.etl.pipeline.runner;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.openairmarket.etl.pipeline.step.ConversionStep;
 import com.openairmarket.etl.pipeline.step.InputStep;
-import com.openairmarket.etl.pipeline.step.PreValidationStep;
 import com.openairmarket.etl.pipeline.step.StepException;
 import javax.inject.Inject;
 
 /** Executes all the steps (extract, input, pre-validation, conversion) of a one pipeline. * */
-public final class SinglePipelineExecution implements Execution {
+public final class PlainPipelineRunner implements PipelineRunner {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private final ExtractExecution extractExecution;
+  private final ExtractPipelineRunner extractExecution;
   private final InputStep inputStep;
-  private final PreValidationStep preValidationStep;
   private final ConversionStep conversionStep;
 
   @Inject
-  public SinglePipelineExecution(
-      ExtractExecution extractExecution,
-      InputStep inputStep,
-      PreValidationStep preValidationStep,
-      ConversionStep conversionStep) {
+  public PlainPipelineRunner(
+      ExtractPipelineRunner extractExecution, InputStep inputStep, ConversionStep conversionStep) {
     this.extractExecution = Preconditions.checkNotNull(extractExecution);
     this.inputStep = Preconditions.checkNotNull(inputStep);
-    this.preValidationStep = Preconditions.checkNotNull(preValidationStep);
     this.conversionStep = Preconditions.checkNotNull(conversionStep);
   }
 
   @Override
-  public void execute(String id) throws ExecutionException {
+  public void execute(String id) throws PipelineRunnerException {
     try {
-      logger.atInfo().log(String.format("Starting the transformation flow [%s].", id));
+      logger.atInfo().log(String.format("Starting the pipeline runner [%s].", id));
       extractExecution.execute(id);
       inputStep.execute(id);
-      preValidationStep.execute(id);
       conversionStep.execute(id);
-      logger.atInfo().log(String.format("Finished the transformation flow [%s].", id));
+      logger.atInfo().log(String.format("Finished the pipeline runner [%s].", id));
     } catch (StepException exc) {
       String msg =
           String.format(
-              "An unexpected error occurred while executing the transformation flow [%s].", id);
-      throw new ExecutionException(msg, exc);
+              "An unexpected error occurred while executing the pipeline runner [%s].", id);
+      throw new PipelineRunnerException(msg, exc);
     }
   }
 }

@@ -2,21 +2,21 @@ package com.openairmarket.etl.database;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.etl.TransformationService;
+import com.openairmarket.etl.ConversionService;
 import com.openairmarket.etl.file.SqlScriptReader;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /** Performs data transformation in h2 database based on a set of SQL scripts. */
 @Singleton
-final class H2TransformationService implements TransformationService {
+final class H2ConversionService implements ConversionService {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final H2DataBaseHelper databaseHelper;
   private final SqlScriptReader sqlScriptReader;
 
   @Inject
-  public H2TransformationService(H2DataBaseHelper databaseHelper, SqlScriptReader sqlScriptReader) {
+  public H2ConversionService(H2DataBaseHelper databaseHelper, SqlScriptReader sqlScriptReader) {
     this.databaseHelper = Preconditions.checkNotNull(databaseHelper);
     this.sqlScriptReader = Preconditions.checkNotNull(sqlScriptReader);
   }
