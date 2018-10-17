@@ -48,6 +48,7 @@ public class PipelineOptions extends OptionsBase {
       name = "outputPath",
       help = "Specifies the path in which the information extracted from H2 will be stored.",
       category = "startup",
-      defaultValue = "/Users/edgarrico/Documents/openairmarket/java/etl/target/pipeline/data/output/")
+      defaultValue =
+          "/Users/edgarrico/Documents/openairmarket/java/etl/target/pipeline/data/output/")
   public String outputPath;
 }

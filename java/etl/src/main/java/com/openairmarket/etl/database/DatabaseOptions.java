@@ -12,21 +12,21 @@ public final class DatabaseOptions extends OptionsBase {
       name = "h2Url",
       help = "The jdbc url that will be used to open a connection with H2.",
       category = "startup",
-      defaultValue = "jdbc:h2:~/test")
+      defaultValue = "jdbc:h2:~/test;MULTI_THREADED=TRUE")
   public String h2Url;
 
   @Option(
       name = "h2User",
       help = "The user that will be used to open a connection with H2.",
       category = "startup",
-      defaultValue = "root")
+      defaultValue = "sa")
   public String h2User;
 
   @Option(
       name = "h2Pass",
       help = "The password that will be use to open a connection with H2.",
       category = "startup",
-      defaultValue = "toor")
+      defaultValue = "")
   public String h2Password;
 
   @Option(
