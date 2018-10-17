@@ -61,11 +61,15 @@ public final class Pipeline {
     Class<PipelineRunner> clazz = RUNNER.get(pipelineOptions.pipelineRunner);
     PipelineRunner pipelineRunner = injector.getInstance(clazz);
     try {
+      logger.atFiner().log("Start the execution of the pipeline [%s]", pipelineOptions.pipelineId);
       pipelineRunner.execute(pipelineOptions.pipelineId);
+      logger.atFiner().log(
+          "Complete the execution of the pipeline [%s]", pipelineOptions.pipelineId);
     } catch (PipelineRunnerException exc) {
       logger.atSevere().log("Failed to run the pipeline [%s].", pipelineOptions.pipelineId);
       exc.printStackTrace();
     }
+    logger.atFiner().log("Completed.");
   }
 
   private static final JdbcDataSourceConfiguration createH2(DatabaseOptions dbOptions) {

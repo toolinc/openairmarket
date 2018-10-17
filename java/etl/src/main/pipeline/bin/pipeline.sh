@@ -49,14 +49,12 @@ if [[ ($pipelineRunner ==  "extract") || ($pipelineRunner ==  "default") ]]
     IFS="$OIFS"
     for pipelineId in "${pipelinesArray[@]}"
     do
-      echo "Start the execution of the pipeline "$pipelineId
       java -Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance \
         -jar ./../../etl-1.0-jar-with-dependencies.jar \
         --h2Url=$h2url --h2MaxPoolSize=5 \
         --msSqlUser=$msSqlUser --msSqlPass=$msSqlPass --msSqlMaxPoolSize=5 \
         --pipelineConfig=$pipelineConfig --pipelineRunner=$pipelineRunner --pipelineId=$pipelineId \
         --scriptsPath=$scriptsPath --inputPath=$inputPath --outputPath=$outputPath
-        echo "Finish the execution of the pipeline "$pipelineId
     done
     echo "Finish the execution of the pipelines."
 fi
