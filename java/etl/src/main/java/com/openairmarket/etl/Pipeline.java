@@ -18,18 +18,17 @@ import java.util.Map;
 /** Pipeline execution. */
 public final class Pipeline {
 
-  private static final FluentLogger logger;
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();;
   private static final String H2_DRIVER = "org.h2.Driver";
   private static final String MSSQL_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
   private static final Map<String, Class> RUNNER =
       ImmutableMap.of("extract", ExtractPipelineRunner.class, "default", PlainPipelineRunner.class);
 
-  static {
+  /*static {
     System.setProperty(
         "flogger.backend_factory",
         "com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance");
-    logger = FluentLogger.forEnclosingClass();
-  }
+  }*/
 
   public static void main(String[] args) {
     OptionsParser parser =

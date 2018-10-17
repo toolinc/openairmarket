@@ -75,11 +75,12 @@ public class PipelineModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @SuppressWarnings({"unchecked", "cast"})
   public Pipelines providesPipelines(@Paths.PipelineConfig String pipelinePath) {
     try (InputStream inputStream = Files.newInputStream(java.nio.file.Paths.get(pipelinePath))) {
       JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
       final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-      return (Pipelines) ((JAXBElement<Pipelines>) unmarshaller.unmarshal(inputStream)).getValue();
+      return ((JAXBElement<Pipelines>) unmarshaller.unmarshal(inputStream)).getValue();
     } catch (IOException | JAXBException exc) {
       throw new IllegalStateException(
           String.format("Unable to read the pipeline configuration file [%s].", pipelinePath), exc);
