@@ -3,7 +3,7 @@
 // Implementation, v2.3.0
 // See <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
 // Any modifications to this file will be lost upon recompilation of the source schema.
-// Generated on: 2018.10.14 at 02:52:29 PM PDT
+// Generated on: 2018.10.17 at 06:19:12 AM PDT
 //
 
 package com.openairmarket.etl.pipeline.model;
@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
   private static final QName _Pipelines_QNAME =
-      new QName("http://www.config.domain.pipeline.workday.corp.google.com", "pipelines");
+      new QName("http://www.openairmarket.etl.pipeline.model", "pipelines");
 
   /**
    * Create a new ObjectFactory that can be used to create new instances of schema derived classes
@@ -104,11 +104,6 @@ public class ObjectFactory {
     return new Pipelines.Inputs();
   }
 
-  /** Create an instance of {@link Pipelines.PreValidations } */
-  public Pipelines.PreValidations createPipelinesPreValidations() {
-    return new Pipelines.PreValidations();
-  }
-
   /** Create an instance of {@link Pipelines.Conversions } */
   public Pipelines.Conversions createPipelinesConversions() {
     return new Pipelines.Conversions();
@@ -120,9 +115,7 @@ public class ObjectFactory {
    * @param value Java instance representing xml element's value.
    * @return the new instance of {@link JAXBElement }{@code <}{@link Pipelines }{@code >}
    */
-  @XmlElementDecl(
-      namespace = "http://www.config.domain.pipeline.workday.corp.google.com",
-      name = "pipelines")
+  @XmlElementDecl(namespace = "http://www.openairmarket.etl.pipeline.model", name = "pipelines")
   public JAXBElement<Pipelines> createPipelines(Pipelines value) {
     return new JAXBElement<Pipelines>(_Pipelines_QNAME, Pipelines.class, null, value);
   }

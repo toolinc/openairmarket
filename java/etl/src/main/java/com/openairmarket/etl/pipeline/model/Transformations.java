@@ -3,7 +3,7 @@
 // Implementation, v2.3.0
 // See <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
 // Any modifications to this file will be lost upon recompilation of the source schema.
-// Generated on: 2018.10.14 at 02:52:29 PM PDT
+// Generated on: 2018.10.17 at 06:19:12 AM PDT
 //
 
 package com.openairmarket.etl.pipeline.model;
@@ -23,9 +23,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="inputs" type="{http://www.config.domain.pipeline.workday.corp.google.com}inputs"/&gt;
- *         &lt;element name="preValidations" type="{http://www.config.domain.pipeline.workday.corp.google.com}preValidations" minOccurs="0"/&gt;
- *         &lt;element name="conversions" type="{http://www.config.domain.pipeline.workday.corp.google.com}conversions"/&gt;
+ *         &lt;element name="inputs" type="{http://www.openairmarket.etl.pipeline.model}inputs"/&gt;
+ *         &lt;element name="conversions" type="{http://www.openairmarket.etl.pipeline.model}conversions"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -35,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
     name = "transformations",
-    propOrder = {"inputs", "preValidations", "conversions"})
+    propOrder = {"inputs", "conversions"})
 public class Transformations {
 
   @XmlElement(required = true)

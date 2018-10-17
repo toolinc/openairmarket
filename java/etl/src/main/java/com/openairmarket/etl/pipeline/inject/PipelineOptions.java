@@ -12,28 +12,29 @@ public class PipelineOptions extends OptionsBase {
       name = "pipelineConfig",
       help = "Specifies the path of the pipeline configuration file.",
       category = "startup",
-      defaultValue = "pipeline/config/pipeline.xml")
+      defaultValue =
+          "/Users/edgarrico/Documents/openairmarket/java/etl/target/pipeline/config/pipeline.xml")
   public String pipelineConfig;
 
   @Option(
       name = "pipelineRunner",
       help = "Specifies the desire runner that will be used to execute a pipeline.",
       category = "startup",
-      defaultValue = "default")
+      defaultValue = "extract")
   public String pipelineRunner;
 
   @Option(
       name = "pipelineId",
       help = "Specifies the desire pipeline id that will be executed.",
       category = "startup",
-      defaultValue = "")
+      defaultValue = "productos")
   public String pipelineId;
 
   @Option(
       name = "scriptsPath",
       help = "Specifies the path in which the scripts are being stored.",
       category = "startup",
-      defaultValue = "pipeline/")
+      defaultValue = "/Users/edgarrico/Documents/openairmarket/java/etl/target/pipeline/")
   public String scriptsPath;
 
   @Option(

@@ -4,9 +4,9 @@
   xmlns="http://www.openairmarket.etl.pipeline.model"
   xsi:schemaLocation="http://www.openairmarket.etl.pipeline.model file:/pipeline.xsd">
 
-  <pipeline id="">
+  <pipeline id="productos">
     <extracts>
-      <extract id=""/>
+      <extract id="productos"/>
     </extracts>
     <transformations>
       <inputs>
@@ -19,9 +19,9 @@
   </pipeline>
 
   <extracts path="script/extraction/">
-    <extract id="">
+    <extract id="productos">
       <scripts>
-        <script></script>
+        <script>extract_productos.sql</script>
       </scripts>
     </extract>
   </extracts>

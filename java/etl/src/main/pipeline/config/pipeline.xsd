@@ -15,7 +15,6 @@
               <xs:sequence>
                 <xs:element name="extracts" type="extracts"/>
                 <xs:element name="transformations" type="transformations"/>
-                <xs:element name="validations" type="validations" minOccurs="0"/>
               </xs:sequence>
             </xs:extension>
           </xs:complexContent>
@@ -60,12 +59,6 @@
     <xs:sequence>
       <xs:element name="inputs" type="inputs"/>
       <xs:element name="conversions" type="conversions"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="validations">
-    <xs:sequence>
-      <xs:element name="validation" type="identifier" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 

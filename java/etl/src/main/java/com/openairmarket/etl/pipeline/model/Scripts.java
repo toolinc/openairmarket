@@ -3,7 +3,7 @@
 // Implementation, v2.3.0
 // See <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
 // Any modifications to this file will be lost upon recompilation of the source schema.
-// Generated on: 2018.10.14 at 02:52:29 PM PDT
+// Generated on: 2018.10.17 at 06:19:12 AM PDT
 //
 
 package com.openairmarket.etl.pipeline.model;
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="script" type="{http://www.config.domain.pipeline.workday.corp.google.com}script" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="script" type="{http://www.openairmarket.etl.pipeline.model}script" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *       &lt;attribute name="path" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *     &lt;/restriction&gt;

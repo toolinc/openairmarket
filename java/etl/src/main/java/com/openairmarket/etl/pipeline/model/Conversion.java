@@ -3,7 +3,7 @@
 // Implementation, v2.3.0
 // See <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
 // Any modifications to this file will be lost upon recompilation of the source schema.
-// Generated on: 2018.10.14 at 02:52:29 PM PDT
+// Generated on: 2018.10.17 at 06:19:12 AM PDT
 //
 
 package com.openairmarket.etl.pipeline.model;
@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="conversion"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://www.config.domain.pipeline.workday.corp.google.com}identifier"&gt;
+ *     &lt;extension base="{http://www.openairmarket.etl.pipeline.model}identifier"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="scripts" type="{http://www.config.domain.pipeline.workday.corp.google.com}scripts"/&gt;
+ *         &lt;element name="scripts" type="{http://www.openairmarket.etl.pipeline.model}scripts"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

@@ -3,7 +3,7 @@
 // Implementation, v2.3.0
 // See <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
 // Any modifications to this file will be lost upon recompilation of the source schema.
-// Generated on: 2018.10.14 at 02:52:29 PM PDT
+// Generated on: 2018.10.17 at 06:19:12 AM PDT
 //
 
 package com.openairmarket.etl.pipeline.model;
@@ -29,11 +29,10 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="pipeline" maxOccurs="unbounded"&gt;
  *           &lt;complexType&gt;
  *             &lt;complexContent&gt;
- *               &lt;extension base="{http://www.config.domain.pipeline.workday.corp.google.com}identifier"&gt;
+ *               &lt;extension base="{http://www.openairmarket.etl.pipeline.model}identifier"&gt;
  *                 &lt;sequence&gt;
- *                   &lt;element name="extracts" type="{http://www.config.domain.pipeline.workday.corp.google.com}extracts"/&gt;
- *                   &lt;element name="transformations" type="{http://www.config.domain.pipeline.workday.corp.google.com}transformations"/&gt;
- *                   &lt;element name="validations" type="{http://www.config.domain.pipeline.workday.corp.google.com}validations" minOccurs="0"/&gt;
+ *                   &lt;element name="extracts" type="{http://www.openairmarket.etl.pipeline.model}extracts"/&gt;
+ *                   &lt;element name="transformations" type="{http://www.openairmarket.etl.pipeline.model}transformations"/&gt;
  *                 &lt;/sequence&gt;
  *               &lt;/extension&gt;
  *             &lt;/complexContent&gt;
@@ -44,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent&gt;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                 &lt;sequence&gt;
- *                   &lt;element name="extract" type="{http://www.config.domain.pipeline.workday.corp.google.com}extract" maxOccurs="unbounded"/&gt;
+ *                   &lt;element name="extract" type="{http://www.openairmarket.etl.pipeline.model}extract" maxOccurs="unbounded"/&gt;
  *                 &lt;/sequence&gt;
  *                 &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *               &lt;/restriction&gt;
@@ -56,19 +55,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent&gt;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                 &lt;sequence&gt;
- *                   &lt;element name="input" type="{http://www.config.domain.pipeline.workday.corp.google.com}input" maxOccurs="unbounded"/&gt;
- *                 &lt;/sequence&gt;
- *                 &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
- *               &lt;/restriction&gt;
- *             &lt;/complexContent&gt;
- *           &lt;/complexType&gt;
- *         &lt;/element&gt;
- *         &lt;element name="preValidations"&gt;
- *           &lt;complexType&gt;
- *             &lt;complexContent&gt;
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *                 &lt;sequence&gt;
- *                   &lt;element name="preValidation" type="{http://www.config.domain.pipeline.workday.corp.google.com}preValidation" maxOccurs="unbounded"/&gt;
+ *                   &lt;element name="input" type="{http://www.openairmarket.etl.pipeline.model}input" maxOccurs="unbounded"/&gt;
  *                 &lt;/sequence&gt;
  *                 &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *               &lt;/restriction&gt;
@@ -80,19 +67,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent&gt;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                 &lt;sequence&gt;
- *                   &lt;element name="conversion" type="{http://www.config.domain.pipeline.workday.corp.google.com}conversion" maxOccurs="unbounded"/&gt;
- *                 &lt;/sequence&gt;
- *                 &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
- *               &lt;/restriction&gt;
- *             &lt;/complexContent&gt;
- *           &lt;/complexType&gt;
- *         &lt;/element&gt;
- *         &lt;element name="validations"&gt;
- *           &lt;complexType&gt;
- *             &lt;complexContent&gt;
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *                 &lt;sequence&gt;
- *                   &lt;element name="validation" type="{http://www.config.domain.pipeline.workday.corp.google.com}validation" maxOccurs="unbounded"/&gt;
+ *                   &lt;element name="conversion" type="{http://www.openairmarket.etl.pipeline.model}conversion" maxOccurs="unbounded"/&gt;
  *                 &lt;/sequence&gt;
  *                 &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *               &lt;/restriction&gt;
@@ -108,7 +83,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
     name = "pipelines",
-    propOrder = {"pipeline", "extracts", "inputs", "preValidations", "conversions", "validations"})
+    propOrder = {"pipeline", "extracts", "inputs", "conversions"})
 public class Pipelines {
 
   @XmlElement(required = true)
@@ -119,9 +94,6 @@ public class Pipelines {
 
   @XmlElement(required = true)
   protected Inputs inputs;
-
-  @XmlElement(required = true)
-  protected PreValidations preValidations;
 
   @XmlElement(required = true)
   protected Conversions conversions;
@@ -185,24 +157,6 @@ public class Pipelines {
   }
 
   /**
-   * Gets the value of the preValidations property.
-   *
-   * @return possible object is {@link PreValidations }
-   */
-  public PreValidations getPreValidations() {
-    return preValidations;
-  }
-
-  /**
-   * Sets the value of the preValidations property.
-   *
-   * @param value allowed object is {@link PreValidations }
-   */
-  public void setPreValidations(PreValidations value) {
-    this.preValidations = value;
-  }
-
-  /**
    * Gets the value of the conversions property.
    *
    * @return possible object is {@link Conversions }
@@ -230,7 +184,7 @@ public class Pipelines {
    *   &lt;complexContent&gt;
    *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
    *       &lt;sequence&gt;
-   *         &lt;element name="conversion" type="{http://www.config.domain.pipeline.workday.corp.google.com}conversion" maxOccurs="unbounded"/&gt;
+   *         &lt;element name="conversion" type="{http://www.openairmarket.etl.pipeline.model}conversion" maxOccurs="unbounded"/&gt;
    *       &lt;/sequence&gt;
    *       &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
    *     &lt;/restriction&gt;
@@ -301,7 +255,7 @@ public class Pipelines {
    *   &lt;complexContent&gt;
    *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
    *       &lt;sequence&gt;
-   *         &lt;element name="extract" type="{http://www.config.domain.pipeline.workday.corp.google.com}extract" maxOccurs="unbounded"/&gt;
+   *         &lt;element name="extract" type="{http://www.openairmarket.etl.pipeline.model}extract" maxOccurs="unbounded"/&gt;
    *       &lt;/sequence&gt;
    *       &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
    *     &lt;/restriction&gt;
@@ -372,7 +326,7 @@ public class Pipelines {
    *   &lt;complexContent&gt;
    *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
    *       &lt;sequence&gt;
-   *         &lt;element name="input" type="{http://www.config.domain.pipeline.workday.corp.google.com}input" maxOccurs="unbounded"/&gt;
+   *         &lt;element name="input" type="{http://www.openairmarket.etl.pipeline.model}input" maxOccurs="unbounded"/&gt;
    *       &lt;/sequence&gt;
    *       &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
    *     &lt;/restriction&gt;
@@ -441,11 +395,10 @@ public class Pipelines {
    * <pre>
    * &lt;complexType&gt;
    *   &lt;complexContent&gt;
-   *     &lt;extension base="{http://www.config.domain.pipeline.workday.corp.google.com}identifier"&gt;
+   *     &lt;extension base="{http://www.openairmarket.etl.pipeline.model}identifier"&gt;
    *       &lt;sequence&gt;
-   *         &lt;element name="extracts" type="{http://www.config.domain.pipeline.workday.corp.google.com}extracts"/&gt;
-   *         &lt;element name="transformations" type="{http://www.config.domain.pipeline.workday.corp.google.com}transformations"/&gt;
-   *         &lt;element name="validations" type="{http://www.config.domain.pipeline.workday.corp.google.com}validations" minOccurs="0"/&gt;
+   *         &lt;element name="extracts" type="{http://www.openairmarket.etl.pipeline.model}extracts"/&gt;
+   *         &lt;element name="transformations" type="{http://www.openairmarket.etl.pipeline.model}transformations"/&gt;
    *       &lt;/sequence&gt;
    *     &lt;/extension&gt;
    *   &lt;/complexContent&gt;
@@ -455,7 +408,7 @@ public class Pipelines {
   @XmlAccessorType(XmlAccessType.FIELD)
   @XmlType(
       name = "",
-      propOrder = {"extracts", "transformations", "validations"})
+      propOrder = {"extracts", "transformations"})
   public static class Pipeline extends Identifier {
 
     @XmlElement(required = true)
@@ -498,50 +451,6 @@ public class Pipelines {
      */
     public void setTransformations(Transformations value) {
       this.transformations = value;
-    }
-  }
-
-  /**
-   * Java class for anonymous complex type.
-   *
-   * <p>The following schema fragment specifies the expected content contained within this class.
-   *
-   * <pre>
-   * &lt;complexType&gt;
-   *   &lt;complexContent&gt;
-   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-   *       &lt;sequence&gt;
-   *         &lt;element name="preValidation" type="{http://www.config.domain.pipeline.workday.corp.google.com}preValidation" maxOccurs="unbounded"/&gt;
-   *       &lt;/sequence&gt;
-   *       &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
-   *     &lt;/restriction&gt;
-   *   &lt;/complexContent&gt;
-   * &lt;/complexType&gt;
-   * </pre>
-   */
-  @XmlAccessorType(XmlAccessType.FIELD)
-  @XmlType(name = "")
-  public static class PreValidations {
-
-    @XmlAttribute(name = "path", required = true)
-    protected String path;
-
-    /**
-     * Gets the value of the path property.
-     *
-     * @return possible object is {@link String }
-     */
-    public String getPath() {
-      return path;
-    }
-
-    /**
-     * Sets the value of the path property.
-     *
-     * @param value allowed object is {@link String }
-     */
-    public void setPath(String value) {
-      this.path = value;
     }
   }
 }

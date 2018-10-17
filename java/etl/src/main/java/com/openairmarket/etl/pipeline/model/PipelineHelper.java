@@ -104,15 +104,6 @@ public final class PipelineHelper {
   }
 
   /**
-   * Specifies the path in which the pre-validation scripts are stored.
-   *
-   * @return the path of the scripts.
-   */
-  public String getPrevalidationPath() {
-    return pipelines.getPreValidations().getPath();
-  }
-
-  /**
    * Search for a particular all the conversion scripts of a pipelines.
    *
    * @param workflowId the identifier
