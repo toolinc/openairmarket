@@ -21,7 +21,7 @@
   <extracts path="script/extraction/">
     <extract id="productos">
       <scripts>
-        <script>extract_productos.sql</script>
+        <script outputName="productos.csv">extract_productos.sql</script>
       </scripts>
     </extract>
   </extracts>

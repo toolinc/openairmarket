@@ -12,6 +12,7 @@ import com.openairmarket.etl.pipeline.inject.PipelineModule;
 import com.openairmarket.etl.pipeline.inject.PipelineOptions;
 import com.openairmarket.etl.pipeline.runner.ExtractPipelineRunner;
 import com.openairmarket.etl.pipeline.runner.PipelineRunner;
+import com.openairmarket.etl.pipeline.runner.PipelineRunnerException;
 import com.openairmarket.etl.pipeline.runner.PlainPipelineRunner;
 import java.util.Map;
 
@@ -59,6 +60,12 @@ public final class Pipeline {
     @SuppressWarnings("unchecked")
     Class<PipelineRunner> clazz = RUNNER.get(pipelineOptions.pipelineRunner);
     PipelineRunner pipelineRunner = injector.getInstance(clazz);
+    try {
+      pipelineRunner.execute(pipelineOptions.pipelineId);
+    } catch (PipelineRunnerException exc) {
+      logger.atSevere().log("Failed to run the pipeline [%s].", pipelineOptions.pipelineId);
+      exc.printStackTrace();
+    }
   }
 
   private static final JdbcDataSourceConfiguration createH2(DatabaseOptions dbOptions) {

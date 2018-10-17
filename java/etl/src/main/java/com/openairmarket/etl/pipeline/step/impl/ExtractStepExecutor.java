@@ -31,7 +31,7 @@ public final class ExtractStepExecutor implements StepExecutor {
       Provider<ExtractService> extractService,
       ExecutorService executorService,
       @Paths.Scripts String basePath,
-      @Paths.Input String outputPath) {
+      @Paths.Output String outputPath) {
     checkState(!isNullOrEmpty(basePath));
     checkState(!isNullOrEmpty(outputPath));
     this.extractService = checkNotNull(extractService, "ExtractService provider is missing.");
