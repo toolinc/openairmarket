@@ -19,12 +19,6 @@ import java.util.Map;
 /** Pipeline execution. */
 public final class Pipeline {
 
-  /*static {
-    System.setProperty(
-        "flogger.backend_factory",
-        "com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance");
-  }*/
-
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String H2_DRIVER = "org.h2.Driver";
   private static final String MSSQL_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
