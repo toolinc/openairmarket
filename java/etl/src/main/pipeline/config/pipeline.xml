@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipelines
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.openairmarket.etl.pipeline.model"
+  xsi:schemaLocation="http://www.openairmarket.etl.pipeline.model file:/pipeline.xsd">
+
+  <pipeline id="">
+    <extracts>
+      <extract id=""/>
+    </extracts>
+    <transformations>
+      <inputs>
+        <input id=""/>
+      </inputs>
+      <conversions>
+        <conversion id=""/>
+      </conversions>
+    </transformations>
+  </pipeline>
+
+  <extracts path="script/extraction/">
+    <extract id="">
+      <scripts>
+        <script></script>
+      </scripts>
+    </extract>
+  </extracts>
+  
+  <inputs path="script/input/">
+    <input id="" table="">
+      <scripts>
+        <script></script>
+      </scripts>
+    </input>
+  </inputs>
+  
+  <conversions path="script/conversion/">
+    <conversion id="">
+      <scripts>
+        <script></script>
+      </scripts>
+    </conversion>
+  </conversions>
+</pipelines>

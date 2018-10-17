@@ -12,14 +12,14 @@ public class PipelineOptions extends OptionsBase {
       name = "pipelineConfig",
       help = "Specifies the path of the pipeline configuration file.",
       category = "startup",
-      defaultValue = "pipeline.xml")
+      defaultValue = "pipeline/config/pipeline.xml")
   public String pipelineConfig;
 
   @Option(
       name = "pipelineRunner",
       help = "Specifies the desire runner that will be used to execute a pipeline.",
       category = "startup",
-      defaultValue = "")
+      defaultValue = "default")
   public String pipelineRunner;
 
   @Option(
@@ -33,20 +33,20 @@ public class PipelineOptions extends OptionsBase {
       name = "scriptsPath",
       help = "Specifies the path in which the scripts are being stored.",
       category = "startup",
-      defaultValue = "pipeline")
+      defaultValue = "pipeline/")
   public String scriptsPath;
 
   @Option(
       name = "inputPath",
       help = "Specifies the path in which the information extracted from MSSQL will be stored.",
       category = "startup",
-      defaultValue = "pipeline/data/input")
+      defaultValue = "pipeline/data/input/")
   public String inputPath;
 
   @Option(
       name = "outputPath",
       help = "Specifies the path in which the information extracted from H2 will be stored.",
       category = "startup",
-      defaultValue = "pipeline/data/output")
+      defaultValue = "pipeline/data/output/")
   public String outputPath;
 }

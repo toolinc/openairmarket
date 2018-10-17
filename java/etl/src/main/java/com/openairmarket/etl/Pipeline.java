@@ -1,10 +1,14 @@
 package com.openairmarket.etl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.flogger.FluentLogger;
 import com.google.devtools.common.options.OptionsParser;
 import com.openairmarket.etl.database.DatabaseOptions;
 import com.openairmarket.etl.database.JdbcDataSourceConfiguration;
 import com.openairmarket.etl.pipeline.inject.PipelineOptions;
+import com.openairmarket.etl.pipeline.runner.ExtractPipelineRunner;
+import com.openairmarket.etl.pipeline.runner.PlainPipelineRunner;
+import java.util.Map;
 
 /** Pipeline execution. */
 public final class Pipeline {
@@ -12,6 +16,8 @@ public final class Pipeline {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String H2_DRIVER = "org.h2.Driver";
   private static final String MSSQL_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+  private static final Map<String, Class> RUNNER =
+      ImmutableMap.of("extract", ExtractPipelineRunner.class, "default", PlainPipelineRunner.class);
 
   public static void main(String[] args) {
     OptionsParser parser =
