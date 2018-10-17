@@ -129,12 +129,12 @@ public abstract class CsvWriter implements Closeable {
         if (bd != null) {
           String[] scales = bd.split(REGEX_EXP_DECIMAL_POINT);
           value = "" + bd;
-          if ((scales != null) && (scales.length == 1) && (scale > 0)) {
+          if (scales.length == 1 && scale > 0) {
             value = value.concat(DECIMAL_POINT);
             for (int i = 0; i < scale; i++) {
               value = value.concat(DECIMAL_ZERO);
             }
-          } else if ((scales != null) && (scales.length >= 2)) {
+          } else if (scales.length >= 2) {
             int count = scales[1].length();
             while (count < scale) {
               value = value.concat(DECIMAL_ZERO);
