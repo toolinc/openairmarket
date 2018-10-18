@@ -15,6 +15,8 @@ import com.openairmarket.etl.pipeline.runner.PipelineRunner;
 import com.openairmarket.etl.pipeline.runner.PipelineRunnerException;
 import com.openairmarket.etl.pipeline.runner.PlainPipelineRunner;
 import java.util.Map;
+import java.util.UUID;
+import org.apache.log4j.MDC;
 
 /** Pipeline execution. */
 public final class Pipeline {
@@ -25,12 +27,15 @@ public final class Pipeline {
   private static final Map<String, Class> RUNNER =
       ImmutableMap.of("extract", ExtractPipelineRunner.class, "default", PlainPipelineRunner.class);
 
-  public static void main(String[] args) {
+  public static final void main(String[] args) {
     OptionsParser parser =
         OptionsParser.newOptionsParser(PipelineOptions.class, DatabaseOptions.class);
     parser.parseAndExitUponError(args);
     PipelineOptions pipelineOptions = parser.getOptions(PipelineOptions.class);
     DatabaseOptions dbOptions = parser.getOptions(DatabaseOptions.class);
+    UUID uuid = UUID.randomUUID();
+    MDC.put("uuid", uuid.toString());
+    MDC.put("pipelineId", pipelineOptions.pipelineId);
     // Adding logging information
     logger.atInfo().log("Using the [%s] pipeline runner.", pipelineOptions.pipelineRunner);
     logger.atInfo().log("The following pipeline [%s] will be launch.", pipelineOptions.pipelineId);
@@ -63,7 +68,9 @@ public final class Pipeline {
       logger.atSevere().log("Failed to run the pipeline [%s].", pipelineOptions.pipelineId);
       exc.printStackTrace();
     }
-    logger.atFiner().log("Completed.");
+    MDC.remove("uuid");
+    MDC.remove("pipelineId");
+    System.exit(1);
   }
 
   private static final JdbcDataSourceConfiguration createH2(DatabaseOptions dbOptions) {

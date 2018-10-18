@@ -44,7 +44,7 @@ public final class ExtractStepExecutor implements StepExecutor {
   public void executeStep(List<Script> scripts, String inputPath) throws StepException {
     logger.atFiner().log(String.format("Starts the runner of [%s].", scripts));
     ImmutableList.Builder<Callable<Boolean>> tasks = ImmutableList.builder();
-    CountdownStepExecutor countdownStepExecutor =
+    final CountdownStepExecutor countdownStepExecutor =
         CountdownStepExecutor.build(executorService, scripts.size());
     for (Script script : scripts) {
       CallableScript callableScript =
