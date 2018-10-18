@@ -49,7 +49,8 @@ if [[ ($pipelineRunner ==  "extract") || ($pipelineRunner ==  "default") ]]
     IFS="$OIFS"
     for pipelineId in "${pipelinesArray[@]}"
     do
-      java -Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance \
+      java -Dlog4j.configuration=file://$log \
+        -Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance \
         -jar ./../../etl-1.0-jar-with-dependencies.jar \
         --h2Url=$h2url --h2MaxPoolSize=5 \
         --msSqlUser=$msSqlUser --msSqlPass=$msSqlPass --msSqlMaxPoolSize=5 \
