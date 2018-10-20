@@ -17,6 +17,12 @@ public class BindingAnnotations {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
     public @interface DataSource {}
+
+    /** A {@link BindingAnnotation} for injecting the h2 environment variables. */
+    @BindingAnnotation
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
+    public @interface EnvironmentVariables {}
   }
 
   /** Specifies the binding for spv gana mas database. */

@@ -27,9 +27,9 @@
   </extracts>
   
   <inputs path="script/input/">
-    <input id="" table="">
+    <input id="productos" table="producto" description="Load productos csv">
       <scripts>
-        <script></script>
+        <script>input_productos.sql</script>
       </scripts>
     </input>
   </inputs>

@@ -37,6 +37,13 @@ public final class DatabaseOptions extends OptionsBase {
   public int h2MaxPoolSize;
 
   @Option(
+      name = "h2FilePath",
+      help = "Defines the path of file that contains the environment variables.",
+      category = "startup",
+      defaultValue = "1")
+  public String h2FilePath;
+
+  @Option(
       name = "msSqlUrl",
       help = "The jdbc url that will be used to open a connection with MS-SQL.",
       category = "startup",

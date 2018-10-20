@@ -2,6 +2,8 @@
 # Script that executes a specific pipeline.
 
 mainPath=/Users/edgarrico/Documents/openairmarket/java/etl/target
+configPath=$mainPath/pipeline/config
+configH2File=$configPath/h2_environment_variables.sql
 pipelineConfig=$mainPath/pipeline/config/pipeline.xml
 log=$mainPath/pipeline/config/log4j.properties
 scriptsPath=$mainPath/pipeline/
@@ -40,6 +42,9 @@ if [[ ($pipelineRunner ==  "extract") || ($pipelineRunner ==  "default") ]]
      else
       echo "Not running in debug mode"
      fi
+    # Setting up the file that contains the environment variables for H2
+    echo "SET @path_main            = '"$mainPath"/pipeline'" > $configH2File
+    cat ./h2_environment_variables.template >> $configH2File
     echo "Please enter the pipelines you want to execute followed by a space: "
     read pipelines
     # Define an array for the pipelines
@@ -52,7 +57,7 @@ if [[ ($pipelineRunner ==  "extract") || ($pipelineRunner ==  "default") ]]
       java -Dlog4j.configuration=file://$log \
         -Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance \
         -jar ./../../etl-1.0-jar-with-dependencies.jar \
-        --h2Url=$h2url --h2MaxPoolSize=5 \
+        --h2Url=$h2url --h2MaxPoolSize=5 --h2FilePath=$configH2File \
         --msSqlUser=$msSqlUser --msSqlPass=$msSqlPass --msSqlMaxPoolSize=5 \
         --pipelineConfig=$pipelineConfig --pipelineRunner=$pipelineRunner --pipelineId=$pipelineId \
         --scriptsPath=$scriptsPath --inputPath=$inputPath --outputPath=$outputPath

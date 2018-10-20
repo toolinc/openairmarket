@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
@@ -19,11 +20,14 @@ public final class H2DataBaseHelper {
   private static final String DROP_OBJECTS = "DROP ALL OBJECTS DELETE FILES;";
   private static final String SCHEMA_COLUMNS = "SHOW COLUMNS FROM %s";
   private final DataSource dataSource;
+  private final List<String> sqls;
   private Connection connection;
 
   @Inject
-  public H2DataBaseHelper(@H2.DataSource DataSource dataSource) {
+  public H2DataBaseHelper(
+      @H2.DataSource DataSource dataSource, @H2.EnvironmentVariables List<String> sqls) {
     this.dataSource = Preconditions.checkNotNull(dataSource);
+    this.sqls = Preconditions.checkNotNull(sqls);
   }
 
   /** Load the environment variables in the current {@code Connection}. */
@@ -86,6 +90,7 @@ public final class H2DataBaseHelper {
         if (this.connection == null) {
           try {
             this.connection = Preconditions.checkNotNull(dataSource.getConnection());
+            loadEnvironmentVariables();
           } catch (SQLException e) {
             throw new IllegalStateException(
                 String.format("Unable to acquire a connection [%s].", e.getMessage()), e);
@@ -94,5 +99,23 @@ public final class H2DataBaseHelper {
       }
     }
     return this.connection;
+  }
+
+  /** Load the environment variables in the current {@link Connection}. */
+  private void loadEnvironmentVariables() {
+    for (String sql : sqls) {
+      try (Statement statement = getConnection().createStatement()) {
+        logger.atFiner().log(
+            String.format("Starting the load of the environment variables [%s].", sql));
+        int rows = statement.executeUpdate(sql);
+        logger.atFiner().log(String.format("Affected rows [%d].", rows));
+        logger.atFiner().log(
+            String.format("Finishing the load of the environment variables [%s].", sql));
+      } catch (SQLException exc) {
+        String message = String.format("An error occurred while executing the sql [%s].", sql);
+        logger.atFiner().log(message, exc);
+        throw new IllegalStateException(message, exc);
+      }
+    }
   }
 }

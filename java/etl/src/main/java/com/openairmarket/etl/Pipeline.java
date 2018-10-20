@@ -50,7 +50,8 @@ public final class Pipeline {
     // Creating the guice injector
     final Injector injector =
         Guice.createInjector(
-            new DatabaseServicesModule(createH2(dbOptions), createMsSql(dbOptions)),
+            new DatabaseServicesModule(
+                createH2(dbOptions), createMsSql(dbOptions), dbOptions.h2FilePath),
             new PipelineModule(
                 pipelineOptions.pipelineConfig,
                 pipelineOptions.scriptsPath,

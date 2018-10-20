@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
@@ -17,6 +18,7 @@ import com.openairmarket.etl.database.BindingAnnotations.MsSql;
 import com.openairmarket.etl.file.CsvFile.CsvConfiguration;
 import com.openairmarket.etl.file.SqlScriptReader;
 import java.beans.PropertyVetoException;
+import java.util.List;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
 
@@ -25,11 +27,16 @@ public final class DatabaseServicesModule extends AbstractModule {
 
   private final JdbcDataSourceConfiguration mssqlConfiguration;
   private final JdbcDataSourceConfiguration h2Configuration;
+  private final String h2FilePath;
 
   public DatabaseServicesModule(
-      JdbcDataSourceConfiguration h2Configuration, JdbcDataSourceConfiguration mssqlConfiguration) {
+      JdbcDataSourceConfiguration h2Configuration,
+      JdbcDataSourceConfiguration mssqlConfiguration,
+      String h2FilePath) {
     this.h2Configuration = checkNotNull(h2Configuration, "Missing H2 configuration.");
     this.mssqlConfiguration = checkNotNull(mssqlConfiguration, "Missing MS-SQL configuration.");
+    this.h2FilePath =
+        checkNotNull(h2FilePath, "Missing file path of the environment variables is missing.");
   }
 
   @Override
@@ -47,8 +54,15 @@ public final class DatabaseServicesModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @H2.EnvironmentVariables
+  List<String> providesEnvironmentVariables(SqlScriptReader sqlScriptReader) {
+    return ImmutableList.copyOf(sqlScriptReader.readSqlStatements(h2FilePath));
+  }
+
+  @Provides
+  @Singleton
   @H2.DataSource
-  public DataSource providesH2DataSource() {
+  DataSource providesH2DataSource() {
     try {
       return createPool(
           h2Configuration.driver(),
@@ -64,7 +78,7 @@ public final class DatabaseServicesModule extends AbstractModule {
   @Provides
   @Singleton
   @MsSql.DataSource
-  public DataSource providesMsSqlDataSource() {
+  DataSource providesMsSqlDataSource() {
     try {
       return createPool(
           mssqlConfiguration.driver(),
