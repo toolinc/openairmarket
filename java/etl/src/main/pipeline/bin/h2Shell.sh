@@ -8,6 +8,6 @@ echo "Please enter the db name of H2 that you want to use: "
 read h2DataBaseName
 
 h2DatabasePath=$mainPath/pipeline/database/$h2DataBaseName
-java -cp ../../etl-1.0-jar-with-dependencies.jar org.h2.tools.Console -driver "org.h2.Driver" \
+java -cp ../../etl-1.0-jar-with-dependencies.jar org.h2.tools.Shell -driver "org.h2.Driver" \
      -url "jdbc:h2:tcp://localhost:$h2Port/$h2DatabasePath" \
      -user "sa" -password ""
