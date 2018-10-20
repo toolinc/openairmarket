@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipelines
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://www.openairmarket.etl.pipeline.model"
-  xsi:schemaLocation="http://www.openairmarket.etl.pipeline.model file:/pipeline.xsd">
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.openairmarket.etl.pipeline.model"
+xsi:schemaLocation="http://www.openairmarket.etl.pipeline.model file:/pipeline.xsd">
 
-  <pipeline id="productos">
-    <extracts>
-      <extract id="productos"/>
-    </extracts>
-    <transformations>
-      <inputs>
-        <input id=""/>
-      </inputs>
-      <conversions>
-        <conversion id=""/>
-      </conversions>
-    </transformations>
-  </pipeline>
-
-  <extracts path="script/extraction/">
-    <extract id="productos">
-      <scripts>
-        <script outputName="productos.csv">extract_productos.sql</script>
-      </scripts>
-    </extract>
+<pipeline id="productos">
+  <extracts>
+    <extract id="productos"/>
   </extracts>
-  
-  <inputs path="script/input/">
-    <input id="productos" table="producto" description="Load productos csv">
-      <scripts>
-        <script>input_productos.sql</script>
-      </scripts>
-    </input>
-  </inputs>
-  
-  <conversions path="script/conversion/">
-    <conversion id="">
-      <scripts>
-        <script></script>
-      </scripts>
-    </conversion>
-  </conversions>
+  <transformations>
+    <inputs>
+      <input id="productos"/>
+    </inputs>
+    <conversions>
+      <conversion id="productos"/>
+    </conversions>
+  </transformations>
+</pipeline>
+
+<extracts path="script/extraction/">
+  <extract id="productos">
+    <scripts>
+      <script outputName="productos.csv">extract_productos.sql</script>
+    </scripts>
+  </extract>
+</extracts>
+
+<inputs path="script/input/">
+  <input id="productos" table="producto" description="Load productos csv">
+    <scripts>
+      <script>input_productos.sql</script>
+    </scripts>
+  </input>
+</inputs>
+
+<conversions path="script/conversion/">
+  <conversion id="productos">
+    <scripts>
+      <script outputName="productos.csv">convert_productos.sql</script>
+    </scripts>
+  </conversion>
+</conversions>
 </pipelines>

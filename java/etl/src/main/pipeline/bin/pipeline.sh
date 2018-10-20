@@ -31,9 +31,10 @@ if [[ ($pipelineRunner ==  "extract") || ($pipelineRunner ==  "default") ]]
         read h2Port
     fi
     msSqlUrl=jdbc:sqlserver://localhost:1433;database=SPVGanaMasSQL
+    h2DatabasePath=$mainPath/pipeline/database/$h2DataBaseName
     # Define the required env variables for H2
-    debugh2url=jdbc:h2:tcp://localhost:$h2Port/$h2DataBaseName;MULTI_THREADED=TRUE
-    h2url=jdbc:h2:~/$h2DataBaseName;MULTI_THREADED=TRUE
+    debugh2url=jdbc:h2:tcp://localhost:$h2Port/$h2DatabasePath;MULTI_THREADED=TRUE
+    h2url=jdbc:h2:file:$h2DatabasePath;MULTI_THREADED=TRUE
     # Setting up the proper configuration for H2
     if test "$mode" = "y"
       then
@@ -43,7 +44,7 @@ if [[ ($pipelineRunner ==  "extract") || ($pipelineRunner ==  "default") ]]
       echo "Not running in debug mode"
      fi
     # Setting up the file that contains the environment variables for H2
-    echo "SET @path_main            = '"$mainPath"/pipeline'" > $configH2File
+    echo "SET @path_main            = '"$mainPath"/pipeline';" > $configH2File
     cat ./h2_environment_variables.template >> $configH2File
     echo "Please enter the pipelines you want to execute followed by a space: "
     read pipelines

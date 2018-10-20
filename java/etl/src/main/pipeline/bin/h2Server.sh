@@ -9,8 +9,8 @@ read action
 if test "$action" = "start"
 then
 echo "Starting the H2 Server."
-java -Xms512m -Xmx2048m -cp ./../etl-1.0-jar-with-dependencies.jar org.h2.tools.Server -tcpPort "$h2Port" -baseDir "./../database/" &
+java -Xms512m -Xmx2048m -cp ../../etl-1.0-jar-with-dependencies.jar org.h2.tools.Server -tcp -tcpPort "$h2Port" -baseDir "./../database/" &
 else
 echo "Stopping the H2 Server."
-java -cp ./../etl-1.0-jar-with-dependencies.jar org.h2.tools.Server -tcpShutdown "tcp://localhost:$h2Port"
+java -cp ../../etl-1.0-jar-with-dependencies.jar org.h2.tools.Server -tcpShutdown "tcp://localhost:$h2Port"
 fi
