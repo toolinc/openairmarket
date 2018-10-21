@@ -7,15 +7,10 @@ import com.google.common.flogger.FluentLogger;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.Writer;
-import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +22,6 @@ public abstract class CsvWriter implements Closeable {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final char NO_QUOTE_CHARACTER = '\u0000';
   private static final char NO_ESCAPE_CHARACTER = '\u0000';
-  private static final String DECIMAL_ZERO = "0";
-  private static final String DECIMAL_POINT = ".";
-  private static final String REGEX_EXP_DECIMAL_POINT = "\\.";
 
   abstract PrintWriter printWriter();
 
@@ -60,15 +52,6 @@ public abstract class CsvWriter implements Closeable {
     }
   }
 
-  protected void writeColumnNames(ResultSetMetaData metadata) throws SQLException {
-    int columnCount = metadata.getColumnCount();
-    String[] nextLine = new String[columnCount];
-    for (int i = 0; i < columnCount; i++) {
-      nextLine[i] = metadata.getColumnLabel(i + 1);
-    }
-    writeNext(nextLine);
-  }
-
   /**
    * Writes the entire ResultSet to a CSV file.
    *
@@ -83,133 +66,25 @@ public abstract class CsvWriter implements Closeable {
       writeColumnNames(metadata);
     }
     int columnCount = metadata.getColumnCount();
+    int row = 1;
     while (rs.next()) {
       String[] nextLine = new String[columnCount];
-
       for (int i = 0; i < columnCount; i++) {
-        nextLine[i] = getColumnValue(rs, metadata.getColumnType(i + 1), i + 1);
+        RetryableWrite retryableWrite = RetryableWrite.create(CsvWriter.this, row, i, rs, metadata);
+        nextLine[i] = retryableWrite.write();
       }
       writeNext(nextLine);
+      row++;
     }
   }
 
-  private String getColumnValue(ResultSet rs, int colType, int colIndex)
-      throws SQLException, IOException {
-    String value = null;
-    switch (colType) {
-      case Types.BIT:
-        Object bit = rs.getObject(colIndex);
-        if (bit != null) {
-          value = String.valueOf(bit);
-        } else {
-          value = csvDefaultValue();
-        }
-        break;
-      case Types.BOOLEAN:
-        boolean b = rs.getBoolean(colIndex);
-        if (!rs.wasNull()) {
-          value = Boolean.valueOf(b).toString();
-        }
-        break;
-      case Types.CLOB:
-        Clob c = rs.getClob(colIndex);
-        if (c != null) {
-          value = read(c);
-        } else {
-          value = csvDefaultValue();
-        }
-        break;
-      case Types.DECIMAL:
-      case Types.DOUBLE:
-      case Types.FLOAT:
-      case Types.REAL:
-      case Types.NUMERIC:
-        String bd = rs.getString(colIndex);
-        int scale = rs.getMetaData().getScale(colIndex);
-        if (bd != null) {
-          String[] scales = bd.split(REGEX_EXP_DECIMAL_POINT);
-          value = "" + bd;
-          if (scales.length == 1 && scale > 0) {
-            value = value.concat(DECIMAL_POINT);
-            for (int i = 0; i < scale; i++) {
-              value = value.concat(DECIMAL_ZERO);
-            }
-          } else if (scales.length >= 2) {
-            int count = scales[1].length();
-            while (count < scale) {
-              value = value.concat(DECIMAL_ZERO);
-              count++;
-            }
-          }
-        } else {
-          value = csvDefaultValue();
-        }
-        break;
-      case Types.BIGINT:
-      case Types.INTEGER:
-      case Types.TINYINT:
-      case Types.SMALLINT:
-        value = rs.getString(colIndex);
-        if (value == null) {
-          value = csvDefaultValue();
-        }
-        break;
-      case Types.JAVA_OBJECT:
-        Object obj = rs.getObject(colIndex);
-        if (obj != null) {
-          value = String.valueOf(obj);
-        } else {
-          value = csvDefaultValue();
-        }
-        break;
-      case Types.DATE:
-        java.sql.Date date = null;
-        try {
-          date = rs.getDate(colIndex);
-        } catch (SQLException exc) {
-          logger.atFiner().log(exc.getMessage());
-        }
-        if (date != null) {
-          value = dateFormatter().format(date);
-        }
-        break;
-      case Types.TIME:
-        Time t = rs.getTime(colIndex);
-        if (t != null) {
-          value = t.toString();
-        }
-        break;
-      case Types.TIMESTAMP:
-        Timestamp tstamp = rs.getTimestamp(colIndex);
-        if (tstamp != null) {
-          value = timestampFormatter().format(tstamp);
-        }
-        break;
-      case Types.LONGVARCHAR:
-      case Types.VARCHAR:
-      case Types.CHAR:
-        value = rs.getString(colIndex);
-        if (value == null) {
-          value = csvDefaultValue();
-        }
-        break;
-      default:
-        value = csvDefaultValue();
+  private void writeColumnNames(ResultSetMetaData metadata) throws SQLException {
+    int columnCount = metadata.getColumnCount();
+    String[] nextLine = new String[columnCount];
+    for (int i = 0; i < columnCount; i++) {
+      nextLine[i] = metadata.getColumnLabel(i + 1);
     }
-    return value;
-  }
-
-  private static String read(Clob c) throws SQLException, IOException {
-    StringBuilder sb = new StringBuilder((int) c.length());
-    Reader r = c.getCharacterStream();
-    char[] cbuf = new char[2048];
-    int n = 0;
-    while ((n = r.read(cbuf, 0, cbuf.length)) != -1) {
-      if (n > 0) {
-        sb.append(cbuf, 0, n);
-      }
-    }
-    return sb.toString();
+    writeNext(nextLine);
   }
 
   /**

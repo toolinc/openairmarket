@@ -66,6 +66,10 @@
       <groupId>com.google.flogger</groupId>
       <artifactId>flogger-log4j-backend</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
