@@ -12,6 +12,7 @@
         <module>common</module>
         <module>etl</module>
         <module>microservice</module>
+        <module>pos-persistence</module>
     </modules>
 
     <properties>
