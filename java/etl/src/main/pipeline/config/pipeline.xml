@@ -7,10 +7,11 @@
   <pipeline id="productos">
     <extracts>
       <extract id="empleado"/>
-      <extract id="producto"/>
-      <extract id="productoPrecio"/>
       <extract id="fabricante"/>
       <extract id="marca"/>
+      <extract id="producto"/>
+      <extract id="productoPrecio"/>
+      <extract id="rol"/>
       <extract id="tipoPrecio"/>
       <extract id="tipoProducto"/>
       <extract id="unidadMedida"/>
@@ -18,10 +19,11 @@
     <transformations>
       <inputs>
         <input id="empleado"/>
-        <input id="producto"/>
-        <input id="productoPrecio"/>
         <input id="fabricante"/>
         <input id="marca"/>
+        <input id="producto"/>
+        <input id="productoPrecio"/>
+        <input id="rol"/>
         <input id="tipoPrecio"/>
         <input id="tipoProducto"/>
         <input id="unidadMedida"/>
@@ -38,6 +40,16 @@
         <script outputName="empleado.csv">extract_empleado.sql</script>
       </scripts>
     </extract>
+    <extract id="fabricante">
+      <scripts>
+        <script outputName="fabricante.csv">extract_fabricante.sql</script>
+      </scripts>
+    </extract>
+    <extract id="marca">
+      <scripts>
+        <script outputName="marca.csv">extract_marca.sql</script>
+      </scripts>
+    </extract>
     <extract id="producto">
       <scripts>
         <script outputName="producto.csv">extract_producto.sql</script>
@@ -48,14 +60,9 @@
         <script outputName="producto_precio.csv">extract_producto_precio.sql</script>
       </scripts>
     </extract>
-    <extract id="fabricante">
+    <extract id="rol">
       <scripts>
-        <script outputName="fabricante.csv">extract_fabricante.sql</script>
-      </scripts>
-    </extract>
-    <extract id="marca">
-      <scripts>
-        <script outputName="marca.csv">extract_marca.sql</script>
+        <script outputName="rol.csv">extract_rol.sql</script>
       </scripts>
     </extract>
     <extract id="tipoPrecio">
@@ -81,6 +88,16 @@
         <script>input_empleado.sql</script>
       </scripts>
     </input>
+    <input id="fabricante" table="fabricante">
+      <scripts>
+        <script>input_fabricante.sql</script>
+      </scripts>
+    </input>
+    <input id="marca" table="marca" description="Load all the brands of a product">
+      <scripts>
+        <script>input_marca.sql</script>
+      </scripts>
+    </input>
     <input id="producto" table="producto" description="Load products">
       <scripts>
         <script>input_producto.sql</script>
@@ -91,14 +108,9 @@
         <script>input_producto_precio.sql</script>
       </scripts>
     </input>
-    <input id="fabricante" table="fabricante">
+    <input id="rol" table="rol">
       <scripts>
-        <script>input_fabricante.sql</script>
-      </scripts>
-    </input>
-    <input id="marca" table="marca" description="Load all the brands of a product">
-      <scripts>
-        <script>input_marca.sql</script>
+        <script>input_rol.sql</script>
       </scripts>
     </input>
     <input id="tipoPrecio" table="tipoPrecio">
