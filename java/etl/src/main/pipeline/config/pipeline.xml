@@ -6,13 +6,19 @@
 
   <pipeline id="productos">
     <extracts>
+      <extract id="empleado"/>
       <extract id="producto"/>
+      <extract id="fabricante"/>
+      <extract id="marca"/>
       <extract id="tipoProducto"/>
       <extract id="unidadMedida"/>
     </extracts>
     <transformations>
       <inputs>
+        <input id="empleado"/>
         <input id="producto"/>
+        <input id="fabricante"/>
+        <input id="marca"/>
         <input id="tipoProducto"/>
         <input id="unidadMedida"/>
       </inputs>
@@ -23,9 +29,24 @@
   </pipeline>
 
   <extracts path="script/extraction/">
+    <extract id="empleado">
+      <scripts>
+        <script outputName="empleado.csv">extract_empleado.sql</script>
+      </scripts>
+    </extract>
     <extract id="producto">
       <scripts>
         <script outputName="producto.csv">extract_producto.sql</script>
+      </scripts>
+    </extract>
+    <extract id="fabricante">
+      <scripts>
+        <script outputName="fabricante.csv">extract_fabricante.sql</script>
+      </scripts>
+    </extract>
+    <extract id="marca">
+      <scripts>
+        <script outputName="marca.csv">extract_marca.sql</script>
       </scripts>
     </extract>
     <extract id="tipoProducto">
@@ -41,9 +62,24 @@
   </extracts>
 
   <inputs path="script/input/">
+    <input id="empleado" table="empleado">
+      <scripts>
+        <script>input_empleado.sql</script>
+      </scripts>
+    </input>
     <input id="producto" table="producto" description="Load products">
       <scripts>
         <script>input_producto.sql</script>
+      </scripts>
+    </input>
+    <input id="fabricante" table="fabricante">
+      <scripts>
+        <script>input_fabricante.sql</script>
+      </scripts>
+    </input>
+    <input id="marca" table="marca" description="Load all the brands of a product">
+      <scripts>
+        <script>input_marca.sql</script>
       </scripts>
     </input>
     <input id="tipoProducto" table="tipoProducto"
