@@ -8,6 +8,7 @@
     <extracts>
       <extract id="empleado"/>
       <extract id="producto"/>
+      <extract id="productoPrecio"/>
       <extract id="fabricante"/>
       <extract id="marca"/>
       <extract id="tipoProducto"/>
@@ -37,6 +38,11 @@
     <extract id="producto">
       <scripts>
         <script outputName="producto.csv">extract_producto.sql</script>
+      </scripts>
+    </extract>
+    <extract id="productoPrecio">
+      <scripts>
+        <script outputName="producto_precio.csv">extract_producto_precio.sql</script>
       </scripts>
     </extract>
     <extract id="fabricante">
@@ -70,6 +76,11 @@
     <input id="producto" table="producto" description="Load products">
       <scripts>
         <script>input_producto.sql</script>
+      </scripts>
+    </input>
+    <input id="productoPrecio" table="productoPrecio">
+      <scripts>
+        <script>input_producto_precio.sql</script>
       </scripts>
     </input>
     <input id="fabricante" table="fabricante">
