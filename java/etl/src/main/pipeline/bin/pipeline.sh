@@ -33,7 +33,7 @@ if [[ ($pipelineRunner ==  "extract") || ($pipelineRunner ==  "default") ]]
     msSqlUrl=jdbc:sqlserver://localhost:1433;database=SPVGanaMasSQL
     h2DatabasePath=$mainPath/pipeline/database/$h2DataBaseName
     # Define the required env variables for H2
-    debugh2url=jdbc:h2:tcp://localhost:$h2Port/$h2DatabasePath;MULTI_THREADED=TRUE
+    debugh2url=jdbc:h2:tcp://localhost:$h2Port/$h2DataBaseName;MULTI_THREADED=TRUE
     h2url=jdbc:h2:file:$h2DatabasePath;MULTI_THREADED=TRUE
     # Setting up the proper configuration for H2
     if test "$mode" = "y"

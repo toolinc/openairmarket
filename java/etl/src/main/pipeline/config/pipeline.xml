@@ -7,6 +7,7 @@ xsi:schemaLocation="http://www.openairmarket.etl.pipeline.model file:/pipeline.x
 <pipeline id="productos">
   <extracts>
     <extract id="productos"/>
+    <extract id="tiposProducto"/>
   </extracts>
   <transformations>
     <inputs>
@@ -22,6 +23,11 @@ xsi:schemaLocation="http://www.openairmarket.etl.pipeline.model file:/pipeline.x
   <extract id="productos">
     <scripts>
       <script outputName="productos.csv">extract_productos.sql</script>
+    </scripts>
+  </extract>
+  <extract id="tiposProducto">
+    <scripts>
+      <script outputName="tipos_producto.csv">extract_tipos_producto.sql</script>
     </scripts>
   </extract>
 </extracts>
