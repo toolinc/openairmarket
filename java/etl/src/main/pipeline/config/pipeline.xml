@@ -11,6 +11,7 @@
       <extract id="productoPrecio"/>
       <extract id="fabricante"/>
       <extract id="marca"/>
+      <extract id="tipoPrecio"/>
       <extract id="tipoProducto"/>
       <extract id="unidadMedida"/>
     </extracts>
@@ -18,8 +19,10 @@
       <inputs>
         <input id="empleado"/>
         <input id="producto"/>
+        <input id="productoPrecio"/>
         <input id="fabricante"/>
         <input id="marca"/>
+        <input id="tipoPrecio"/>
         <input id="tipoProducto"/>
         <input id="unidadMedida"/>
       </inputs>
@@ -53,6 +56,11 @@
     <extract id="marca">
       <scripts>
         <script outputName="marca.csv">extract_marca.sql</script>
+      </scripts>
+    </extract>
+    <extract id="tipoPrecio">
+      <scripts>
+        <script outputName="tipo_precio.csv">extract_tipo_precio.sql</script>
       </scripts>
     </extract>
     <extract id="tipoProducto">
@@ -91,6 +99,11 @@
     <input id="marca" table="marca" description="Load all the brands of a product">
       <scripts>
         <script>input_marca.sql</script>
+      </scripts>
+    </input>
+    <input id="tipoPrecio" table="tipoPrecio">
+      <scripts>
+        <script>input_tipo_precio.sql</script>
       </scripts>
     </input>
     <input id="tipoProducto" table="tipoProducto"
