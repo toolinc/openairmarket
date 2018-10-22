@@ -5,6 +5,7 @@ java/common/target/
 java/etl/target/
 java/microservice/target
 java/microservice/branch-server/target/
+java/pos-persistence/target/
 ../.DS_Store
 .DS_Store
 common/.DS_Store

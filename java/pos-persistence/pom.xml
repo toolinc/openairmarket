@@ -13,6 +13,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.openairmarket</groupId>
+      <artifactId>common</artifactId>
+      <version>${openairmarket.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
@@ -21,9 +26,13 @@
       <artifactId>guice</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate.version}</version>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>eclipselink</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>c3p0</groupId>
@@ -51,6 +60,33 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <version>3.3.3</version>
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/generated-sources/metamodel
+              </outputDirectory>
+              <compilerArguments>
+                -Aeclipselink.persistencexml=${project.basedir}/src/maingit gi/resources/META-INF/persistence.xml
+              </compilerArguments>
+              <processors>
+                <processor>
+                  org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor
+                </processor>
+              </processors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>com.coveo</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
