@@ -3,18 +3,18 @@ package com.openairmarket.common.persistence.dao.inject;
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.openairmarket.common.persistence.dao.ActiveDao;
+import com.openairmarket.common.persistence.dao.Dao;
 import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.dao.QueryHelper;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
 import com.openairmarket.common.persistence.model.AbstractActiveModel_;
 import java.io.Serializable;
 import java.util.List;
-
 import java.util.Optional;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
 
 /**
  * Provides the implementation for {@code ActiveDAO} interface.
@@ -22,20 +22,25 @@ import javax.persistence.PersistenceContext;
  * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractActiveModel}.
  * @param <T> specifies the {@code AbstractActiveModel} of the data access object.
  */
-public final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel<S>>
+public final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel>
     implements ActiveDao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private EntityManager entityManager;
+  private final Provider<EntityManager> entityManagerProvider;
   private final Class<T> entityClass;
   private final Class<S> entityIdClass;
-  private final DaoImpl<S, T> dao;
+  private final Dao<S, T> dao;
 
   @Inject
-  public ActiveDaoImpl(Class<T> entityClass, Class<S> entityIdClass) {
+  public ActiveDaoImpl(
+      Provider<EntityManager> entityManagerProvider,
+      Dao<S, T> dao,
+      Class<T> entityClass,
+      Class<S> entityIdClass) {
+    this.entityManagerProvider = Preconditions.checkNotNull(entityManagerProvider);
+    this.dao = Preconditions.checkNotNull(dao);
     this.entityClass = Preconditions.checkNotNull(entityClass);
     this.entityIdClass = Preconditions.checkNotNull(entityIdClass);
-    this.dao = new DaoImpl<S, T>(entityClass, entityIdClass);
   }
 
   @Override
@@ -122,36 +127,11 @@ public final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiv
     return qc.getResultList(start, end - start);
   }
 
-  /**
-   * Provides the class of this dao.
-   *
-   * @return - the class of the dao
-   */
-  public Class<T> getEntityClass() {
+  private Class<T> getEntityClass() {
     return entityClass;
   }
 
-  /**
-   * Provides the class of the Id.
-   *
-   * @return - the class of the Id of an entity.
-   */
-  public Class<S> getEntityIdClass() {
-    return entityIdClass;
-  }
-
-  @PersistenceContext
-  public void setEntityManager(EntityManager entityManager) {
-    this.entityManager = Preconditions.checkNotNull(entityManager);
-    this.dao.setEntityManager(entityManager);
-  }
-
-  /**
-   * Provides the {@code EntityManager} that is being use by the dao.
-   *
-   * @return - the instance
-   */
-  public EntityManager getEntityManager() {
-    return entityManager;
+  private EntityManager getEntityManager() {
+    return entityManagerProvider.get();
   }
 }

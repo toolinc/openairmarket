@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractActiveModel}
  * @param <T> specifies the {@code AbstractActiveModel} of the data access object
  */
-public interface ActiveDao<S extends Serializable, T extends ActiveModel<S>> extends Dao<S, T> {
+public interface ActiveDao<S extends Serializable, T extends ActiveModel> extends Dao<S, T> {
 
   /**
    * Count the number of instances in the persistent storage that are inactive.

@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @param <T> specifies the {@code AbstractCatalogModel} of the data access object.
  */
 public interface CatalogDao<
-        S extends Serializable, RID extends Serializable, T extends CatalogModel<S, RID>>
+        S extends Serializable, RID extends Serializable, T extends CatalogModel>
     extends ActiveDao<S, T> {
 
   /**

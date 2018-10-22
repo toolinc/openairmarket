@@ -11,10 +11,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 
 /**
  * Provides the implementation for {@link Dao} interface.
@@ -26,12 +26,14 @@ public final class DaoImpl<S extends Serializable, T extends AbstractModel<S>>
     implements Dao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private EntityManager entityManager;
+  private final Provider<EntityManager> entityManagerProvider;
   private final Class<T> entityClass;
   private final Class<S> entityIdClass;
 
   @Inject
-  public DaoImpl(Class<T> entityClass, Class<S> entityIdClass) {
+  public DaoImpl(
+      Provider<EntityManager> entityManagerProvider, Class<T> entityClass, Class<S> entityIdClass) {
+    this.entityManagerProvider = Preconditions.checkNotNull(entityManagerProvider);
     this.entityClass = Preconditions.checkNotNull(entityClass);
     this.entityIdClass = Preconditions.checkNotNull(entityIdClass);
   }
@@ -123,35 +125,15 @@ public final class DaoImpl<S extends Serializable, T extends AbstractModel<S>>
     }
   }
 
-  /**
-   * Provides the class of this dao.
-   *
-   * @return - the class of the dao
-   */
-  public Class<T> getEntityClass() {
+  private Class<T> getEntityClass() {
     return entityClass;
   }
 
-  /**
-   * Provides the class of the Id.
-   *
-   * @return - the class of the Id of an entity.
-   */
-  public Class<S> getEntityIdClass() {
+  private Class<S> getEntityIdClass() {
     return entityIdClass;
   }
 
-  @PersistenceContext
-  public void setEntityManager(EntityManager entityManager) {
-    this.entityManager = Preconditions.checkNotNull(entityManager);
-  }
-
-  /**
-   * Provides the {@code EntityManager} that is being use by the dao.
-   *
-   * @return - the instance
-   */
-  public EntityManager getEntityManager() {
-    return entityManager;
+  private EntityManager getEntityManager() {
+    return entityManagerProvider.get();
   }
 }

@@ -35,9 +35,9 @@
     <jsr305.version>3.0.2</jsr305.version>
     <!-- persistence -->
     <c3p0.version>0.9.1.2</c3p0.version>
-    <persistence.version>2.2</persistence.version>
+    <persistence.version>2.1.1</persistence.version>
     <eclipse-link.version>2.7.3</eclipse-link.version>
-    <guice.persist.version>4.2.0</guice.persist.version>
+    <guice.persist.version>4.1.0</guice.persist.version>
     <h2.version>1.4.197</h2.version>
     <mssql.version>6.4.0.jre8</mssql.version>
     <!-- testing -->
@@ -76,6 +76,11 @@
       <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
+        <version>${guice.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.inject.extensions</groupId>
+        <artifactId>guice-persist</artifactId>
         <version>${guice.version}</version>
       </dependency>
       <dependency>
@@ -119,14 +124,20 @@
         <version>${netty.tcnative.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.persistence</groupId>
-        <artifactId>javax.persistence-api</artifactId>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>javax.persistence</artifactId>
         <version>${persistence.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.persistence</groupId>
         <artifactId>eclipselink</artifactId>
         <version>${eclipse-link.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.google.inject.extensions</groupId>
@@ -275,6 +286,17 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>cobertura-maven-plugin</artifactId>
           <version>2.7</version>
+        </plugin>
+        <!-- Site -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.0.1</version>
         </plugin>
       </plugins>
     </pluginManagement>

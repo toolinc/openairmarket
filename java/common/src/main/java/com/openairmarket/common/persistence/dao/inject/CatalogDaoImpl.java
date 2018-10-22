@@ -2,6 +2,7 @@ package com.openairmarket.common.persistence.dao.inject;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.openairmarket.common.persistence.dao.ActiveDao;
 import com.openairmarket.common.persistence.dao.CatalogDao;
 import com.openairmarket.common.persistence.dao.DaoErrorCode;
 import com.openairmarket.common.persistence.dao.DaoException;
@@ -11,12 +12,12 @@ import com.openairmarket.common.persistence.model.AbstractCatalogModel;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel_;
 import java.io.Serializable;
 import java.util.List;
-
 import java.util.Optional;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 
 /**
  * Provides the implementation for {@code CatalogDAO} interface.
@@ -26,21 +27,28 @@ import javax.persistence.PersistenceContext;
  * @param <T> specifies the {@code AbstractActiveModel} of the data access object
  */
 public final class CatalogDaoImpl<
-        S extends Serializable, RID extends Serializable, T extends AbstractCatalogModel<S, RID>>
+        S extends Serializable, RID extends Serializable, T extends AbstractCatalogModel>
     implements CatalogDao<S, RID, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final Class<T> entityClass;
   private final Class<S> entityIdClass;
   private final Class<RID> referenceIdClass;
-  private final ActiveDaoImpl<S, T> activeDAO;
-  private EntityManager entityManager;
+  private final Provider<EntityManager> entityManagerProvider;
+  private final ActiveDao<S, T> activeDao;
 
-  public CatalogDaoImpl(Class<T> entityClass, Class<S> entityIdClass, Class<RID> referenceIdClass) {
+  @Inject
+  public CatalogDaoImpl(
+      Provider<EntityManager> entityManagerProvider,
+      ActiveDao<S, T> activeDao,
+      Class<T> entityClass,
+      Class<S> entityIdClass,
+      Class<RID> referenceIdClass) {
+    this.entityManagerProvider = Preconditions.checkNotNull(entityManagerProvider);
+    this.activeDao = Preconditions.checkNotNull(activeDao);
     this.entityClass = Preconditions.checkNotNull(entityClass);
     this.entityIdClass = Preconditions.checkNotNull(entityIdClass);
     this.referenceIdClass = Preconditions.checkNotNull(referenceIdClass);
-    this.activeDAO = new ActiveDaoImpl<S, T>(entityClass, entityIdClass);
   }
 
   @Override
@@ -76,7 +84,7 @@ public final class CatalogDaoImpl<
   @Override
   public void persist(T entity) throws DaoException {
     validatePersist(entity);
-    activeDAO.persist(entity);
+    activeDao.persist(entity);
   }
 
   @Override
@@ -86,57 +94,57 @@ public final class CatalogDaoImpl<
     } else {
       validateMerge(entity);
     }
-    return activeDAO.merge(entity);
+    return activeDao.merge(entity);
   }
 
   @Override
   public void remove(T entity) throws DaoException {
-    activeDAO.remove(entity);
+    activeDao.remove(entity);
   }
 
   @Override
   public void refresh(T entity) {
-    activeDAO.refresh(entity);
+    activeDao.refresh(entity);
   }
 
   @Override
   public void refresh(T entity, LockModeType modeType) {
-    activeDAO.refresh(entity, modeType);
+    activeDao.refresh(entity, modeType);
   }
 
   @Override
   public Optional<T> find(S id) {
-    return activeDAO.find(id);
+    return activeDao.find(id);
   }
 
   @Override
   public T find(S id, long version) throws DaoException {
-    return activeDAO.find(id, version);
+    return activeDao.find(id, version);
   }
 
   @Override
   public List<T> findRange(int start, int count) {
-    return activeDAO.findRange(start, count);
+    return activeDao.findRange(start, count);
   }
 
   @Override
   public long count() {
-    return activeDAO.count();
+    return activeDao.count();
   }
 
   @Override
   public long countInactive() {
-    return activeDAO.countInactive();
+    return activeDao.countInactive();
   }
 
   @Override
   public void flush() {
-    activeDAO.flush();
+    activeDao.flush();
   }
 
   @Override
   public boolean hasVersionChanged(T entity) throws DaoException {
-    return activeDAO.hasVersionChanged(entity);
+    return activeDao.hasVersionChanged(entity);
   }
 
   private void validatePersist(T entity) throws DaoException {
@@ -203,36 +211,11 @@ public final class CatalogDaoImpl<
     return DaoErrorCode.CATALOG_NAME_UK;
   }
 
-  /**
-   * Provides the class of this dao.
-   *
-   * @return - the class of the dao
-   */
-  public Class<T> getEntityClass() {
+  private Class<T> getEntityClass() {
     return entityClass;
   }
 
-  /**
-   * Provides the class of the Id.
-   *
-   * @return - the class of the Id of an entity.
-   */
-  public Class<S> getEntityIdClass() {
-    return entityIdClass;
-  }
-
-  @PersistenceContext
-  public void setEntityManager(EntityManager entityManager) {
-    this.entityManager = entityManager;
-    activeDAO.setEntityManager(entityManager);
-  }
-
-  /**
-   * Provides the {@code EntityManager} that is being use by the dao.
-   *
-   * @return - the instance
-   */
-  public EntityManager getEntityManager() {
-    return entityManager;
+  private EntityManager getEntityManager() {
+    return entityManagerProvider.get();
   }
 }

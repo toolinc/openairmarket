@@ -12,7 +12,7 @@ import javax.persistence.LockModeType;
  * @param <S> specifies the {@code Serializable} identifier of the {@code Model}
  * @param <T> specifies the {@code Model} of the data access object
  */
-public interface Dao<S extends Serializable, T extends Model<S>> {
+public interface Dao<S extends Serializable, T extends Model> {
 
   /**
    * Persist the given entity.
