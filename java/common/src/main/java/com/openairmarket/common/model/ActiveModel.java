@@ -1,4 +1,4 @@
-package com.openairmarket.pos.persistence.model;
+package com.openairmarket.common.model;
 
 import java.io.Serializable;
 

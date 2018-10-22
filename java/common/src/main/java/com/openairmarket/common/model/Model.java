@@ -1,6 +1,5 @@
-package com.openairmarket.pos.persistence.model;
+package com.openairmarket.common.model;
 
-import com.openairmarket.common.domain.model.DomainModel;
 import java.io.Serializable;
 
 /**
@@ -8,7 +7,7 @@ import java.io.Serializable;
  *
  * @param <T> specifies the {@code Class} of the id for the {@code Entity}
  */
-public interface Model<T extends Serializable> extends DomainModel {
+public interface Model<T extends Serializable> extends Domain {
 
   /**
    * Provides the value of the optimistic locking column.

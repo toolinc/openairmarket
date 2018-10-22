@@ -1,6 +1,7 @@
-package com.openairmarket.pos.persistence.model;
+package com.openairmarket.common.persistence.model;
 
 import com.google.common.base.Preconditions;
+import com.openairmarket.common.model.ActiveModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

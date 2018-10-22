@@ -1,15 +1,15 @@
-package com.openairmarket.pos.persistence.model;
+package com.openairmarket.common.model;
 
 import java.io.Serializable;
 
 /**
- * Specifies the behavior for the entities that are catalogs that required an alternate primary key.
+ * Specifies the behavior for the entities that requires an alternate primary key.
  *
  * @param <T> specifies the {@link Class} of the id for the {@link javax.persistence.Entity}.
  * @param <RID> specifies the {@link Class} of the referenceId for the {@link
  *     javax.persistence.Entity}.
  */
-public interface SimpleCatalogModel<T extends Serializable, RID extends Serializable>
+public interface ActiveReferenceModel<T extends Serializable, RID extends Serializable>
     extends ActiveModel<T> {
 
   /**

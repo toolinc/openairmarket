@@ -1,7 +1,8 @@
-package com.openairmarket.pos.persistence.model;
+package com.openairmarket.common.persistence.model;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.model.Model;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
