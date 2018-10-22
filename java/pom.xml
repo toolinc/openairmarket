@@ -22,16 +22,17 @@
     <!-- java -->
     <jaxb.version>2.3.1</jaxb.version>
     <!-- grpc -->
-    <grpc.version>1.12.0</grpc.version>
-    <grpc.api.version>1.11.0</grpc.api.version>
-    <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
+    <grpc.version>1.15.1</grpc.version>
+    <grpc.api.version>1.12.0</grpc.api.version>
+    <netty.tcnative.version>2.0.18.Final</netty.tcnative.version>
     <!-- google -->
     <auto.version>1.6.2</auto.version>
-    <guava.version>20.0</guava.version>
+    <guava.version>27.0-jre</guava.version>
     <flogger.version>0.3.1</flogger.version>
     <guice.version>4.1.0</guice.version>
     <http-client.version>1.26.0</http-client.version>
     <options.version>1.0.0</options.version>
+    <jsr305.version>3.0.2</jsr305.version>
     <!-- persistence -->
     <c3p0.version>0.9.1.2</c3p0.version>
     <persistence.version>2.2</persistence.version>
@@ -180,6 +181,11 @@
             <artifactId>jmxri</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>${jsr305.version}</version>
       </dependency>
       <!-- Testing -->
       <dependency>
