@@ -30,11 +30,6 @@
       <artifactId>eclipselink</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>c3p0</groupId>
       <artifactId>c3p0</artifactId>
     </dependency>
@@ -63,7 +58,6 @@
       <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
-        <version>3.3.3</version>
         <executions>
           <execution>
             <id>process</id>
@@ -76,7 +70,7 @@
                 ${project.build.directory}/generated-sources/metamodel
               </outputDirectory>
               <compilerArguments>
-                -Aeclipselink.persistencexml=${project.basedir}/src/main/resources/META-INF/persistence.xml
+                -Aeclipselink.persistencexml=${project.basedir}/src/test/resources/META-INF/persistence.xml
               </compilerArguments>
               <processors>
                 <processor>

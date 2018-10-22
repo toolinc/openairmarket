@@ -38,6 +38,33 @@
 
   <build>
     <plugins>
+      <!-- Metamodel -->
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/generated-sources/metamodel
+              </outputDirectory>
+              <compilerArguments>
+                -Aeclipselink.persistencexml=${project.basedir}/src/test/resources/META-INF/persistence.xml
+              </compilerArguments>
+              <processors>
+                <processor>
+                  org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor
+                </processor>
+              </processors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>com.coveo</groupId>
         <artifactId>fmt-maven-plugin</artifactId>

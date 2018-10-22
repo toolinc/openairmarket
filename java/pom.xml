@@ -128,12 +128,6 @@
         <version>${eclipse-link.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.eclipse.persistence</groupId>
-        <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-        <version>${eclipse-link.version}</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
         <groupId>com.google.inject.extensions</groupId>
         <artifactId>guice-persist</artifactId>
         <version>${guice.persist.version}</version>
@@ -221,6 +215,19 @@
             <target>1.8</target>
             <compilerArgument>-Xlint:unchecked</compilerArgument>
           </configuration>
+        </plugin>
+        <!-- Metamodel -->
+        <plugin>
+          <groupId>org.bsc.maven</groupId>
+          <artifactId>maven-processor-plugin</artifactId>
+          <version>3.3.3</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.eclipse.persistence</groupId>
+              <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+              <version>${eclipse-link.version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <!-- Style guide -->
         <plugin>
