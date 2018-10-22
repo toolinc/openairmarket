@@ -1,7 +1,7 @@
-package com.openairmarket.common.persistence.tenant;
+package com.openairmarket.common.persistence.model.tenant;
 
-import com.openairmarket.common.persistence.history.tenant.TenantHistory;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
+import com.openairmarket.common.persistence.model.history.tenant.TenantHistory;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

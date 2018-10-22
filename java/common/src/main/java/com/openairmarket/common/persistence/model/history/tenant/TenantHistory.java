@@ -1,9 +1,9 @@
-package com.openairmarket.common.persistence.history.tenant;
+package com.openairmarket.common.persistence.model.history.tenant;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.model.history.HistoryModelBuilder;
-import com.openairmarket.common.persistence.history.AbstractAuditModel;
-import com.openairmarket.common.persistence.tenant.Tenant;
+import com.openairmarket.common.persistence.model.history.AbstractAuditModel;
+import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

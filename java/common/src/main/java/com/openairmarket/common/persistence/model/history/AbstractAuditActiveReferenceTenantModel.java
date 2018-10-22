@@ -1,4 +1,4 @@
-package com.openairmarket.common.persistence.history;
+package com.openairmarket.common.persistence.model.history;
 
 import java.io.Serializable;
 import javax.persistence.DiscriminatorType;

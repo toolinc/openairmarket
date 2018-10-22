@@ -1,4 +1,4 @@
-package com.openairmarket.common.persistence.history;
+package com.openairmarket.common.persistence.model.history;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.model.ActiveReferenceModel;

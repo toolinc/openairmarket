@@ -1,10 +1,10 @@
-package com.openairmarket.common.persistence.history;
+package com.openairmarket.common.persistence.model.history;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.DateUtil;
 import com.openairmarket.common.model.history.History;
 import com.openairmarket.common.persistence.model.AbstractModel;
-import com.openairmarket.common.persistence.security.SystemUser;
+import com.openairmarket.common.persistence.model.security.SystemUser;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

@@ -1,4 +1,4 @@
-package com.openairmarket.common.persistence.security;
+package com.openairmarket.common.persistence.model.security;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.model.security.User;
