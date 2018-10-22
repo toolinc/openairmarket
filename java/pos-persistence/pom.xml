@@ -76,7 +76,7 @@
                 ${project.build.directory}/generated-sources/metamodel
               </outputDirectory>
               <compilerArguments>
-                -Aeclipselink.persistencexml=${project.basedir}/src/maingit gi/resources/META-INF/persistence.xml
+                -Aeclipselink.persistencexml=${project.basedir}/src/main/resources/META-INF/persistence.xml
               </compilerArguments>
               <processors>
                 <processor>
