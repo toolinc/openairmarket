@@ -3,6 +3,7 @@ package com.openairmarket.common.persistence.dao;
 import com.openairmarket.common.model.Model;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.LockModeType;
 
 /**
@@ -62,7 +63,7 @@ public interface Dao<S extends Serializable, T extends Model<S>> {
    * @throws IllegalArgumentException - if the first argument does not denote an entity type or the
    *     second argument is is not a valid type for that entity’s primary key or is null.
    */
-  T find(S id);
+  Optional<T> find(S id);
 
   /**
    * Retrieves an instance by a particular version.
