@@ -27,9 +27,6 @@ public final class CatalogDaoImpl<S extends Serializable, T extends AbstractCata
     implements CatalogDao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private static final String REFERENCE_ID = "referenceId";
-  private static final String NAME = "name";
-  private static final String ACTIVE = "active";
   private final Class<T> entityClass;
   private final Provider<EntityManager> entityManagerProvider;
   private final ActiveDao<S, T> activeDao;

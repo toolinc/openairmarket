@@ -25,7 +25,6 @@ public final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiv
     implements ActiveDao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private static final String ACTIVE = "active";
   private final Provider<EntityManager> entityManagerProvider;
   private final Class<T> entityClass;
   private final Class<S> entityIdClass;

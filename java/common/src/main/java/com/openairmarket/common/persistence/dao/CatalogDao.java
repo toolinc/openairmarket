@@ -12,6 +12,9 @@ import java.io.Serializable;
 public interface CatalogDao<S extends Serializable, T extends CatalogModel>
     extends ActiveDao<S, T> {
 
+  public static final String REFERENCE_ID = "referenceId";
+  public static final String NAME = "name";
+
   /**
    * Find by reference id.
    *

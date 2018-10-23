@@ -3,7 +3,6 @@ package com.openairmarket.common.persistence.dao;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
-import com.openairmarket.common.persistence.model.AbstractActiveModel_;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -87,7 +86,7 @@ public final class QueryHelper<R, F> {
   }
 
   private <T extends AbstractActiveModel> Predicate activePredicate(Path<T> root, Boolean value) {
-    return getCriteriaBuilder().equal(root.get(AbstractActiveModel_.active), value);
+    return getCriteriaBuilder().equal(root.get(ActiveDao.ACTIVE), value);
   }
 
   private TypedQuery<R> createTypedQuery() {

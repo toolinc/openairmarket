@@ -11,6 +11,8 @@ import java.io.Serializable;
  */
 public interface ActiveDao<S extends Serializable, T extends ActiveModel> extends Dao<S, T> {
 
+  public static final String ACTIVE = "active";
+
   /**
    * Count the number of instances in the persistent storage that are inactive.
    *
