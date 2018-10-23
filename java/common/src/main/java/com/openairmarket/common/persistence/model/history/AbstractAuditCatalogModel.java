@@ -1,19 +1,13 @@
 package com.openairmarket.common.persistence.model.history;
 
 import com.openairmarket.common.model.CatalogModel;
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-/**
- * Specifies the behavior of the history of the entities ({@code CatalogModel}).
- *
- * @param <RID> specifies the {@link Class} of the referenceId for the {@link
- *     javax.persistence.Entity}.
- */
+/** Specifies the behavior of the history of the entities ({@code CatalogModel}). */
 @MappedSuperclass
-public abstract class AbstractAuditCatalogModel<RID extends Serializable>
-    extends AbstractAuditActiveReferenceModel<RID> implements CatalogModel<Long, RID> {
+public abstract class AbstractAuditCatalogModel extends AbstractAuditActiveReferenceModel
+    implements CatalogModel<Long> {
 
   @Column(name = "name", nullable = false)
   private String name;

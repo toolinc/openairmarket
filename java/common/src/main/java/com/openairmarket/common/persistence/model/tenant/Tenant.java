@@ -1,5 +1,7 @@
 package com.openairmarket.common.persistence.model.tenant;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
 import com.openairmarket.common.persistence.model.history.tenant.TenantHistory;
 import java.util.Set;
@@ -31,7 +33,7 @@ import javax.persistence.UniqueConstraint;
           name = "tenantUK",
           columnNames = {"name"})
     })
-public class Tenant extends AbstractCatalogModel<Integer, Integer> {
+public class Tenant extends AbstractCatalogModel<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "idTenant")
@@ -81,11 +83,12 @@ public class Tenant extends AbstractCatalogModel<Integer, Integer> {
    */
   public static class Buider {
 
-    private Integer referenceId;
+    private String referenceId;
     private String name;
 
-    public Buider setReferenceId(Integer referenceId) {
-      this.referenceId = checkPositive(referenceId);
+    public Buider setReferenceId(String referenceId) {
+      Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
+      this.referenceId = referenceId;
       return this;
     }
 

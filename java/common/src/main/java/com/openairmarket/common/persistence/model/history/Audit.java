@@ -6,6 +6,7 @@ import com.openairmarket.common.model.history.History;
 import com.openairmarket.common.persistence.model.AbstractModel;
 import com.openairmarket.common.persistence.model.security.SystemUser;
 import java.util.Date;
+import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,12 +24,12 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "audit")
-public class Audit extends AbstractModel<Long> implements History<SystemUser> {
+public class Audit extends AbstractModel<UUID> implements History<SystemUser> {
 
   @Id
   @Column(name = "idAudit")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private UUID id;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "createDate", nullable = false)
@@ -39,12 +40,12 @@ public class Audit extends AbstractModel<Long> implements History<SystemUser> {
   private SystemUser systemUser;
 
   @Override
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
   @Override
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = Preconditions.checkNotNull(id);
   }
 

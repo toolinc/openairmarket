@@ -24,9 +24,8 @@ public final class TenantDaoModule extends AbstractModule {
     Dao<Integer, Tenant> dao = new DaoImpl<>(entityManagerProvider, Tenant.class, Integer.class);
     ActiveDao<Integer, Tenant> activeDao =
         new ActiveDaoImpl<>(entityManagerProvider, dao, Tenant.class, Integer.class);
-    CatalogDao<Integer, Integer, Tenant> catalogDao =
-        new CatalogDaoImpl<>(
-            entityManagerProvider, activeDao, Tenant.class, Integer.class, Integer.class);
+    CatalogDao<Integer, Tenant> catalogDao =
+        new CatalogDaoImpl<>(entityManagerProvider, activeDao, Tenant.class);
     return new TenantDaoImpl(catalogDao);
   }
 }

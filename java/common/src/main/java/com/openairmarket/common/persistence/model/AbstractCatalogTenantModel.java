@@ -12,11 +12,9 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
  * Specifies the behavior of all {@code Tenant} the entities.
  *
  * @param <T> specifies the {@link Class} of the id for the {@link javax.persistence.Entity}.
- * @param <RID> specifies the {@link Class} of the referenceId for the {@link
- *     javax.persistence.Entity}.
  */
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = "idTenant", discriminatorType = DiscriminatorType.INTEGER)
 @MappedSuperclass
-public abstract class AbstractCatalogTenantModel<T extends Serializable, RID extends Serializable>
-    extends AbstractCatalogModel<T, RID> implements TenantModel<T> {}
+public abstract class AbstractCatalogTenantModel<T extends Serializable>
+    extends AbstractCatalogModel<T> implements TenantModel<T> {}

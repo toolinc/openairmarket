@@ -13,10 +13,10 @@ import javax.persistence.LockModeType;
 /** Data Access Object for {@code Tenant}. */
 public final class TenantDaoImpl implements TenantDao {
 
-  private final CatalogDao<Integer, Integer, Tenant> catalogDao;
+  private final CatalogDao<Integer, Tenant> catalogDao;
 
   @Inject
-  public TenantDaoImpl(CatalogDao<Integer, Integer, Tenant> catalogDao) {
+  public TenantDaoImpl(CatalogDao<Integer, Tenant> catalogDao) {
     this.catalogDao = Preconditions.checkNotNull(catalogDao);
   }
 
@@ -57,12 +57,12 @@ public final class TenantDaoImpl implements TenantDao {
   }
 
   @Override
-  public Tenant findByReferenceId(Integer referenceId) {
+  public Tenant findByReferenceId(String referenceId) {
     return catalogDao.findByReferenceId(referenceId);
   }
 
   @Override
-  public Tenant findInactiveByReferenceId(Integer referenceId) {
+  public Tenant findInactiveByReferenceId(String referenceId) {
     return catalogDao.findInactiveByReferenceId(referenceId);
   }
 

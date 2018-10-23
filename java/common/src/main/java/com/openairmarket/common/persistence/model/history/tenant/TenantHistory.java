@@ -1,6 +1,7 @@
 package com.openairmarket.common.persistence.model.history.tenant;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.openairmarket.common.model.history.HistoryModelBuilder;
 import com.openairmarket.common.persistence.model.history.AbstractAuditModel;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
@@ -40,7 +41,7 @@ public class TenantHistory extends AbstractAuditModel {
   private Tenant tenant;
 
   @Column(name = "idReference", nullable = false)
-  private Integer referenceId;
+  private String referenceId;
 
   @Column(name = "name", nullable = false)
   private String name;
@@ -63,12 +64,13 @@ public class TenantHistory extends AbstractAuditModel {
     this.tenant = Preconditions.checkNotNull(tenant);
   }
 
-  public Integer getReferenceId() {
+  public String getReferenceId() {
     return referenceId;
   }
 
-  public void setReferenceId(Integer referenceId) {
-    this.referenceId = checkPositive(referenceId);
+  public void setReferenceId(String referenceId) {
+    Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
+    this.referenceId = referenceId;
   }
 
   public String getName() {

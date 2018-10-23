@@ -7,11 +7,8 @@ import java.io.Serializable;
  * {@link ActiveReferenceModel}.
  *
  * @param <T> specifies the {@link Class} of the id for the {@link javax.persistence.Entity}.
- * @param <RID> specifies the {@link Class} of the referenceId for the {@link
- *     javax.persistence.Entity}.
  */
-public interface CatalogModel<T extends Serializable, RID extends Serializable>
-    extends ActiveReferenceModel<T, RID> {
+public interface CatalogModel<T extends Serializable> extends ActiveReferenceModel<T> {
 
   /**
    * Provides the description for the unique key of this entity on the database.

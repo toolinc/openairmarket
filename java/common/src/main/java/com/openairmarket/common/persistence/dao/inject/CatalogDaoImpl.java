@@ -7,9 +7,7 @@ import com.openairmarket.common.persistence.dao.CatalogDao;
 import com.openairmarket.common.persistence.dao.DaoErrorCode;
 import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.dao.QueryHelper;
-import com.openairmarket.common.persistence.model.AbstractActiveModel_;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
-import com.openairmarket.common.persistence.model.AbstractCatalogModel_;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
@@ -23,17 +21,16 @@ import javax.persistence.NoResultException;
  * Provides the implementation for {@code CatalogDAO} interface.
  *
  * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractActiveModel}
- * @param <RID> specifies the {@code Number} identifier of the {@code AbstractCatalogModel}
  * @param <T> specifies the {@code AbstractActiveModel} of the data access object
  */
-public final class CatalogDaoImpl<
-        S extends Serializable, RID extends Serializable, T extends AbstractCatalogModel>
-    implements CatalogDao<S, RID, T> {
+public final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogModel<S>>
+    implements CatalogDao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private static final String REFERENCE_ID = "referenceId";
+  private static final String NAME = "name";
+  private static final String ACTIVE = "active";
   private final Class<T> entityClass;
-  private final Class<S> entityIdClass;
-  private final Class<RID> referenceIdClass;
   private final Provider<EntityManager> entityManagerProvider;
   private final ActiveDao<S, T> activeDao;
 
@@ -41,38 +38,31 @@ public final class CatalogDaoImpl<
   public CatalogDaoImpl(
       Provider<EntityManager> entityManagerProvider,
       ActiveDao<S, T> activeDao,
-      Class<T> entityClass,
-      Class<S> entityIdClass,
-      Class<RID> referenceIdClass) {
+      Class<T> entityClass) {
     this.entityManagerProvider = Preconditions.checkNotNull(entityManagerProvider);
     this.activeDao = Preconditions.checkNotNull(activeDao);
     this.entityClass = Preconditions.checkNotNull(entityClass);
-    this.entityIdClass = Preconditions.checkNotNull(entityIdClass);
-    this.referenceIdClass = Preconditions.checkNotNull(referenceIdClass);
   }
 
   @Override
-  public T findByReferenceId(RID referenceId) {
+  public T findByReferenceId(String referenceId) {
     return findByReferenceId(referenceId, Boolean.TRUE);
   }
 
   @Override
-  public T findInactiveByReferenceId(RID referenceId) {
+  public T findInactiveByReferenceId(String referenceId) {
     return findByReferenceId(referenceId, Boolean.FALSE);
   }
 
-  private T findByReferenceId(RID referenceId, Boolean active) {
+  private T findByReferenceId(String referenceId, Boolean active) {
     try {
       QueryHelper<T, T> qc = QueryHelper.newQueryContainer(getEntityManager(), getEntityClass());
       qc.getCriteriaQuery()
           .where(
               qc.getCriteriaBuilder()
                   .and(
-                      qc.getCriteriaBuilder()
-                          .equal(qc.getRoot().get(AbstractActiveModel_.active), active),
-                      qc.getCriteriaBuilder()
-                          .equal(
-                              qc.getRoot().get(AbstractCatalogModel_.referenceId), referenceId)));
+                      qc.getCriteriaBuilder().equal(qc.getRoot().get(ACTIVE), active),
+                      qc.getCriteriaBuilder().equal(qc.getRoot().get(REFERENCE_ID), referenceId)));
       return qc.getSingleResult();
     } catch (NoResultException exc) {
       logger.atWarning().log(
@@ -148,7 +138,7 @@ public final class CatalogDaoImpl<
   }
 
   private void validatePersist(T entity) throws DaoException {
-    long uniqueId = countEntitiesWithReferenceId(referenceIdClass.cast(entity.getReferenceId()));
+    long uniqueId = countEntitiesWithReferenceId(entity.getReferenceId());
     long uniqueName = countEntitiesWithName(entity.getName());
     if (uniqueId > 0 || uniqueName > 0) {
       DaoException daoException = null;
@@ -169,21 +159,18 @@ public final class CatalogDaoImpl<
     }
   }
 
-  private Long countEntitiesWithReferenceId(RID referenceId) {
+  private Long countEntitiesWithReferenceId(String referenceId) {
     QueryHelper<Long, T> qc =
         QueryHelper.newQueryContainerCount(getEntityManager(), getEntityClass());
     qc.getCriteriaQuery()
-        .where(
-            qc.getCriteriaBuilder()
-                .equal(qc.getRoot().get(AbstractCatalogModel_.referenceId), referenceId));
+        .where(qc.getCriteriaBuilder().equal(qc.getRoot().get(REFERENCE_ID), referenceId));
     return qc.getSingleResult();
   }
 
   private Long countEntitiesWithName(String name) {
     QueryHelper<Long, T> qc =
         QueryHelper.newQueryContainerCount(getEntityManager(), getEntityClass());
-    qc.getCriteriaQuery()
-        .where(qc.getCriteriaBuilder().equal(qc.getRoot().get(AbstractCatalogModel_.name), name));
+    qc.getCriteriaQuery().where(qc.getCriteriaBuilder().equal(qc.getRoot().get(NAME), name));
     return qc.getSingleResult();
   }
 
@@ -194,12 +181,9 @@ public final class CatalogDaoImpl<
         .where(
             qc.getCriteriaBuilder()
                 .and(
+                    qc.getCriteriaBuilder().equal(qc.getRoot().get(NAME), entity.getName()),
                     qc.getCriteriaBuilder()
-                        .equal(qc.getRoot().get(AbstractCatalogModel_.name), entity.getName()),
-                    qc.getCriteriaBuilder()
-                        .notEqual(
-                            qc.getRoot().get(AbstractCatalogModel_.referenceId),
-                            entity.getReferenceId())));
+                        .notEqual(qc.getRoot().get(REFERENCE_ID), entity.getReferenceId())));
     return qc.getSingleResult();
   }
 

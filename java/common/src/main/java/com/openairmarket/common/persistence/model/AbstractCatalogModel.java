@@ -9,12 +9,10 @@ import javax.persistence.MappedSuperclass;
  * Specifies the behavior of the entities that are catalogs.
  *
  * @param <T> specifies the {@link Class} of the id for the {@link javax.persistence.Entity}.
- * @param <RID> specifies the {@link Class} of the referenceId for the {@link
- *     javax.persistence.Entity}.
  */
 @MappedSuperclass
-public abstract class AbstractCatalogModel<T extends Serializable, RID extends Serializable>
-    extends AbstractActiveReferenceModel<T, RID> implements CatalogModel<T, RID> {
+public abstract class AbstractCatalogModel<T extends Serializable>
+    extends AbstractActiveReferenceModel<T> implements CatalogModel<T> {
 
   @Column(name = "name", nullable = false)
   private String name;
