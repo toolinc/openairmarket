@@ -7,7 +7,6 @@ import com.openairmarket.common.persistence.dao.Dao;
 import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.dao.QueryHelper;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
-import com.openairmarket.common.persistence.model.AbstractActiveModel_;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +25,7 @@ public final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiv
     implements ActiveDao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private static final String ACTIVE = "active";
   private final Provider<EntityManager> entityManagerProvider;
   private final Class<T> entityClass;
   private final Class<S> entityIdClass;
@@ -115,8 +115,7 @@ public final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiv
   private long countEntities(Boolean value) {
     QueryHelper<Long, T> qc =
         QueryHelper.newQueryContainerCount(getEntityManager(), getEntityClass());
-    qc.getCriteriaQuery()
-        .where(qc.getCriteriaBuilder().equal(qc.getRoot().get(AbstractActiveModel_.active), value));
+    qc.getCriteriaQuery().where(qc.getCriteriaBuilder().equal(qc.getRoot().get(ACTIVE), value));
     return qc.getSingleResult();
   }
 
