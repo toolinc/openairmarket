@@ -2,12 +2,15 @@ package com.openairmarket.common.persistence.model.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.persistence.listener.AuditListener;
+import com.openairmarket.common.persistence.listener.Revision;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
-import com.openairmarket.common.persistence.model.history.tenant.TenantHistory;
+import com.openairmarket.common.persistence.model.history.tenant.TenantAudit;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,13 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-/**
- * Define the characteristics of a tenant.
- *
- * @author Edgar Rico (edgar.martinez.rico@gmail.com)
- */
-// @EntityListeners(value = {HistoryListener.class})
-// @Revision(builder = TenantHistory.Builder.class)
+/** Define the characteristics of a tenant. */
+@EntityListeners(value = {AuditListener.class})
+@Revision(builder = TenantAudit.Builder.class)
 @Entity
 @Table(
     name = "tenant",
@@ -40,7 +39,7 @@ public class Tenant extends AbstractCatalogModel<Integer> {
   private Integer id;
 
   @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL)
-  private Set<TenantHistory> tenantHistories;
+  private Set<TenantAudit> tenantHistories;
 
   public Tenant() {}
 
@@ -54,11 +53,11 @@ public class Tenant extends AbstractCatalogModel<Integer> {
     this.id = checkPositive(id);
   }
 
-  public Set<TenantHistory> getTenantHistories() {
+  public Set<TenantAudit> getTenantHistories() {
     return tenantHistories;
   }
 
-  public void setTenantHistories(Set<TenantHistory> tenantHistories) {
+  public void setTenantHistories(Set<TenantAudit> tenantHistories) {
     this.tenantHistories = tenantHistories;
   }
 
@@ -76,11 +75,7 @@ public class Tenant extends AbstractCatalogModel<Integer> {
     return new Buider();
   }
 
-  /**
-   * Builder class that creates instances of {@code Tenant}.
-   *
-   * @author Edgar Rico (edgar.martinez.rico@gmail.com)
-   */
+  /** Builder class that creates instances of {@code Tenant}. */
   public static class Buider {
 
     private String referenceId;

@@ -2,6 +2,7 @@ package com.openairmarket.common.persistence.model.history;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.DateUtil;
+import com.openairmarket.common.model.history.History;
 import com.openairmarket.common.model.history.HistoryModel;
 import com.openairmarket.common.model.history.HistoryType;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;

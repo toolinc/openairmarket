@@ -7,9 +7,9 @@ import java.util.UUID;
 /** Specifies the contract for a revision entity. */
 public interface History<T extends User> {
 
-  UUID getId();
+  String getId();
 
-  void setId(UUID id);
+  void setId(String id);
 
   Date getCreatedDate();
 

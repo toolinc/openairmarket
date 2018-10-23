@@ -1,35 +1,36 @@
 package com.openairmarket.common.persistence.model.history;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.openairmarket.common.DateUtil;
 import com.openairmarket.common.model.history.History;
 import com.openairmarket.common.persistence.model.AbstractModel;
 import com.openairmarket.common.persistence.model.security.SystemUser;
 import java.util.Date;
-import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.eclipse.persistence.annotations.UuidGenerator;
 
 /**
  * Specifies the revision for an {@link javax.persistence.Entity} that is required to keep tenancy.
  */
 @Entity
 @Table(name = "audit")
-public class Audit extends AbstractModel<UUID> implements History<SystemUser> {
+@UuidGenerator(name = "audit_id_gen")
+public class Audit extends AbstractModel<String> implements History<SystemUser> {
 
   @Id
   @Column(name = "idAudit")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private UUID id;
+  @GeneratedValue(generator = "audit_id_gen")
+  private String id;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "createDate", nullable = false)
@@ -40,13 +41,14 @@ public class Audit extends AbstractModel<UUID> implements History<SystemUser> {
   private SystemUser systemUser;
 
   @Override
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 
   @Override
-  public void setId(UUID id) {
-    this.id = Preconditions.checkNotNull(id);
+  public void setId(String id) {
+    Preconditions.checkState(!Strings.isNullOrEmpty(id));
+    this.id = id;
   }
 
   @Override

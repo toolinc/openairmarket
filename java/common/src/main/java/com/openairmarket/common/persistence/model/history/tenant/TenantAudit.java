@@ -2,7 +2,7 @@ package com.openairmarket.common.persistence.model.history.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.openairmarket.common.model.history.HistoryModelBuilder;
+import com.openairmarket.common.model.history.HistoryModel;
 import com.openairmarket.common.persistence.model.history.AbstractAuditModel;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.persistence.Column;
@@ -29,7 +29,7 @@ import javax.persistence.UniqueConstraint;
           name = "tenantHistoryUK",
           columnNames = {"idTenant", "idAudit"})
     })
-public class TenantHistory extends AbstractAuditModel {
+public class TenantAudit extends AbstractAuditModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,27 +82,27 @@ public class TenantHistory extends AbstractAuditModel {
   }
 
   /**
-   * Factory class for the {@code TenantHistory} entities.
+   * Factory class for the {@code TenantAudit} entities.
    *
    * @author Edgar Rico (edgar.martinez.rico@gmail.com)
    */
-  public static class Builder extends HistoryModelBuilder<Tenant, TenantHistory> {
+  public static class Builder extends HistoryModel.Builder<Tenant, TenantAudit> {
 
     /**
-     * Create an instance of {@code TenantHistory}.
+     * Create an instance of {@code TenantAudit}.
      *
      * @param tenant the instance that will be used to create a new {@code Tenant}.
      * @return a new instance
      */
     @Override
-    public TenantHistory build(Tenant tenant) {
-      TenantHistory tenantHistory = new TenantHistory();
-      tenantHistory.setTenant(tenant);
-      tenantHistory.setReferenceId(tenant.getReferenceId());
-      tenantHistory.setName(tenant.getName());
-      tenantHistory.setActive(tenant.getActive());
-      tenantHistory.setVersion(tenant.getVersion());
-      return tenantHistory;
+    public TenantAudit build(Tenant tenant) {
+      TenantAudit tenantAudit = new TenantAudit();
+      tenantAudit.setTenant(tenant);
+      tenantAudit.setReferenceId(tenant.getReferenceId());
+      tenantAudit.setName(tenant.getName());
+      tenantAudit.setActive(tenant.getActive());
+      tenantAudit.setVersion(tenant.getVersion());
+      return tenantAudit;
     }
   }
 }
