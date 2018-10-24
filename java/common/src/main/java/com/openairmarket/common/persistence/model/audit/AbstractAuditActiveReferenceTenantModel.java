@@ -1,4 +1,4 @@
-package com.openairmarket.common.persistence.model.history;
+package com.openairmarket.common.persistence.model.audit;
 
 import javax.persistence.DiscriminatorType;
 import javax.persistence.MappedSuperclass;
@@ -7,8 +7,8 @@ import org.eclipse.persistence.annotations.MultitenantType;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 /**
- * Specifies the behavior of the history of the entities ({@code SimpleCatalogModel}) that requires
- * to be {@code Tenant} aware.
+ * Specifies the behavior of the audit of the entities ({@code SimpleCatalogModel}) that requires to
+ * be {@code Tenant} aware.
  */
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = "idTenant", discriminatorType = DiscriminatorType.INTEGER)

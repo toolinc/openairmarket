@@ -1,12 +1,12 @@
 package com.openairmarket.common.persistence.listener;
 
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.common.model.history.HistoryType;
+import com.openairmarket.common.model.audit.AuditType;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
 import com.openairmarket.common.persistence.model.AbstractModel;
-import com.openairmarket.common.persistence.model.history.AbstractAuditModel;
-import com.openairmarket.common.persistence.model.history.Audit;
-import com.openairmarket.common.persistence.model.history.AuditModel;
+import com.openairmarket.common.persistence.model.audit.AbstractAuditModel;
+import com.openairmarket.common.persistence.model.audit.AuditModel;
+import com.openairmarket.common.persistence.model.audit.Auditable;
 import java.util.GregorianCalendar;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -25,47 +25,47 @@ public final class AuditListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   /**
-   * Creates a revision entity with the {@code HistoryType.CREATE}.
+   * Creates a revision entity with the {@code AuditType.CREATE}.
    *
    * @param entity - the instance that will be used to create the revision.
    */
   @PrePersist
   public void prePersist(AbstractActiveModel entity) {
-    createAuditModel(entity, HistoryType.CREATE);
+    createAuditModel(entity, AuditType.CREATE);
   }
 
   /**
-   * Creates a revision entity with the {@code HistoryType.UPDATE}.
+   * Creates a revision entity with the {@code AuditType.UPDATE}.
    *
    * @param entity - the instance that will be used to create the revision.
    */
   @PreUpdate
   public void preUpdate(AbstractActiveModel entity) {
-    HistoryType historyType = HistoryType.UPDATE;
+    AuditType auditType = AuditType.UPDATE;
     if (!entity.getActive()) {
-      historyType = historyType.DELETE;
+      auditType = auditType.DELETE;
     }
-    createAuditModel(entity, historyType);
+    createAuditModel(entity, auditType);
   }
 
   /**
-   * Creates a revision entity with the {@code HistoryType.DELETE}.
+   * Creates a revision entity with the {@code AuditType.DELETE}.
    *
    * @param entity - the instance that will be used to create the revision.
    */
   @PreRemove
   public void preRemove(AbstractActiveModel entity) {
-    createAuditModel(entity, HistoryType.DELETE);
+    createAuditModel(entity, AuditType.DELETE);
   }
 
   @SuppressWarnings("rawtypes")
-  private void createAuditModel(AbstractActiveModel entity, HistoryType historyType) {
+  private void createAuditModel(AbstractActiveModel entity, AuditType auditType) {
     AuditModel.Builder builder = createAuditModelBuilder(entity);
-    Audit audit = new Audit();
-    audit.setCreatedDate(new GregorianCalendar().getTime());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedDate(new GregorianCalendar().getTime());
+    auditable.setAuditType(auditType);
     AbstractAuditModel auditModel = builder.build(entity);
-    auditModel.setHistoryType(historyType);
-    auditModel.setHistory(audit);
+    auditModel.setAuditable(auditable);
     entityManagerProvider.get().persist(auditModel);
   }
 

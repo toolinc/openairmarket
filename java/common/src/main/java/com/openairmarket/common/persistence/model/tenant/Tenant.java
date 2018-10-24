@@ -5,7 +5,7 @@ import com.google.common.base.Strings;
 import com.openairmarket.common.persistence.listener.AuditListener;
 import com.openairmarket.common.persistence.listener.AuditRevision;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
-import com.openairmarket.common.persistence.model.history.tenant.TenantAudit;
+import com.openairmarket.common.persistence.model.audit.tenant.TenantAudit;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +39,7 @@ public class Tenant extends AbstractCatalogModel<Integer> {
   private Integer id;
 
   @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL)
-  private Set<TenantAudit> tenantHistories;
+  private Set<TenantAudit> tenantAudits;
 
   public Tenant() {}
 
@@ -53,12 +53,12 @@ public class Tenant extends AbstractCatalogModel<Integer> {
     this.id = checkPositive(id);
   }
 
-  public Set<TenantAudit> getTenantHistories() {
-    return tenantHistories;
+  public Set<TenantAudit> getTenantAudits() {
+    return tenantAudits;
   }
 
-  public void setTenantHistories(Set<TenantAudit> tenantHistories) {
-    this.tenantHistories = tenantHistories;
+  public void setTenantAudits(Set<TenantAudit> tenantAudits) {
+    this.tenantAudits = tenantAudits;
   }
 
   @Override

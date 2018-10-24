@@ -1,4 +1,4 @@
-package com.openairmarket.common.model.history;
+package com.openairmarket.common.model.audit;
 
 import com.openairmarket.common.model.TenantModel;
 import com.openairmarket.common.model.security.User;
@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @param <T> specifies the {@link Class} of the id for the {@link javax.persistence.Entity}
  * @param <U> specifies the {@link Class} of the {@link User}
- * @param <H> specifies the {@link Class} of the {@link History}
+ * @param <H> specifies the {@link Class} of the {@link Audit}
  */
-public interface HistoryTenantModel<T extends Serializable, U extends User, H extends History<U>>
-    extends TenantModel<T>, HistoryModel<U, H> {}
+public interface AuditTenantModel<T extends Serializable, U extends User, H extends Audit<U>>
+    extends TenantModel<T> {}

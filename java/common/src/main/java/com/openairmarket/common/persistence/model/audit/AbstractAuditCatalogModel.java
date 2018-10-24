@@ -1,13 +1,13 @@
-package com.openairmarket.common.persistence.model.history;
+package com.openairmarket.common.persistence.model.audit;
 
 import com.openairmarket.common.model.CatalogModel;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-/** Specifies the behavior of the history of the entities ({@code CatalogModel}). */
+/** Specifies the behavior of the audit of the entities ({@code CatalogModel}). */
 @MappedSuperclass
 public abstract class AbstractAuditCatalogModel extends AbstractAuditActiveReferenceModel
-    implements CatalogModel<Long> {
+    implements CatalogModel<String> {
 
   @Column(name = "name", nullable = false)
   private String name;

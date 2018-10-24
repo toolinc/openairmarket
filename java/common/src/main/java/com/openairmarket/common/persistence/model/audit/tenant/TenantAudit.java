@@ -1,20 +1,20 @@
-package com.openairmarket.common.persistence.model.history.tenant;
+package com.openairmarket.common.persistence.model.audit.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.openairmarket.common.persistence.model.history.AbstractAuditModel;
-import com.openairmarket.common.persistence.model.history.AuditModel;
+import com.openairmarket.common.persistence.model.audit.AbstractAuditModel;
+import com.openairmarket.common.persistence.model.audit.AuditModel;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import org.eclipse.persistence.annotations.UuidGenerator;
 
 /**
  * Define the revision for the {@code Tenant} entities.
@@ -23,22 +23,19 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(
-    name = "tenantHistory",
+    name = "tenantAudit",
     uniqueConstraints = {
       @UniqueConstraint(
           name = "tenantHistoryUK",
-          columnNames = {"idTenant", "idAudit"})
+          columnNames = {"idTenant"})
     })
+@UuidGenerator(name = "tenantAudit_gen")
 public class TenantAudit extends AbstractAuditModel {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "idTenantHistory")
-  private Long id;
-
-  @JoinColumn(name = "idTenant", referencedColumnName = "idTenant", nullable = false)
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Tenant tenant;
+  @GeneratedValue(generator = "tenantAudit_gen")
+  private String id;
 
   @Column(name = "idReference", nullable = false)
   private String referenceId;
@@ -46,14 +43,19 @@ public class TenantAudit extends AbstractAuditModel {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @JoinColumn(name = "idTenant", referencedColumnName = "idTenant", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Tenant tenant;
+
   @Override
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
   @Override
-  public void setId(Long id) {
-    this.id = Preconditions.checkNotNull(id);
+  public void setId(String id) {
+    Preconditions.checkState(!Strings.isNullOrEmpty(id));
+    this.id = id;
   }
 
   public Tenant getTenant() {

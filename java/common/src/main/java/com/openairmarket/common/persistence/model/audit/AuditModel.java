@@ -1,10 +1,12 @@
-package com.openairmarket.common.persistence.model.history;
+package com.openairmarket.common.persistence.model.audit;
 
-import com.openairmarket.common.model.history.HistoryModel;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
-import com.openairmarket.common.persistence.model.security.SystemUser;
 
-public interface AuditModel extends HistoryModel<SystemUser, Audit> {
+public interface AuditModel {
+
+  Auditable getAuditable();
+
+  void setAuditable(Auditable auditable);
 
   /**
    * Specifies the behavior of a builder class that creates a {@code HistoryEntity}.
