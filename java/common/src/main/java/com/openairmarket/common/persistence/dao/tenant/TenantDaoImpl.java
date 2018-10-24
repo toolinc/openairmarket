@@ -1,9 +1,8 @@
-package com.openairmarket.common.persistence.dao.inject;
+package com.openairmarket.common.persistence.dao.tenant;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.persistence.dao.CatalogDao;
 import com.openairmarket.common.persistence.dao.DaoException;
-import com.openairmarket.common.persistence.dao.tenant.TenantDao;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import java.util.List;
 import java.util.Optional;

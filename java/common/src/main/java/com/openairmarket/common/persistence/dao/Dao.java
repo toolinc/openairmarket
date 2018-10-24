@@ -1,6 +1,6 @@
 package com.openairmarket.common.persistence.dao;
 
-import com.openairmarket.common.model.Model;
+import com.openairmarket.common.persistence.model.AbstractModel;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
@@ -9,10 +9,10 @@ import javax.persistence.LockModeType;
 /**
  * Specifies the contract for all the data access objects.
  *
- * @param <S> specifies the {@code Serializable} identifier of the {@code Model}
- * @param <T> specifies the {@code Model} of the data access object
+ * @param <S> specifies the {@link Serializable} identifier of the {@link AbstractModel}.
+ * @param <T> specifies the {@link AbstractModel} of the data access object.
  */
-public interface Dao<S extends Serializable, T extends Model> {
+public interface Dao<S extends Serializable, T extends AbstractModel<S>> {
 
   /**
    * Persist the given entity.

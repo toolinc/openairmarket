@@ -1,15 +1,16 @@
 package com.openairmarket.common.persistence.dao;
 
-import com.openairmarket.common.model.ActiveModel;
+import com.openairmarket.common.persistence.model.AbstractActiveModel;
 import java.io.Serializable;
 
 /**
- * Specifies the contract for all the data access objects for {@code AbstractActive} entities.
+ * Specifies the contract for all the data access objects for {@link AbstractActiveModel} entities.
  *
- * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractActiveModel}
- * @param <T> specifies the {@code AbstractActiveModel} of the data access object
+ * @param <S> specifies the {@link Serializable} identifier of the {@code AbstractActiveModel}.
+ * @param <T> specifies the {@link AbstractActiveModel} of the data access object.
  */
-public interface ActiveDao<S extends Serializable, T extends ActiveModel> extends Dao<S, T> {
+public interface ActiveDao<S extends Serializable, T extends AbstractActiveModel<S>>
+    extends Dao<S, T> {
 
   public static final String ACTIVE = "active";
 

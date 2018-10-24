@@ -1,12 +1,7 @@
-package com.openairmarket.common.persistence.dao.inject;
+package com.openairmarket.common.persistence.dao;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.common.persistence.dao.ActiveDao;
-import com.openairmarket.common.persistence.dao.CatalogDao;
-import com.openairmarket.common.persistence.dao.DaoErrorCode;
-import com.openairmarket.common.persistence.dao.DaoException;
-import com.openairmarket.common.persistence.dao.QueryHelper;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
 import java.io.Serializable;
 import java.util.List;
@@ -20,8 +15,8 @@ import javax.persistence.NoResultException;
 /**
  * Provides the implementation for {@code CatalogDAO} interface.
  *
- * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractActiveModel}
- * @param <T> specifies the {@code AbstractActiveModel} of the data access object
+ * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractActiveModel}.
+ * @param <T> specifies the {@code AbstractActiveModel} of the data access object.
  */
 public final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogModel<S>>
     implements CatalogDao<S, T> {

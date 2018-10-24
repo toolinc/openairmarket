@@ -1,15 +1,15 @@
 package com.openairmarket.common.persistence.dao;
 
-import com.openairmarket.common.model.CatalogModel;
+import com.openairmarket.common.persistence.model.AbstractCatalogModel;
 import java.io.Serializable;
 
 /**
- * Specifies the contract for all the data access objects for {@code AbstractCatalogModel} entities.
+ * Specifies the contract for all the data access objects for {@link AbstractCatalogModel} entities.
  *
- * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractCatalogModel}.
- * @param <T> specifies the {@code AbstractCatalogModel} of the data access object.
+ * @param <S> specifies the {@link Serializable} identifier of the {@code AbstractCatalogModel}.
+ * @param <T> specifies the {@link AbstractCatalogModel} of the data access object.
  */
-public interface CatalogDao<S extends Serializable, T extends CatalogModel>
+public interface CatalogDao<S extends Serializable, T extends AbstractCatalogModel<S>>
     extends ActiveDao<S, T> {
 
   public static final String REFERENCE_ID = "referenceId";

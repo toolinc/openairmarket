@@ -1,11 +1,7 @@
-package com.openairmarket.common.persistence.dao.inject;
+package com.openairmarket.common.persistence.dao;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.openairmarket.common.persistence.dao.Dao;
-import com.openairmarket.common.persistence.dao.DaoErrorCode;
-import com.openairmarket.common.persistence.dao.DaoException;
-import com.openairmarket.common.persistence.dao.QueryHelper;
 import com.openairmarket.common.persistence.model.AbstractModel;
 import java.io.Serializable;
 import java.util.List;
@@ -19,8 +15,8 @@ import javax.persistence.NoResultException;
 /**
  * Provides the implementation for {@link Dao} interface.
  *
- * @param <S> specifies the {@code Serializable} identifier of the {@code Model}
- * @param <T> specifies the {@code Model} of the data access object
+ * @param <S> specifies the {@link Serializable} identifier of the {@link AbstractModel}.
+ * @param <T> specifies the {@link AbstractModel} of the data access object.
  */
 public final class DaoImpl<S extends Serializable, T extends AbstractModel<S>>
     implements Dao<S, T> {
