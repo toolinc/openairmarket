@@ -64,6 +64,7 @@ public final class AuditListener {
     Auditable auditable = new Auditable();
     auditable.setCreatedDate(new GregorianCalendar().getTime());
     auditable.setAuditType(auditType);
+    auditable.setUser(ThreadLocalSystemUserHolder.getCurrentSystemUser());
     AbstractAuditActiveModel auditModel = builder.build(entity);
     auditModel.setAuditable(auditable);
     entityManagerProvider.get().persist(auditModel);

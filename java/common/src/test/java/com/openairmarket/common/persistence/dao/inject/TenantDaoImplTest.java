@@ -9,6 +9,8 @@ import com.google.inject.persist.jpa.JpaPersistModule;
 import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.dao.tenant.TenantDao;
 import com.openairmarket.common.persistence.listener.AuditListener;
+import com.openairmarket.common.persistence.listener.ThreadLocalSystemUserHolder;
+import com.openairmarket.common.persistence.model.security.SystemUser;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
@@ -35,6 +37,19 @@ public final class TenantDaoImplTest {
             new TenantDaoModule());
     injector.injectMembers(this);
     persistService.start();
+    UnitOfWork unitOfWork = injector.getInstance(UnitOfWork.class);
+    unitOfWork.begin();
+    EntityManager entityManager = entityManagerProvider.get();
+    SystemUser systemUser = new SystemUser();
+    systemUser.setId(1L);
+    systemUser.setEmail("root@openairmarket.com");
+    systemUser.setActive(Boolean.TRUE);
+    entityManager.getTransaction().begin();
+    entityManager.persist(systemUser);
+    entityManager.getTransaction().commit();
+    unitOfWork.end();
+    ThreadLocalSystemUserHolder.registerTenancyContext(systemUser);
+    injector.injectMembers(this);
   }
 
   @After
