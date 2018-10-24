@@ -1,7 +1,7 @@
 package com.openairmarket.common.persistence.model.history;
 
 import com.openairmarket.common.model.history.HistoryModel;
-import com.openairmarket.common.persistence.model.AbstractModel;
+import com.openairmarket.common.persistence.model.AbstractActiveModel;
 import com.openairmarket.common.persistence.model.security.SystemUser;
 
 public interface AuditModel extends HistoryModel<SystemUser, Audit> {
@@ -12,7 +12,7 @@ public interface AuditModel extends HistoryModel<SystemUser, Audit> {
    * @param <E> specifies the {@code javax.persistence.Entity}.
    * @param <HE> specifies the {@code HistoryEntity}.
    */
-  abstract class Builder<E extends AbstractModel, HE extends AbstractAuditModel> {
+  abstract class Builder<E extends AbstractActiveModel, HE extends AbstractAuditModel> {
     public abstract HE build(E entity);
   }
 }
