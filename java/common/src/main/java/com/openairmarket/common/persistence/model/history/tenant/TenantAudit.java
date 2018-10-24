@@ -2,8 +2,8 @@ package com.openairmarket.common.persistence.model.history.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.openairmarket.common.model.history.HistoryModel;
 import com.openairmarket.common.persistence.model.history.AbstractAuditModel;
+import com.openairmarket.common.persistence.model.history.AuditModel;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -86,7 +86,7 @@ public class TenantAudit extends AbstractAuditModel {
    *
    * @author Edgar Rico (edgar.martinez.rico@gmail.com)
    */
-  public static class Builder extends HistoryModel.Builder<Tenant, TenantAudit> {
+  public static class Builder extends AuditModel.Builder<Tenant, TenantAudit> {
 
     /**
      * Create an instance of {@code TenantAudit}.

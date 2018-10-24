@@ -2,11 +2,8 @@ package com.openairmarket.common.persistence.model.history;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.DateUtil;
-import com.openairmarket.common.model.history.History;
-import com.openairmarket.common.model.history.HistoryModel;
 import com.openairmarket.common.model.history.HistoryType;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
-import com.openairmarket.common.persistence.model.security.SystemUser;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,8 +21,7 @@ import javax.persistence.TemporalType;
  * to keep tenancy.
  */
 @MappedSuperclass
-public abstract class AbstractAuditModel extends AbstractActiveModel<Long>
-    implements HistoryModel<SystemUser, Audit> {
+public abstract class AbstractAuditModel extends AbstractActiveModel<Long> implements AuditModel {
 
   @JoinColumn(name = "idAudit", referencedColumnName = "idAudit", nullable = false)
   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
