@@ -1,6 +1,6 @@
 package com.openairmarket.common.persistence.listener;
 
-import com.openairmarket.common.persistence.model.audit.AuditModel;
+import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Inherited
 @Target(ElementType.TYPE)
 public @interface AuditRevision {
-  Class<? extends AuditModel.Builder> builder();
+  Class<? extends AuditActiveModel.Builder> builder();
 }

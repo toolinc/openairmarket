@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @param <T> specifies the {@code User}.
  */
-public interface Audit<T extends User> extends Domain {
+public interface AuditModel<T extends User> extends Domain {
 
   Date getCreatedDate();
 

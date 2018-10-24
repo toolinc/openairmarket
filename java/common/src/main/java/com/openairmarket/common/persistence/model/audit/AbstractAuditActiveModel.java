@@ -15,10 +15,11 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 @AssociationOverrides({
   @AssociationOverride(
-      name = "systemUser",
+      name = "user",
       joinColumns = @JoinColumn(name = "idSystemUser", referencedColumnName = "idSystemUser"))
 })
-public abstract class AbstractAuditModel extends AbstractActiveModel<String> implements AuditModel {
+public abstract class AbstractAuditActiveModel extends AbstractActiveModel<String> implements
+    AuditActiveModel {
 
   @Embedded private Auditable auditable;
 

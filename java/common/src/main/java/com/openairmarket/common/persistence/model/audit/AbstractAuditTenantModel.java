@@ -15,5 +15,5 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = "idTenant", discriminatorType = DiscriminatorType.INTEGER)
 @MappedSuperclass
-public abstract class AbstractAuditTenantModel extends AbstractAuditModel
+public abstract class AbstractAuditTenantModel extends AbstractAuditActiveModel
     implements AuditTenantModel<String, SystemUser, Auditable> {}

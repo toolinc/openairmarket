@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @param <T> specifies the {@link Class} of the id for the {@link javax.persistence.Entity}
  * @param <U> specifies the {@link Class} of the {@link User}
- * @param <H> specifies the {@link Class} of the {@link Audit}
+ * @param <H> specifies the {@link Class} of the {@link AuditModel}
  */
-public interface AuditTenantModel<T extends Serializable, U extends User, H extends Audit<U>>
+public interface AuditTenantModel<T extends Serializable, U extends User, H extends AuditModel<U>>
     extends TenantModel<T> {}

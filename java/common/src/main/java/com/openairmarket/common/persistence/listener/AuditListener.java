@@ -4,8 +4,8 @@ import com.google.common.flogger.FluentLogger;
 import com.openairmarket.common.model.audit.AuditType;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
 import com.openairmarket.common.persistence.model.AbstractModel;
-import com.openairmarket.common.persistence.model.audit.AbstractAuditModel;
-import com.openairmarket.common.persistence.model.audit.AuditModel;
+import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveModel;
+import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.common.persistence.model.audit.Auditable;
 import java.util.GregorianCalendar;
 import javax.inject.Inject;
@@ -60,19 +60,19 @@ public final class AuditListener {
 
   @SuppressWarnings("rawtypes")
   private void createAuditModel(AbstractActiveModel entity, AuditType auditType) {
-    AuditModel.Builder builder = createAuditModelBuilder(entity);
+    AuditActiveModel.Builder builder = createAuditModelBuilder(entity);
     Auditable auditable = new Auditable();
     auditable.setCreatedDate(new GregorianCalendar().getTime());
     auditable.setAuditType(auditType);
-    AbstractAuditModel auditModel = builder.build(entity);
+    AbstractAuditActiveModel auditModel = builder.build(entity);
     auditModel.setAuditable(auditable);
     entityManagerProvider.get().persist(auditModel);
   }
 
-  private AuditModel.Builder createAuditModelBuilder(AbstractModel entity) {
+  private AuditActiveModel.Builder createAuditModelBuilder(AbstractModel entity) {
     try {
       AuditRevision auditRevision = entity.getClass().getAnnotation(AuditRevision.class);
-      Class<? extends AuditModel.Builder> auditBuilderClass = auditRevision.builder();
+      Class<? extends AuditActiveModel.Builder> auditBuilderClass = auditRevision.builder();
       return auditBuilderClass.newInstance();
     } catch (InstantiationException | IllegalAccessException ex) {
       logger.atSevere().log("Unable to instantiate [%s].", ex.getMessage());

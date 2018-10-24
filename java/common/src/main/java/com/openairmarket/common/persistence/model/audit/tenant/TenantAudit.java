@@ -2,8 +2,8 @@ package com.openairmarket.common.persistence.model.audit.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.openairmarket.common.persistence.model.audit.AbstractAuditModel;
-import com.openairmarket.common.persistence.model.audit.AuditModel;
+import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveModel;
+import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +30,7 @@ import org.eclipse.persistence.annotations.UuidGenerator;
           columnNames = {"idTenant"})
     })
 @UuidGenerator(name = "tenantAudit_gen")
-public class TenantAudit extends AbstractAuditModel {
+public class TenantAudit extends AbstractAuditActiveModel {
 
   @Id
   @Column(name = "idTenantHistory")
@@ -88,7 +88,7 @@ public class TenantAudit extends AbstractAuditModel {
    *
    * @author Edgar Rico (edgar.martinez.rico@gmail.com)
    */
-  public static class Builder extends AuditModel.Builder<Tenant, TenantAudit> {
+  public static class Builder extends AuditActiveModel.Builder<Tenant, TenantAudit> {
 
     /**
      * Create an instance of {@code TenantAudit}.
