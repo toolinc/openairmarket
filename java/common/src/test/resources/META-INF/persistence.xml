@@ -18,7 +18,7 @@
       <property name="eclipselink.connection-pool.min" value="5"/>
       <property name="eclipselink.connection-pool.max" value="10"/>
       <property name="eclipselink.ddl-generation.output-mode" value="both" />
-      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
       <property name="eclipselink.logging.level" value="ALL"/>
       <property name="eclipselink.logging.level.sql" value="ALL"/>
       <property name="eclipselink.logging.parameters" value="true"/>

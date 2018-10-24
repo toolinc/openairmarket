@@ -21,7 +21,7 @@ import javax.persistence.PreUpdate;
  */
 public final class AuditListener {
 
-  @Inject public static Provider<EntityManager> entityManagerProvider;
+  @Inject private static Provider<EntityManager> entityManagerProvider;
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   /**
