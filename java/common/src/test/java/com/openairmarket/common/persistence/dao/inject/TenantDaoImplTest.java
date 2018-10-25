@@ -34,7 +34,7 @@ public final class TenantDaoImplTest {
         Guice.createInjector(
             new JpaPersistModule("OpenAirMarket_PU"),
             binder -> binder.requestStaticInjection(AuditListener.class),
-            new TenantDaoModule());
+            new DaoModule());
     injector.injectMembers(this);
     persistService.start();
     UnitOfWork unitOfWork = injector.getInstance(UnitOfWork.class);

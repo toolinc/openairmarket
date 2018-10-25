@@ -13,7 +13,8 @@ import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 
-final class TenantDaoModule extends AbstractModule {
+/** Defines the data access object injection points. */
+final class DaoModule extends AbstractModule {
 
   @Override
   protected void configure() {
