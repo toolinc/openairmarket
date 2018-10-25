@@ -9,9 +9,11 @@ import com.openairmarket.common.persistence.model.AbstractCatalogModel;
 import java.io.Serializable;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 
 /** Provides the implementation of the {@link CatalogDaoFactory}. */
+@Singleton
 final class CatalogDaoFactoryImpl implements CatalogDaoFactory {
 
   private final Provider<EntityManager> entityManagerProvider;

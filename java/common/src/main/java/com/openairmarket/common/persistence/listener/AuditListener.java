@@ -72,8 +72,8 @@ public final class AuditListener {
 
   private AuditActiveModel.Builder createAuditModelBuilder(AbstractModel entity) {
     try {
-      AuditRevision auditRevision = entity.getClass().getAnnotation(AuditRevision.class);
-      Class<? extends AuditActiveModel.Builder> auditBuilderClass = auditRevision.builder();
+      Audit audit = entity.getClass().getAnnotation(Audit.class);
+      Class<? extends AuditActiveModel.Builder> auditBuilderClass = audit.builderClass();
       return auditBuilderClass.newInstance();
     } catch (InstantiationException | IllegalAccessException ex) {
       logger.atSevere().log("Unable to instantiate [%s].", ex.getMessage());

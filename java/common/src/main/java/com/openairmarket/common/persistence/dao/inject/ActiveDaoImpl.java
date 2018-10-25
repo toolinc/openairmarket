@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 
@@ -21,6 +22,7 @@ import javax.persistence.LockModeType;
  * @param <S> specifies the {@link Serializable} identifier of the {@code AbstractActiveModel}.
  * @param <T> specifies the {@link AbstractActiveModel} of the data access object.
  */
+@Singleton
 final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel<S>>
     implements ActiveDao<S, T> {
 

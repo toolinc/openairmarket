@@ -9,7 +9,8 @@ public interface AuditActiveModel {
   void setAuditable(Auditable auditable);
 
   /**
-   * Specifies the behavior of a builder class that creates a new {@link AbstractAuditActiveModel}.
+   * Specifies the behavior of a builderClass class that creates a new {@link
+   * AbstractAuditActiveModel}.
    *
    * @param <E> specifies the {@link AbstractActiveModel}.
    * @param <A> specifies the {@link AbstractAuditActiveModel}.

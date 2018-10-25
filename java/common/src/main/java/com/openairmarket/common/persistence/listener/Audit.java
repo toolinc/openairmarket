@@ -7,10 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** Specifies the builder class of a {@link com.openairmarket.common.model.audit.HistoryModel}. */
+/** Specifies the builderClass class of a {@link AuditActiveModel}. */
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Target(ElementType.TYPE)
-public @interface AuditRevision {
-  Class<? extends AuditActiveModel.Builder> builder();
+public @interface Audit {
+  Class<? extends AuditActiveModel.Builder> builderClass();
 }

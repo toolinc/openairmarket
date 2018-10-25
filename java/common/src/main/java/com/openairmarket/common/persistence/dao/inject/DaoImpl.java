@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
@@ -22,6 +23,7 @@ import javax.persistence.NoResultException;
  * @param <S> specifies the {@link Serializable} identifier of the {@link AbstractModel}.
  * @param <T> specifies the {@link AbstractModel} of the data access object.
  */
+@Singleton
 final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implements Dao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();

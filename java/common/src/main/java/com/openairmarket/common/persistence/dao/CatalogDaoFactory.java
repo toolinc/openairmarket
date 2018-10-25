@@ -2,10 +2,8 @@ package com.openairmarket.common.persistence.dao;
 
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
 import java.io.Serializable;
-import javax.inject.Singleton;
 
 /** Factory to create instances of {@link CatalogDao}. */
-@Singleton
 public interface CatalogDaoFactory {
 
   /**

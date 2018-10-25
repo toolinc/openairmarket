@@ -2,8 +2,8 @@ package com.openairmarket.common.persistence.model.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.persistence.listener.Audit;
 import com.openairmarket.common.persistence.listener.AuditListener;
-import com.openairmarket.common.persistence.listener.AuditRevision;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
 import com.openairmarket.common.persistence.model.audit.tenant.TenantAudit;
 import java.util.Set;
@@ -20,7 +20,7 @@ import javax.persistence.UniqueConstraint;
 
 /** Define the characteristics of a tenant. */
 @EntityListeners(value = {AuditListener.class})
-@AuditRevision(builder = TenantAudit.Builder.class)
+@Audit(builderClass = TenantAudit.Builder.class)
 @Entity
 @Table(
     name = "tenant",
