@@ -14,7 +14,7 @@ import javax.inject.Provider;
 import javax.persistence.EntityManager;
 
 /** Defines the data access object injection points. */
-final class DaoModule extends AbstractModule {
+public final class DaoModule extends AbstractModule {
 
   @Override
   protected void configure() {
