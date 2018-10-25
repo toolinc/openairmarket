@@ -1,7 +1,11 @@
-package com.openairmarket.common.persistence.dao;
+package com.openairmarket.common.persistence.dao.inject;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.openairmarket.common.persistence.dao.Dao;
+import com.openairmarket.common.persistence.dao.DaoErrorCode;
+import com.openairmarket.common.persistence.dao.DaoException;
+import com.openairmarket.common.persistence.dao.QueryHelper;
 import com.openairmarket.common.persistence.model.AbstractModel;
 import java.io.Serializable;
 import java.util.List;
@@ -18,8 +22,7 @@ import javax.persistence.NoResultException;
  * @param <S> specifies the {@link Serializable} identifier of the {@link AbstractModel}.
  * @param <T> specifies the {@link AbstractModel} of the data access object.
  */
-public final class DaoImpl<S extends Serializable, T extends AbstractModel<S>>
-    implements Dao<S, T> {
+final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implements Dao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final Provider<EntityManager> entityManagerProvider;

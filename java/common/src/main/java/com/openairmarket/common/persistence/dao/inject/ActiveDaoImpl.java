@@ -1,7 +1,11 @@
-package com.openairmarket.common.persistence.dao;
+package com.openairmarket.common.persistence.dao.inject;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.openairmarket.common.persistence.dao.ActiveDao;
+import com.openairmarket.common.persistence.dao.Dao;
+import com.openairmarket.common.persistence.dao.DaoException;
+import com.openairmarket.common.persistence.dao.QueryHelper;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +21,7 @@ import javax.persistence.LockModeType;
  * @param <S> specifies the {@link Serializable} identifier of the {@code AbstractActiveModel}.
  * @param <T> specifies the {@link AbstractActiveModel} of the data access object.
  */
-public final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel<S>>
+final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel<S>>
     implements ActiveDao<S, T> {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
