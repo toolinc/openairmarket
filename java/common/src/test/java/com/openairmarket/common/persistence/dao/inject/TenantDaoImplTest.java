@@ -7,6 +7,7 @@ import com.google.inject.persist.PersistService;
 import com.google.inject.persist.UnitOfWork;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.openairmarket.common.persistence.dao.DaoException;
+import com.openairmarket.common.persistence.dao.security.SystemUserDao;
 import com.openairmarket.common.persistence.dao.tenant.TenantDao;
 import com.openairmarket.common.persistence.listener.AuditListener;
 import com.openairmarket.common.persistence.listener.ThreadLocalSystemUserHolder;
@@ -26,10 +27,11 @@ public final class TenantDaoImplTest {
   @Inject PersistService persistService;
   @Inject UnitOfWork unitOfWork;
   @Inject Provider<EntityManager> entityManagerProvider;
+  @Inject private SystemUserDao systemUserDao;
   @Inject private TenantDao tenantDao;
 
   @Before
-  public void setUp() {
+  public void setUp() throws DaoException {
     Injector injector =
         Guice.createInjector(
             new JpaPersistModule("OpenAirMarket_PU"),
@@ -45,7 +47,7 @@ public final class TenantDaoImplTest {
     systemUser.setEmail("root@openairmarket.com");
     systemUser.setActive(Boolean.TRUE);
     entityManager.getTransaction().begin();
-    entityManager.persist(systemUser);
+    systemUserDao.persist(systemUser);
     entityManager.getTransaction().commit();
     unitOfWork.end();
     ThreadLocalSystemUserHolder.registerTenancyContext(systemUser);
