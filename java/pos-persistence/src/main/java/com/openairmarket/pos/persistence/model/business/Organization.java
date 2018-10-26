@@ -30,7 +30,7 @@ import javax.persistence.UniqueConstraint;
           name = "organizationUK",
           columnNames = {"idTenant", "name"})
     })
-public class Organization extends AbstractCatalogTenantModel<Long> {
+public final class Organization extends AbstractCatalogTenantModel<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,7 +74,7 @@ public class Organization extends AbstractCatalogTenantModel<Long> {
     }
 
     /**
-     * Creates a new instance of {@code Organization}.
+     * Creates a new instance of {@link Organization}.
      *
      * @return - new instance
      */

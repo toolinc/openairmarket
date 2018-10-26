@@ -12,6 +12,8 @@
     <!-- business -->
     <class>com.openairmarket.pos.persistence.model.audit.business.OrganizationAudit</class>
     <class>com.openairmarket.pos.persistence.model.business.Organization</class>
+    <class>com.openairmarket.pos.persistence.model.audit.business.RuleOrganizationAudit</class>
+    <class>com.openairmarket.pos.persistence.model.audit.business.TaxCategoryAudit</class>
     <class>com.openairmarket.pos.persistence.model.business.RuleOrganization</class>
     <class>com.openairmarket.pos.persistence.model.business.TaxCategory</class>
     <!-- location -->

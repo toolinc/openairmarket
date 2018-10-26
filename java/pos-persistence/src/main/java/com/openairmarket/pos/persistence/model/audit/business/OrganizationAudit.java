@@ -1,6 +1,7 @@
 package com.openairmarket.pos.persistence.model.audit.business;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.openairmarket.common.persistence.model.audit.AbstractAuditCatalogTenantModel;
 import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.pos.persistence.model.business.Organization;
@@ -25,7 +26,7 @@ import org.eclipse.persistence.annotations.UuidGenerator;
           columnNames = {"idOrganization", "createDate"})
     })
 @UuidGenerator(name = "organizationAudit_gen")
-public class OrganizationAudit extends AbstractAuditCatalogTenantModel {
+public final class OrganizationAudit extends AbstractAuditCatalogTenantModel {
 
   @Id
   @GeneratedValue(generator = "organizationAudit_gen")
@@ -43,7 +44,7 @@ public class OrganizationAudit extends AbstractAuditCatalogTenantModel {
 
   @Override
   public void setId(String id) {
-
+    Preconditions.checkState(!Strings.isNullOrEmpty(id));
     this.id = id;
   }
 
@@ -56,7 +57,8 @@ public class OrganizationAudit extends AbstractAuditCatalogTenantModel {
   }
 
   /** Factory class for the {@link OrganizationAudit} entities. */
-  public static class Builder extends AuditActiveModel.Builder<Organization, OrganizationAudit> {
+  public static final class Builder
+      extends AuditActiveModel.Builder<Organization, OrganizationAudit> {
 
     /**
      * Create an instance of {@link OrganizationAudit}.

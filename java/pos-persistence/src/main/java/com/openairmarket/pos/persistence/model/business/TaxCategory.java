@@ -3,17 +3,21 @@ package com.openairmarket.pos.persistence.model.business;
 /** Define the different types of taxes. */
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.persistence.listener.Audit;
+import com.openairmarket.common.persistence.listener.AuditListener;
+import com.openairmarket.pos.persistence.model.audit.business.TaxCategoryAudit;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 
-// @EntityListeners(value = {AuditListener.class})
-// @Revision(builder = TaxCategoryHistory.Builder.class)
+@EntityListeners(value = {AuditListener.class})
+@Audit(builderClass = TaxCategoryAudit.Builder.class)
 @Entity
 @DiscriminatorValue("TAX_CATEGORY")
-public class TaxCategory extends RuleOrganization {
+public final class TaxCategory extends RuleOrganization {
 
   /**
-   * Creates a new {@code TaxCategory.Builder} instance.
+   * Creates a new {@link TaxCategory.Buider} instance.
    *
    * @return - new instance
    */
@@ -21,11 +25,7 @@ public class TaxCategory extends RuleOrganization {
     return new TaxCategory.Buider();
   }
 
-  /**
-   * Builder class that creates instances of {@code TaxCategory}.
-   *
-   * @author Edgar Rico (edgar.martinez.rico@gmail.com)
-   */
+  /** Builder class that creates instances of {@link TaxCategory}. */
   public static class Buider {
 
     private String referenceId;
@@ -50,7 +50,7 @@ public class TaxCategory extends RuleOrganization {
     }
 
     /**
-     * Creates a new instance of {@code TaxCategory}.
+     * Creates a new instance of {@link TaxCategory}.
      *
      * @return - new instance
      */
