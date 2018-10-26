@@ -2,7 +2,9 @@ package com.openairmarket.pos.persistence.model.business;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.persistence.listener.Audit;
 import com.openairmarket.common.persistence.model.AbstractCatalogTenantModel;
+import com.openairmarket.pos.persistence.model.audit.business.OrganizationAudit;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,10 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 /**
- * Define the organizations that a {@code com.structureeng.persistence.model.tenant.Tenant} owns.
+ * Define the organizations that a {@link com.openairmarket.common.persistence.model.tenant.Tenant}
+ * owns.
  */
 // @EntityListeners(value = {AuditListener.class})
-// @Revision(builder = OrganizationHistory.Builder.class)
+@Audit(builderClass = OrganizationAudit.Builder.class)
 @Entity
 @Table(
     name = "organization",

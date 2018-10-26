@@ -10,10 +10,10 @@ import javax.persistence.Entity;
 // @Revision(builder = PurchasePriceHistory.Builder.class)
 @Entity
 @DiscriminatorValue("PURCHASE_PRICE")
-public class PurchasePrice extends ProductPrice {
+public final class ProductPurchasePrice extends ProductPrice {
 
   /**
-   * Creates a new {@code Builder} instance.
+   * Creates a new {@link Builder} instance.
    *
    * @return - new instance
    */
@@ -21,11 +21,7 @@ public class PurchasePrice extends ProductPrice {
     return new Builder();
   }
 
-  /**
-   * Builder class that creates instances of {@code PurchasePrice}.
-   *
-   * @author Edgar Rico (edgar.martinez.rico@gmail.com)
-   */
+  /** Builder class that creates instances of {@link ProductPurchasePrice}. */
   public static class Builder {
 
     private ProductOrganization product;
@@ -42,15 +38,15 @@ public class PurchasePrice extends ProductPrice {
     }
 
     /**
-     * Creates a new instance of {@code PurchasePrice}.
+     * Creates a new instance of {@link ProductPurchasePrice}.
      *
      * @return - new instance
      */
-    public PurchasePrice build() {
-      PurchasePrice purchasePrice = new PurchasePrice();
-      purchasePrice.setProduct(product);
-      purchasePrice.setPrice(price);
-      return purchasePrice;
+    public ProductPurchasePrice build() {
+      ProductPurchasePrice productPurchasePrice = new ProductPurchasePrice();
+      productPurchasePrice.setProduct(product);
+      productPurchasePrice.setPrice(price);
+      return productPurchasePrice;
     }
   }
 }

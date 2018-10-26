@@ -1,5 +1,9 @@
 package com.openairmarket.pos.persistence.model.price;
 
-public class SalePriceList {
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
-}
+/** Sale price list is a further refinement of the {@link PriceList}. */
+@Entity
+@DiscriminatorValue("SALE")
+public class SalePriceList extends PriceList {}

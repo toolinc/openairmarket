@@ -4,18 +4,36 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="OpenAirMarket_PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <!-- main -->
     <class>com.openairmarket.common.persistence.model.security.SystemUser</class>
     <class>com.openairmarket.common.persistence.model.audit.Auditable</class>
     <class>com.openairmarket.common.persistence.model.audit.tenant.TenantAudit</class>
     <class>com.openairmarket.common.persistence.model.tenant.Tenant</class>
+    <!-- business -->
+    <class>com.openairmarket.pos.persistence.model.audit.business.OrganizationAudit</class>
     <class>com.openairmarket.pos.persistence.model.business.Organization</class>
     <class>com.openairmarket.pos.persistence.model.business.RuleOrganization</class>
     <class>com.openairmarket.pos.persistence.model.business.TaxCategory</class>
+    <!-- location -->
+    <class>com.openairmarket.pos.persistence.model.location.Currency</class>
+    <!-- price -->
+    <class>com.openairmarket.pos.persistence.model.price.PriceList</class>
+    <class>com.openairmarket.pos.persistence.model.price.PriceListVersion</class>
+    <class>com.openairmarket.pos.persistence.model.price.PriceSchema</class>
+    <class>com.openairmarket.pos.persistence.model.price.PriceSchemaDetail</class>
+    <class>com.openairmarket.pos.persistence.model.price.PurchasePriceList</class>
+    <class>com.openairmarket.pos.persistence.model.price.PurchasePriceListVersion</class>
+    <class>com.openairmarket.pos.persistence.model.price.SalePriceList</class>
+    <class>com.openairmarket.pos.persistence.model.price.SalePriceListVersion</class>
+    <!-- product -->
     <class>com.openairmarket.pos.persistence.model.product.Product</class>
     <class>com.openairmarket.pos.persistence.model.product.ProductCategory</class>
     <class>com.openairmarket.pos.persistence.model.product.ProductManufacturer</class>
     <class>com.openairmarket.pos.persistence.model.product.ProductMeasureUnit</class>
     <class>com.openairmarket.pos.persistence.model.product.ProductOrganization</class>
+    <class>com.openairmarket.pos.persistence.model.product.ProductPrice</class>
+    <class>com.openairmarket.pos.persistence.model.product.ProductPurchasePrice</class>
+    <class>com.openairmarket.pos.persistence.model.product.ProductSalePrice</class>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
       <property name="eclipselink.target-database"
