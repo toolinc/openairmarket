@@ -9,8 +9,8 @@ import org.eclipse.persistence.annotations.MultitenantType;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 /**
- * Specifies the behavior of all {@code AbstractSimpleCatalogModel} that requires to be {@code
- * Tenant} aware.
+ * Specifies the behavior of all {@link AbstractActiveReferenceModel} that requires to be {@link
+ * com.openairmarket.common.persistence.model.tenant.Tenant} aware.
  *
  * @param <T> specifies the {@link Class} of the id for the {@link javax.persistence.Entity}.
  */
