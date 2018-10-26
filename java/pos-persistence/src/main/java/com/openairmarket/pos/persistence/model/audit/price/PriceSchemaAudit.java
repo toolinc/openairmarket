@@ -1,21 +1,21 @@
-package com.openairmarket.pos.persistence.model.price;
+package com.openairmarket.pos.persistence.model.audit.price;
 
 import com.google.common.base.Preconditions;
-import com.openairmarket.common.persistence.listener.Audit;
-import com.openairmarket.common.persistence.listener.AuditListener;
-import com.openairmarket.common.persistence.model.AbstractActiveReferenceTenantModel;
-import com.openairmarket.pos.persistence.model.audit.price.PriceSchemaAudit;
+import com.google.common.base.Strings;
+import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveReferenceTenantModel;
+import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.pos.persistence.model.business.Organization;
+import com.openairmarket.pos.persistence.model.price.DiscountType;
+import com.openairmarket.pos.persistence.model.price.PriceSchema;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,28 +23,28 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import org.eclipse.persistence.annotations.UuidGenerator;
 
-/**
- * The price schema is the overall system of pricing for your organization and can specify discounts
- * for products, product categories and business partners. It calculates the trade discount
- * percentage.
- */
-@EntityListeners(AuditListener.class)
-@Audit(builderClass = PriceSchemaAudit.Builder.class)
+/** Define the revision for the {@link PriceSchema} entities. */
 @Entity
 @Table(
-    name = "priceSchema",
+    name = "priceSchemaAudit",
     uniqueConstraints = {
       @UniqueConstraint(
-          name = "priceSchemaPK",
-          columnNames = {"idTenant", "idReference"})
+          name = "priceSchemaAuditUK",
+          columnNames = {"idPriceSchema", "createDate"})
     })
-public final class PriceSchema extends AbstractActiveReferenceTenantModel<Long> {
+@UuidGenerator(name = "priceSchemaAudit_gen")
+public final class PriceSchemaAudit extends AbstractAuditActiveReferenceTenantModel {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "idPriceSchema")
-  private Long id;
+  @Column(name = "idPriceSchemaAudit")
+  @GeneratedValue(generator = "priceSchemaAudit_gen")
+  private String id;
+
+  @JoinColumn(name = "idPriceSchema", referencedColumnName = "idPriceSchema", nullable = false)
+  @ManyToOne(cascade = CascadeType.REFRESH)
+  private PriceSchema priceSchema;
 
   @JoinColumn(name = "idOrganization", referencedColumnName = "idOrganization", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
@@ -71,13 +71,22 @@ public final class PriceSchema extends AbstractActiveReferenceTenantModel<Long> 
   private String discountFormula;
 
   @Override
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
   @Override
-  public void setId(Long id) {
-    this.id = checkPositive(id);
+  public void setId(String id) {
+    Preconditions.checkState(!Strings.isNullOrEmpty(id));
+    this.id = id;
+  }
+
+  public PriceSchema getPriceSchema() {
+    return priceSchema;
+  }
+
+  public void setPriceSchema(PriceSchema priceSchema) {
+    this.priceSchema = Preconditions.checkNotNull(priceSchema);
   }
 
   public Organization getOrganization() {
@@ -134,5 +143,30 @@ public final class PriceSchema extends AbstractActiveReferenceTenantModel<Long> 
 
   public void setDiscountFormula(String discountFormula) {
     this.discountFormula = discountFormula;
+  }
+
+  /** Factory class for the {@link PriceSchemaAudit} entities. */
+  public static final class Builder
+      extends AuditActiveModel.Builder<PriceSchema, PriceSchemaAudit> {
+
+    /**
+     * Create an instance of {@link PriceSchemaAudit}.
+     *
+     * @param priceSchema the instance that will be used to create a new {@link PriceSchema}.
+     * @return a new instance
+     */
+    @Override
+    public PriceSchemaAudit build(PriceSchema priceSchema) {
+      PriceSchemaAudit priceSchemaAudit = new PriceSchemaAudit();
+      priceSchemaAudit.setPriceSchema(priceSchema);
+      priceSchemaAudit.setOrganization(priceSchema.getOrganization());
+      priceSchemaAudit.setDescription(priceSchema.getDescription());
+      priceSchemaAudit.setValidFrom(priceSchema.getValidFrom());
+      priceSchemaAudit.setQuantityBased(priceSchema.getQuantityBased());
+      priceSchemaAudit.setDiscountType(priceSchema.getDiscountType());
+      priceSchemaAudit.setFlatDiscount(priceSchema.getFlatDiscount());
+      priceSchemaAudit.setDiscountFormula(priceSchema.getDiscountFormula());
+      return priceSchemaAudit;
+    }
   }
 }

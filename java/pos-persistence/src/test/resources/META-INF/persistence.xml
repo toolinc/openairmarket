@@ -21,6 +21,7 @@
     <class>com.openairmarket.pos.persistence.model.price.PriceList</class>
     <class>com.openairmarket.pos.persistence.model.price.PriceListVersion</class>
     <class>com.openairmarket.pos.persistence.model.price.PriceSchema</class>
+    <class>com.openairmarket.pos.persistence.model.audit.price.PriceSchemaAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.PriceSchemaDetail</class>
     <class>com.openairmarket.pos.persistence.model.price.PurchasePriceList</class>
     <class>com.openairmarket.pos.persistence.model.price.PurchasePriceListVersion</class>
