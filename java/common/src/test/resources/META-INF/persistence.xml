@@ -4,10 +4,11 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="OpenAirMarket_PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>com.openairmarket.common.persistence.model.security.SystemUser</class>
     <class>com.openairmarket.common.persistence.model.audit.Auditable</class>
-    <class>com.openairmarket.common.persistence.model.audit.tenant.TenantAudit</class>
+    <class>com.openairmarket.common.persistence.model.location.Currency</class>
+    <class>com.openairmarket.common.persistence.model.security.SystemUser</class>
     <class>com.openairmarket.common.persistence.model.tenant.Tenant</class>
+    <class>com.openairmarket.common.persistence.model.audit.tenant.TenantAudit</class>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
       <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.H2Platform"/>

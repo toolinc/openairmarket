@@ -2,8 +2,8 @@ package com.openairmarket.pos.persistence.model.price;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.persistence.model.AbstractActiveReferenceTenantModel;
+import com.openairmarket.common.persistence.model.location.Currency;
 import com.openairmarket.pos.persistence.model.business.Organization;
-import com.openairmarket.pos.persistence.model.location.Currency;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;

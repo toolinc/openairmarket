@@ -5,10 +5,11 @@
   <persistence-unit name="OpenAirMarket_PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <!-- main -->
-    <class>com.openairmarket.common.persistence.model.security.SystemUser</class>
     <class>com.openairmarket.common.persistence.model.audit.Auditable</class>
-    <class>com.openairmarket.common.persistence.model.audit.tenant.TenantAudit</class>
+    <class>com.openairmarket.common.persistence.model.location.Currency</class>
+    <class>com.openairmarket.common.persistence.model.security.SystemUser</class>
     <class>com.openairmarket.common.persistence.model.tenant.Tenant</class>
+    <class>com.openairmarket.common.persistence.model.audit.tenant.TenantAudit</class>
     <!-- business -->
     <class>com.openairmarket.pos.persistence.model.audit.business.OrganizationAudit</class>
     <class>com.openairmarket.pos.persistence.model.business.Organization</class>
@@ -16,8 +17,6 @@
     <class>com.openairmarket.pos.persistence.model.audit.business.TaxCategoryAudit</class>
     <class>com.openairmarket.pos.persistence.model.business.RuleOrganization</class>
     <class>com.openairmarket.pos.persistence.model.business.TaxCategory</class>
-    <!-- location -->
-    <class>com.openairmarket.pos.persistence.model.location.Currency</class>
     <!-- price -->
     <class>com.openairmarket.pos.persistence.model.price.PriceList</class>
     <class>com.openairmarket.pos.persistence.model.price.PriceListVersion</class>

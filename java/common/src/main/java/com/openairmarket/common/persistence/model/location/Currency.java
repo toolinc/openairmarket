@@ -1,4 +1,4 @@
-package com.openairmarket.pos.persistence.model.location;
+package com.openairmarket.common.persistence.model.location;
 
 import com.openairmarket.common.persistence.model.AbstractModel;
 import javax.persistence.Column;
