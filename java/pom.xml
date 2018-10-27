@@ -35,7 +35,7 @@
     <jsr305.version>3.0.2</jsr305.version>
     <!-- persistence -->
     <c3p0.version>0.9.1.2</c3p0.version>
-    <persistence.version>2.1.1</persistence.version>
+    <persistence.version>2.2</persistence.version>
     <eclipse-link.version>2.7.3</eclipse-link.version>
     <guice.persist.version>4.1.0</guice.persist.version>
     <h2.version>1.4.197</h2.version>
@@ -124,20 +124,14 @@
         <version>${netty.tcnative.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.eclipse.persistence</groupId>
-        <artifactId>javax.persistence</artifactId>
+        <groupId>javax.persistence</groupId>
+        <artifactId>javax.persistence-api</artifactId>
         <version>${persistence.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.persistence</groupId>
         <artifactId>eclipselink</artifactId>
         <version>${eclipse-link.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>javax.persistence</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.google.inject.extensions</groupId>
