@@ -27,9 +27,13 @@
     <class>com.openairmarket.pos.persistence.model.price.PriceListSchemaDetail</class>
     <class>com.openairmarket.pos.persistence.model.audit.price.PriceListSchemaDetailAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.PurchasePriceList</class>
+    <class>com.openairmarket.pos.persistence.model.audit.price.PurchasePriceListAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.PurchasePriceListVersion</class>
+    <class>com.openairmarket.pos.persistence.model.audit.price.PurchasePriceListVersionAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.SalePriceList</class>
+    <class>com.openairmarket.pos.persistence.model.audit.price.SalePriceListAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.SalePriceListVersion</class>
+    <class>com.openairmarket.pos.persistence.model.audit.price.SalePriceListVersionAudit</class>
     <!-- product -->
     <class>com.openairmarket.pos.persistence.model.product.Product</class>
     <class>com.openairmarket.pos.persistence.model.product.ProductCategory</class>
