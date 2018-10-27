@@ -2,6 +2,7 @@ package com.openairmarket.common.persistence.model.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.listener.Audit;
 import com.openairmarket.common.persistence.listener.AuditListener;
 import com.openairmarket.common.persistence.model.AbstractCatalogModel;
@@ -32,7 +33,7 @@ import javax.persistence.UniqueConstraint;
           name = "tenantUK",
           columnNames = {"name"})
     })
-public class Tenant extends AbstractCatalogModel<Integer> {
+public final class Tenant extends AbstractCatalogModel<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "idTenant")
@@ -67,7 +68,7 @@ public class Tenant extends AbstractCatalogModel<Integer> {
   }
 
   /**
-   * Creates a new {@code Builder} instance.
+   * Creates a new {@link Tenant.Buider} instance.
    *
    * @return - new instance
    */
@@ -75,8 +76,8 @@ public class Tenant extends AbstractCatalogModel<Integer> {
     return new Buider();
   }
 
-  /** Builder class that creates instances of {@code Tenant}. */
-  public static class Buider {
+  /** Builder class that creates instances of {@link Tenant}. */
+  public static final class Buider implements Domain {
 
     private String referenceId;
     private String name;
@@ -93,7 +94,7 @@ public class Tenant extends AbstractCatalogModel<Integer> {
     }
 
     /**
-     * Creates a new instance of {@code Tenant}.
+     * Creates a new instance of {@link Tenant}.
      *
      * @return - new instance
      */
