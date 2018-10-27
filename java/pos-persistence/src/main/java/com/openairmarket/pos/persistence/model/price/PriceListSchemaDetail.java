@@ -27,22 +27,25 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(
-    name = "priceSchemaDetail",
+    name = "priceListSchemaDetail",
     uniqueConstraints = {
       @UniqueConstraint(
-          name = "priceSchemaDetailPK",
-          columnNames = {"idTenant", "idPriceSchema", "idReference"})
+          name = "priceListSchemaDetailPK",
+          columnNames = {"idTenant", "idPriceListSchema", "idReference"})
     })
 public final class PriceSchemaDetail extends AbstractActiveReferenceTenantModel<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "idPriceSchemaDetail")
+  @Column(name = "idPriceListSchemaDetail")
   private Long id;
 
-  @JoinColumn(name = "idPriceSchema", referencedColumnName = "idPriceSchema", nullable = false)
+  @JoinColumn(
+      name = "idPriceListSchema",
+      referencedColumnName = "idPriceListSchema",
+      nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
-  private PriceSchema priceSchema;
+  private PriceListSchema priceListSchema;
 
   // @JoinColumn(name = "idBusinessPartner", referencedColumnName = "idBusinessPartner")
   // @ManyToOne(fetch = FetchType.LAZY)
@@ -140,12 +143,12 @@ public final class PriceSchemaDetail extends AbstractActiveReferenceTenantModel<
     this.id = checkPositive(id);
   }
 
-  public PriceSchema getPriceSchema() {
-    return priceSchema;
+  public PriceListSchema getPriceListSchema() {
+    return priceListSchema;
   }
 
-  public void setPriceSchema(PriceSchema priceSchema) {
-    this.priceSchema = priceSchema;
+  public void setPriceListSchema(PriceListSchema priceListSchema) {
+    this.priceListSchema = priceListSchema;
   }
 
   /*

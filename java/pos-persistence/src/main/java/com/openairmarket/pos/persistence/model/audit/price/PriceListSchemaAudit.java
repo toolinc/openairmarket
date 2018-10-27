@@ -6,7 +6,7 @@ import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveRefer
 import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.pos.persistence.model.business.Organization;
 import com.openairmarket.pos.persistence.model.price.DiscountType;
-import com.openairmarket.pos.persistence.model.price.PriceSchema;
+import com.openairmarket.pos.persistence.model.price.PriceListSchema;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import org.eclipse.persistence.annotations.UuidGenerator;
 
-/** Define the revision for the {@link PriceSchema} entities. */
+/** Define the revision for the {@link PriceListSchema} entities. */
 @Entity
 @Table(
     name = "priceSchemaAudit",
@@ -44,7 +44,7 @@ public final class PriceSchemaAudit extends AbstractAuditActiveReferenceTenantMo
 
   @JoinColumn(name = "idPriceSchema", referencedColumnName = "idPriceSchema", nullable = false)
   @ManyToOne(cascade = CascadeType.REFRESH)
-  private PriceSchema priceSchema;
+  private PriceListSchema priceListSchema;
 
   @JoinColumn(name = "idOrganization", referencedColumnName = "idOrganization", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
@@ -81,12 +81,12 @@ public final class PriceSchemaAudit extends AbstractAuditActiveReferenceTenantMo
     this.id = id;
   }
 
-  public PriceSchema getPriceSchema() {
-    return priceSchema;
+  public PriceListSchema getPriceListSchema() {
+    return priceListSchema;
   }
 
-  public void setPriceSchema(PriceSchema priceSchema) {
-    this.priceSchema = Preconditions.checkNotNull(priceSchema);
+  public void setPriceListSchema(PriceListSchema priceListSchema) {
+    this.priceListSchema = Preconditions.checkNotNull(priceListSchema);
   }
 
   public Organization getOrganization() {
@@ -147,25 +147,25 @@ public final class PriceSchemaAudit extends AbstractAuditActiveReferenceTenantMo
 
   /** Factory class for the {@link PriceSchemaAudit} entities. */
   public static final class Builder
-      extends AuditActiveModel.Builder<PriceSchema, PriceSchemaAudit> {
+      extends AuditActiveModel.Builder<PriceListSchema, PriceSchemaAudit> {
 
     /**
      * Create an instance of {@link PriceSchemaAudit}.
      *
-     * @param priceSchema the instance that will be used to create a new {@link PriceSchema}.
+     * @param priceListSchema the instance that will be used to create a new {@link PriceListSchema}.
      * @return a new instance
      */
     @Override
-    public PriceSchemaAudit build(PriceSchema priceSchema) {
+    public PriceSchemaAudit build(PriceListSchema priceListSchema) {
       PriceSchemaAudit priceSchemaAudit = new PriceSchemaAudit();
-      priceSchemaAudit.setPriceSchema(priceSchema);
-      priceSchemaAudit.setOrganization(priceSchema.getOrganization());
-      priceSchemaAudit.setDescription(priceSchema.getDescription());
-      priceSchemaAudit.setValidFrom(priceSchema.getValidFrom());
-      priceSchemaAudit.setQuantityBased(priceSchema.getQuantityBased());
-      priceSchemaAudit.setDiscountType(priceSchema.getDiscountType());
-      priceSchemaAudit.setFlatDiscount(priceSchema.getFlatDiscount());
-      priceSchemaAudit.setDiscountFormula(priceSchema.getDiscountFormula());
+      priceSchemaAudit.setPriceListSchema(priceListSchema);
+      priceSchemaAudit.setOrganization(priceListSchema.getOrganization());
+      priceSchemaAudit.setDescription(priceListSchema.getDescription());
+      priceSchemaAudit.setValidFrom(priceListSchema.getValidFrom());
+      priceSchemaAudit.setQuantityBased(priceListSchema.getQuantityBased());
+      priceSchemaAudit.setDiscountType(priceListSchema.getDiscountType());
+      priceSchemaAudit.setFlatDiscount(priceListSchema.getFlatDiscount());
+      priceSchemaAudit.setDiscountFormula(priceListSchema.getDiscountFormula());
       return priceSchemaAudit;
     }
   }

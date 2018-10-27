@@ -1,7 +1,5 @@
 package com.openairmarket.common.persistence.model;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.openairmarket.common.model.Model;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -52,59 +50,5 @@ public abstract class AbstractModel<T extends Serializable> implements Model<T> 
     }
     AbstractModel other = (AbstractModel) obj;
     return getId().equals(other.getId());
-  }
-
-  /**
-   * Ensures that an object reference passed as a parameter to the calling method is not null, as
-   * well as is not negative.
-   *
-   * @param <E> a Number
-   * @param value an object reference
-   * @return the reference that was validated
-   */
-  public static <E extends Number> E checkPositive(E value) {
-    Preconditions.checkNotNull(value);
-    Preconditions.checkState(value.doubleValue() > 0.0);
-    return value;
-  }
-
-  /**
-   * Ensures that an object reference passed as a parameter to the calling method is not null, as
-   * well as is not empty.
-   *
-   * @param value an object reference
-   * @return the reference that was validated
-   */
-  public static String checkNotEmpty(String value) {
-    Preconditions.checkState(!Strings.isNullOrEmpty(value));
-    return value.trim().toUpperCase();
-  }
-
-  /**
-   * Ensures that an object reference passed as a parameter to the calling method is nillable, as
-   * well as is not empty.
-   *
-   * @param value an object reference
-   * @return the reference that was validated
-   */
-  public static String checkNillable(String value) {
-    if (!Strings.isNullOrEmpty(value)) {
-      return checkNotEmpty(value);
-    }
-    return value;
-  }
-
-  /**
-   * Ensures that an object reference passed as a parameter to the calling method is nillable, as
-   * well as is not negative.
-   *
-   * @param value an object reference
-   * @return the reference that was validated
-   */
-  public static <E extends Number> E checkNillablePositive(E value) {
-    if (value != null) {
-      return checkPositive(value);
-    }
-    return value;
   }
 }
