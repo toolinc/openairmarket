@@ -2,6 +2,7 @@ package com.openairmarket.pos.persistence.model.audit.price;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveReferenceTenantModel;
+import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.common.persistence.model.location.Currency;
 import com.openairmarket.pos.persistence.model.business.Organization;
 import com.openairmarket.pos.persistence.model.price.PriceList;
@@ -117,5 +118,20 @@ public abstract class PriceListAudit extends AbstractAuditActiveReferenceTenantM
 
   public void setTaxIncluded(Boolean taxIncluded) {
     this.taxIncluded = Preconditions.checkNotNull(taxIncluded);
+  }
+
+  /** Factory class for the {@link PriceListAudit} entities. */
+  public abstract static class Builder<E extends PriceList, A extends PriceListAudit>
+      extends AuditActiveModel.Builder<E, A> {
+
+    /** Populates the {@link PriceListAudit} from {@link PriceList}. */
+    void build(E priceList, A priceListAudit) {
+      priceListAudit.setPriceList(priceList);
+      priceListAudit.setOrganization(priceList.getOrganization());
+      priceListAudit.setDescription(priceList.getDescription());
+      priceListAudit.setCurrency(priceList.getCurrency());
+      priceListAudit.setDefaulted(priceList.getDefaulted());
+      priceListAudit.setTaxIncluded(priceList.getTaxIncluded());
+    }
   }
 }
