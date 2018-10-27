@@ -2,6 +2,7 @@ package com.openairmarket.pos.persistence.model.audit.price;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveReferenceTenantModel;
+import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.pos.persistence.model.price.PriceListSchema;
 import com.openairmarket.pos.persistence.model.price.PriceListVersion;
 import java.util.Date;
@@ -114,5 +115,19 @@ public abstract class PriceListVersionAudit extends AbstractAuditActiveReference
 
   public void setDescription(String description) {
     this.description = checkNotEmpty(description);
+  }
+
+  /** Factory class for the {@link PriceListVersionAudit} entities. */
+  public abstract static class Builder<E extends PriceListVersion, A extends PriceListVersionAudit>
+      extends AuditActiveModel.Builder<E, A> {
+
+    /** Populates the {@link PriceListVersionAudit} from {@link PriceListVersion}. */
+    void build(E priceListVersion, A priceListVersionAudit) {
+      priceListVersionAudit.setPriceListVersion(priceListVersion);
+      priceListVersionAudit.setPriceListSchema(priceListVersion.getPriceListSchema());
+      priceListVersionAudit.setSeqNo(priceListVersion.getSeqNo());
+      priceListVersionAudit.setValidFrom(priceListVersion.getValidFrom());
+      priceListVersionAudit.setDescription(priceListVersion.getDescription());
+    }
   }
 }
