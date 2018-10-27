@@ -19,7 +19,9 @@
     <class>com.openairmarket.pos.persistence.model.business.TaxCategory</class>
     <!-- price -->
     <class>com.openairmarket.pos.persistence.model.price.PriceList</class>
+    <class>com.openairmarket.pos.persistence.model.audit.price.PriceListAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.PriceListVersion</class>
+    <class>com.openairmarket.pos.persistence.model.audit.price.PriceListVersionAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.PriceListSchema</class>
     <class>com.openairmarket.pos.persistence.model.audit.price.PriceListSchemaAudit</class>
     <class>com.openairmarket.pos.persistence.model.price.PriceListSchemaDetail</class>
