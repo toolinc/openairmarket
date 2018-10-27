@@ -24,21 +24,13 @@ public final class AuditListener {
   @Inject private static Provider<EntityManager> entityManagerProvider;
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  /**
-   * Creates a revision entity with the {@code AuditType.CREATE}.
-   *
-   * @param entity - the instance that will be used to create the revision.
-   */
+  /** Creates a revision entity with the {@link AuditType#CREATE}. */
   @PrePersist
   public void prePersist(AbstractActiveModel entity) {
     createAuditModel(entity, AuditType.CREATE);
   }
 
-  /**
-   * Creates a revision entity with the {@code AuditType.UPDATE}.
-   *
-   * @param entity - the instance that will be used to create the revision.
-   */
+  /** Creates a revision entity with the {@link AuditType#UPDATE}. */
   @PreUpdate
   public void preUpdate(AbstractActiveModel entity) {
     AuditType auditType = AuditType.UPDATE;
@@ -48,31 +40,27 @@ public final class AuditListener {
     createAuditModel(entity, auditType);
   }
 
-  /**
-   * Creates a revision entity with the {@code AuditType.DELETE}.
-   *
-   * @param entity - the instance that will be used to create the revision.
-   */
+  /** Creates a revision entity with the {@link AuditType#DELETE}. */
   @PreRemove
   public void preRemove(AbstractActiveModel entity) {
     createAuditModel(entity, AuditType.DELETE);
   }
 
   @SuppressWarnings("rawtypes")
-  private void createAuditModel(AbstractActiveModel entity, AuditType auditType) {
-    AuditActiveModel.Builder builder = createAuditModelBuilder(entity);
+  private void createAuditModel(AbstractActiveModel abstractActiveModel, AuditType auditType) {
+    AuditActiveModel.Builder builder = createAuditModelBuilder(abstractActiveModel);
     Auditable auditable = new Auditable();
     auditable.setCreatedDate(new GregorianCalendar().getTime());
     auditable.setAuditType(auditType);
     auditable.setUser(ThreadLocalSystemUserHolder.getCurrentSystemUser());
-    AbstractAuditActiveModel auditModel = builder.build(entity);
+    AbstractAuditActiveModel auditModel = builder.build(abstractActiveModel);
     auditModel.setAuditable(auditable);
     entityManagerProvider.get().persist(auditModel);
   }
 
-  private AuditActiveModel.Builder createAuditModelBuilder(AbstractModel entity) {
+  private AuditActiveModel.Builder createAuditModelBuilder(AbstractModel abstractModel) {
     try {
-      Audit audit = entity.getClass().getAnnotation(Audit.class);
+      Audit audit = abstractModel.getClass().getAnnotation(Audit.class);
       Class<? extends AuditActiveModel.Builder> auditBuilderClass = audit.builderClass();
       return auditBuilderClass.newInstance();
     } catch (InstantiationException | IllegalAccessException ex) {
