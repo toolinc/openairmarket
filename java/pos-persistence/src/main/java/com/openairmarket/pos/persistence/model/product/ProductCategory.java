@@ -2,6 +2,7 @@ package com.openairmarket.pos.persistence.model.product;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.model.AbstractCatalogTenantModel;
 import com.openairmarket.pos.persistence.model.business.Organization;
 import javax.persistence.Column;
@@ -29,7 +30,7 @@ import javax.persistence.UniqueConstraint;
           name = "productCategoryUK",
           columnNames = {"idTenant", "name"})
     })
-public class ProductCategory extends AbstractCatalogTenantModel<Long> {
+public final class ProductCategory extends AbstractCatalogTenantModel<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,29 +64,29 @@ public class ProductCategory extends AbstractCatalogTenantModel<Long> {
    *
    * @return - new instance
    */
-  public static ProductCategory.Buider newBuilder() {
-    return new ProductCategory.Buider();
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
   /** Builder class that creates instances of {@link ProductCategory}. */
-  public static class Buider {
+  public static final class Builder implements Domain {
 
     private String referenceId;
     private String name;
     private Organization organization;
 
-    public Buider setReferenceId(String referenceId) {
+    public Builder setReferenceId(String referenceId) {
       Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
       this.referenceId = referenceId;
       return this;
     }
 
-    public Buider setName(String name) {
+    public Builder setName(String name) {
       this.name = checkNotEmpty(name);
       return this;
     }
 
-    public Buider setOrganization(Organization organization) {
+    public Builder setOrganization(Organization organization) {
       this.organization = Preconditions.checkNotNull(organization);
       return this;
     }

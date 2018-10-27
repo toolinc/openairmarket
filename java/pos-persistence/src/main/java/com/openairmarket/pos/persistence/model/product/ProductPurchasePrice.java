@@ -1,6 +1,7 @@
 package com.openairmarket.pos.persistence.model.product;
 
 import com.google.common.base.Preconditions;
+import com.openairmarket.common.model.Domain;
 import java.math.BigDecimal;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ public final class ProductPurchasePrice extends ProductPrice {
   }
 
   /** Builder class that creates instances of {@link ProductPurchasePrice}. */
-  public static class Builder {
+  public static final class Builder implements Domain {
 
     private ProductOrganization product;
     private BigDecimal price;

@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.openairmarket.common.persistence.listener.Audit;
 import com.openairmarket.common.persistence.listener.AuditListener;
 import com.openairmarket.common.persistence.model.AbstractActiveReferenceTenantModel;
-import com.openairmarket.pos.persistence.model.audit.price.PriceSchemaAudit;
+import com.openairmarket.pos.persistence.model.audit.price.PriceListSchemaAudit;
 import com.openairmarket.pos.persistence.model.business.Organization;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,20 +30,20 @@ import javax.persistence.UniqueConstraint;
  * percentage.
  */
 @EntityListeners(AuditListener.class)
-@Audit(builderClass = PriceSchemaAudit.Builder.class)
+@Audit(builderClass = PriceListSchemaAudit.Builder.class)
 @Entity
 @Table(
-    name = "priceSchema",
+    name = "priceListSchema",
     uniqueConstraints = {
       @UniqueConstraint(
-          name = "priceSchemaPK",
+          name = "priceListSchemaPK",
           columnNames = {"idTenant", "idReference"})
     })
-public final class PriceSchema extends AbstractActiveReferenceTenantModel<Long> {
+public final class PriceListSchema extends AbstractActiveReferenceTenantModel<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "idPriceSchema")
+  @Column(name = "idPriceListSchema")
   private Long id;
 
   @JoinColumn(name = "idOrganization", referencedColumnName = "idOrganization", nullable = false)

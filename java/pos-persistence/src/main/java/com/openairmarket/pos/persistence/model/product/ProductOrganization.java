@@ -2,6 +2,7 @@ package com.openairmarket.pos.persistence.model.product;
 
 /** Defines the {@code Product}s that a {@link Organization} can have. */
 import com.google.common.base.Preconditions;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.model.AbstractTenantModel;
 import com.openairmarket.pos.persistence.model.business.Organization;
 import com.openairmarket.pos.persistence.model.business.TaxCategory;
@@ -30,7 +31,7 @@ import javax.persistence.UniqueConstraint;
           name = "productOrganizationUK",
           columnNames = {"idTenant", "idOrganization", "upc"})
     })
-public class ProductOrganization extends AbstractTenantModel<Long> {
+public final class ProductOrganization extends AbstractTenantModel<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,12 +119,8 @@ public class ProductOrganization extends AbstractTenantModel<Long> {
     return new ProductOrganization.Builder();
   }
 
-  /**
-   * Builder class that creates instances of {@link ProductOrganization}.
-   *
-   * @author Edgar Rico (edgar.martinez.rico@gmail.com)
-   */
-  public static class Builder {
+  /** Builder class that creates instances of {@link ProductOrganization}. */
+  public static class Builder implements Domain {
 
     private Organization organization;
     private Product product;
@@ -157,7 +154,7 @@ public class ProductOrganization extends AbstractTenantModel<Long> {
     }
 
     /**
-     * Creates a new instance of {@code ProductOrganization}.
+     * Creates a new instance of {@link ProductOrganization}.
      *
      * @return - new instance
      */

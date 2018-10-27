@@ -2,6 +2,7 @@ package com.openairmarket.pos.persistence.model.product;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.model.AbstractCatalogTenantModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ import javax.persistence.UniqueConstraint;
           name = "productManufacturerUK",
           columnNames = {"idTenant", "name"})
     })
-public class ProductManufacturer extends AbstractCatalogTenantModel<Long> {
+public final class ProductManufacturer extends AbstractCatalogTenantModel<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,27 +44,27 @@ public class ProductManufacturer extends AbstractCatalogTenantModel<Long> {
   }
 
   /**
-   * Creates a new {@link ProductManufacturer.Buider} instance.
+   * Creates a new {@link Builder} instance.
    *
    * @return - new instance
    */
-  public static ProductManufacturer.Buider newBuilder() {
-    return new ProductManufacturer.Buider();
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
   /** Builder class that creates instances of {@link ProductManufacturer}. */
-  public static class Buider {
+  public static final class Builder implements Domain {
 
     private String referenceId;
     private String name;
 
-    public Buider setReferenceId(String referenceId) {
+    public Builder setReferenceId(String referenceId) {
       Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
       this.referenceId = referenceId;
       return this;
     }
 
-    public Buider setName(String name) {
+    public Builder setName(String name) {
       this.name = checkNotEmpty(name);
       return this;
     }

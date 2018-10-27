@@ -2,6 +2,7 @@ package com.openairmarket.pos.persistence.model.product;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.model.AbstractCatalogTenantModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ import javax.persistence.UniqueConstraint;
           name = "productMeasureUnitUK",
           columnNames = {"idTenant", "name"})
     })
-public class ProductMeasureUnit extends AbstractCatalogTenantModel<Long> {
+public final class ProductMeasureUnit extends AbstractCatalogTenantModel<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,39 +66,39 @@ public class ProductMeasureUnit extends AbstractCatalogTenantModel<Long> {
   }
 
   /**
-   * Creates a new {@link ProductMeasureUnit.Buider} instance.
+   * Creates a new {@link Builder} instance.
    *
    * @return - new instance
    */
-  public static ProductMeasureUnit.Buider newBuilder() {
-    return new ProductMeasureUnit.Buider();
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
   /** Builder class that creates instances of {@link ProductMeasureUnit}. */
-  public static class Buider {
+  public static final class Builder implements Domain {
 
     private String referenceId;
     private String name;
     private Boolean countable;
     private Boolean expire;
 
-    public ProductMeasureUnit.Buider setReferenceId(String referenceId) {
+    public Builder setReferenceId(String referenceId) {
       Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
       this.referenceId = referenceId;
       return this;
     }
 
-    public ProductMeasureUnit.Buider setName(String name) {
+    public Builder setName(String name) {
       this.name = checkNotEmpty(name);
       return this;
     }
 
-    public ProductMeasureUnit.Buider setCountable(Boolean countable) {
+    public Builder setCountable(Boolean countable) {
       this.countable = Preconditions.checkNotNull(countable);
       return this;
     }
 
-    public ProductMeasureUnit.Buider setExpire(Boolean expire) {
+    public Builder setExpire(Boolean expire) {
       this.expire = Preconditions.checkNotNull(expire);
       return this;
     }

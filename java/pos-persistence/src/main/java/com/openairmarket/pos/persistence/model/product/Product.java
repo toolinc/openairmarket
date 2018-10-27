@@ -1,6 +1,7 @@
 package com.openairmarket.pos.persistence.model.product;
 
 import com.google.common.base.Preconditions;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.model.AbstractCatalogTenantModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -110,16 +111,16 @@ public class Product extends AbstractCatalogTenantModel<Long> {
   }
 
   /**
-   * Creates a new {@code Builder} instance.
+   * Creates a new {@link Builder} instance.
    *
    * @return - new instance
    */
-  public static Product.Buider newBuilder() {
-    return new Product.Buider();
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
   /** Builder class that creates instances of {@link Product}. */
-  public static class Buider {
+  public static final class Builder implements Domain {
 
     private String referenceId;
     private String name;
@@ -129,37 +130,37 @@ public class Product extends AbstractCatalogTenantModel<Long> {
     private ProductManufacturer productManufacturer;
     private Boolean stocked;
 
-    public Buider setReferenceId(String referenceId) {
+    public Builder setReferenceId(String referenceId) {
       this.referenceId = checkNotEmpty(referenceId);
       return this;
     }
 
-    public Buider setName(String name) {
+    public Builder setName(String name) {
       this.name = checkNotEmpty(name);
       return this;
     }
 
-    public Buider setImage(String image) {
+    public Builder setImage(String image) {
       this.image = image;
       return this;
     }
 
-    public Buider setProductType(ProductType productType) {
+    public Builder setProductType(ProductType productType) {
       this.productType = Preconditions.checkNotNull(productType);
       return this;
     }
 
-    public Buider setProductMeasureUnit(ProductMeasureUnit productMeasureUnit) {
+    public Builder setProductMeasureUnit(ProductMeasureUnit productMeasureUnit) {
       this.productMeasureUnit = Preconditions.checkNotNull(productMeasureUnit);
       return this;
     }
 
-    public Buider setProductManufacturer(ProductManufacturer productManufacturer) {
+    public Builder setProductManufacturer(ProductManufacturer productManufacturer) {
       this.productManufacturer = productManufacturer;
       return this;
     }
 
-    public Buider setStocked(Boolean stocked) {
+    public Builder setStocked(Boolean stocked) {
       this.stocked = Preconditions.checkNotNull(stocked);
       return this;
     }

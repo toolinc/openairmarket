@@ -39,7 +39,7 @@ import javax.persistence.UniqueConstraint;
           columnNames = {"idTenant", "idReference"}),
       @UniqueConstraint(
           name = "priceListVersionUK",
-          columnNames = {"idTenant", "idPriceSchema", "idPriceList", "seqnsao"})
+          columnNames = {"idTenant", "idPriceList", "idPriceListSchema", "seqNo"})
     })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING, length = 50)
@@ -50,12 +50,15 @@ public abstract class PriceListVersion extends AbstractActiveReferenceTenantMode
   @Column(name = "idPriceListVersion")
   private Long id;
 
-  @JoinColumn(name = "idPriceSchema", referencedColumnName = "idPriceSchema", nullable = false)
+  @JoinColumn(
+      name = "idPriceListSchema",
+      referencedColumnName = "idPriceListSchema",
+      nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
-  private PriceSchema priceSchema;
+  private PriceListSchema priceListSchema;
 
-  @Column(name = "seqnsao", nullable = false)
-  private Integer seqno;
+  @Column(name = "seqNo", nullable = false)
+  private Integer seqNo;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "validFrom", nullable = false)
@@ -74,20 +77,20 @@ public abstract class PriceListVersion extends AbstractActiveReferenceTenantMode
     this.id = checkPositive(id);
   }
 
-  public PriceSchema getPriceSchema() {
-    return priceSchema;
+  public PriceListSchema getPriceListSchema() {
+    return priceListSchema;
   }
 
-  public void setPriceSchema(PriceSchema priceSchema) {
-    this.priceSchema = Preconditions.checkNotNull(priceSchema);
+  public void setPriceListSchema(PriceListSchema priceListSchema) {
+    this.priceListSchema = Preconditions.checkNotNull(priceListSchema);
   }
 
-  public Integer getSeqno() {
-    return seqno;
+  public Integer getSeqNo() {
+    return seqNo;
   }
 
-  public void setSeqno(Integer seqno) {
-    this.seqno = checkPositive(seqno);
+  public void setSeqNo(Integer seqNo) {
+    this.seqNo = checkPositive(seqNo);
   }
 
   public Date getValidFrom() {

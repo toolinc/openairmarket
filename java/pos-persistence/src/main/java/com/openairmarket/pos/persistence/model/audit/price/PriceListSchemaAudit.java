@@ -28,21 +28,24 @@ import org.eclipse.persistence.annotations.UuidGenerator;
 /** Define the revision for the {@link PriceListSchema} entities. */
 @Entity
 @Table(
-    name = "priceSchemaAudit",
+    name = "priceListSchemaAudit",
     uniqueConstraints = {
       @UniqueConstraint(
-          name = "priceSchemaAuditUK",
-          columnNames = {"idPriceSchema", "createDate"})
+          name = "priceListSchemaAuditUK",
+          columnNames = {"idPriceListSchema", "createDate"})
     })
-@UuidGenerator(name = "priceSchemaAudit_gen")
-public final class PriceSchemaAudit extends AbstractAuditActiveReferenceTenantModel {
+@UuidGenerator(name = "priceListSchemaAudit_gen")
+public final class PriceListSchemaAudit extends AbstractAuditActiveReferenceTenantModel {
 
   @Id
-  @Column(name = "idPriceSchemaAudit")
-  @GeneratedValue(generator = "priceSchemaAudit_gen")
+  @Column(name = "idPriceListSchemaAudit")
+  @GeneratedValue(generator = "priceListSchemaAudit_gen")
   private String id;
 
-  @JoinColumn(name = "idPriceSchema", referencedColumnName = "idPriceSchema", nullable = false)
+  @JoinColumn(
+      name = "idPriceListSchema",
+      referencedColumnName = "idPriceListSchema",
+      nullable = false)
   @ManyToOne(cascade = CascadeType.REFRESH)
   private PriceListSchema priceListSchema;
 
@@ -145,28 +148,29 @@ public final class PriceSchemaAudit extends AbstractAuditActiveReferenceTenantMo
     this.discountFormula = discountFormula;
   }
 
-  /** Factory class for the {@link PriceSchemaAudit} entities. */
+  /** Factory class for the {@link PriceListSchemaAudit} entities. */
   public static final class Builder
-      extends AuditActiveModel.Builder<PriceListSchema, PriceSchemaAudit> {
+      extends AuditActiveModel.Builder<PriceListSchema, PriceListSchemaAudit> {
 
     /**
-     * Create an instance of {@link PriceSchemaAudit}.
+     * Create an instance of {@link PriceListSchemaAudit}.
      *
-     * @param priceListSchema the instance that will be used to create a new {@link PriceListSchema}.
+     * @param priceListSchema the instance that will be used to create a new {@link
+     *     PriceListSchema}.
      * @return a new instance
      */
     @Override
-    public PriceSchemaAudit build(PriceListSchema priceListSchema) {
-      PriceSchemaAudit priceSchemaAudit = new PriceSchemaAudit();
-      priceSchemaAudit.setPriceListSchema(priceListSchema);
-      priceSchemaAudit.setOrganization(priceListSchema.getOrganization());
-      priceSchemaAudit.setDescription(priceListSchema.getDescription());
-      priceSchemaAudit.setValidFrom(priceListSchema.getValidFrom());
-      priceSchemaAudit.setQuantityBased(priceListSchema.getQuantityBased());
-      priceSchemaAudit.setDiscountType(priceListSchema.getDiscountType());
-      priceSchemaAudit.setFlatDiscount(priceListSchema.getFlatDiscount());
-      priceSchemaAudit.setDiscountFormula(priceListSchema.getDiscountFormula());
-      return priceSchemaAudit;
+    public PriceListSchemaAudit build(PriceListSchema priceListSchema) {
+      PriceListSchemaAudit priceListSchemaAudit = new PriceListSchemaAudit();
+      priceListSchemaAudit.setPriceListSchema(priceListSchema);
+      priceListSchemaAudit.setOrganization(priceListSchema.getOrganization());
+      priceListSchemaAudit.setDescription(priceListSchema.getDescription());
+      priceListSchemaAudit.setValidFrom(priceListSchema.getValidFrom());
+      priceListSchemaAudit.setQuantityBased(priceListSchema.getQuantityBased());
+      priceListSchemaAudit.setDiscountType(priceListSchema.getDiscountType());
+      priceListSchemaAudit.setFlatDiscount(priceListSchema.getFlatDiscount());
+      priceListSchemaAudit.setDiscountFormula(priceListSchema.getDiscountFormula());
+      return priceListSchemaAudit;
     }
   }
 }

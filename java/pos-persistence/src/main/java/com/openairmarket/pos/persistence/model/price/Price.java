@@ -10,47 +10,33 @@ import javax.persistence.Enumerated;
 
 /** The Price Base indicates the price to use as the basis for the calculation of a new price. */
 @Embeddable
-public final class ListPrice implements Domain {
+public final class Price implements Domain {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "PriceType", length = 50, nullable = false)
   private PriceType priceType;
 
-  /** Indicates the rounding (if any) will apply to the final prices in this price . */
   @Enumerated(EnumType.STRING)
   @Column(name = "RoundingType", length = 50, nullable = false)
   private RoundingType roundingType;
 
-  /** Indicates the amount to be added to the Limit price prior to multiplication. */
-  @Column(name = "AddAmount", precision = 15, scale = 6)
-  private BigDecimal addAmount;
+  @Column(name = "BasePrice", precision = 15, scale = 6)
+  private BigDecimal basePrice;
 
-  /**
-   * Indicates the discount in percent to be subtracted from base, if negative it will be added to
-   * base price.
-   */
+  @Column(name = "SurchargeAmount", precision = 15, scale = 6)
+  private BigDecimal surchargeAmount;
+
   @Column(name = "DiscountAmount", precision = 15, scale = 6)
   private BigDecimal discountAmount;
 
-  /**
-   * Indicates the minimum margin for a product. The margin is calculated by subtracting the
-   * original limit price from the newly calculated price. If this field contains 0.00 then it is
-   * ignored.
-   */
-  @Column(name = "MinimumAmount", precision = 15, scale = 6)
-  private BigDecimal minimumAmount;
+  @Column(name = "MinimumPriceMargin", precision = 15, scale = 6)
+  private BigDecimal minimumPriceMargin;
 
-  /**
-   * Indicates the maximum margin for a product. The margin is calculated by subtracting the
-   * original limit price from the newly calculated price. If this field contains 0.00 then it is
-   * ignored.
-   */
-  @Column(name = "MaximumAmount", precision = 15, scale = 6)
-  private BigDecimal maximumAmount;
+  @Column(name = "MaximumPriceMargin", precision = 15, scale = 6)
+  private BigDecimal maximumPriceMargin;
 
-  /** Fixed price (not calculated). */
   @Column(name = "FixedAmount", precision = 15, scale = 6)
-  private BigDecimal fixedAmount;
+  private BigDecimal fixedPrice;
 
   public PriceType getPriceType() {
     return priceType;
@@ -60,51 +46,84 @@ public final class ListPrice implements Domain {
     this.priceType = Preconditions.checkNotNull(priceType);
   }
 
+  /** Indicates how the final list price will be rounded. */
   public RoundingType getRoundingType() {
     return roundingType;
   }
 
-  public void setRoundingType(RoundingType RoundingType) {
-    this.roundingType = Preconditions.checkNotNull(RoundingType);
+  public void setRoundingType(RoundingType roundingType) {
+    this.roundingType = Preconditions.checkNotNull(roundingType);
   }
 
-  public BigDecimal getAddAmount() {
-    return addAmount;
+  /**
+   * The List Price Base indicates the price to use as the basis for the calculation of a new price
+   * list.
+   */
+  public BigDecimal getBasePrice() {
+    return basePrice;
   }
 
-  public void setAddAmount(BigDecimal AddAmount) {
-    this.addAmount = checkNillablePositive(AddAmount);
+  public void setBasePrice(BigDecimal basePrice) {
+    this.basePrice = checkPositive(basePrice);
   }
 
+  /**
+   * The List Price Surcharge Amount indicates the amount to be added to the price prior to
+   * multiplication.
+   */
+  public BigDecimal getSurchargeAmount() {
+    return surchargeAmount;
+  }
+
+  public void setSurchargeAmount(BigDecimal surchargeAmount) {
+    this.surchargeAmount = checkPositive(surchargeAmount);
+  }
+
+  /**
+   * The List Price Discount Percentage indicates the percentage discount which will be subtracted
+   * from the base price. A negative amount indicates the percentage which will be added to the base
+   * price.
+   */
   public BigDecimal getDiscountAmount() {
     return discountAmount;
   }
 
-  public void setDiscountAmount(BigDecimal DiscountAmount) {
-    this.discountAmount = checkNillablePositive(DiscountAmount);
+  public void setDiscountAmount(BigDecimal discountAmount) {
+    this.discountAmount = checkPositive(discountAmount);
   }
 
-  public BigDecimal getMinimumAmount() {
-    return minimumAmount;
+  /**
+   * Indicates the minimum margin for a product. The margin is calculated by subtracting the
+   * original limit price from the newly calculated price. If this field contains 0.00 then it is
+   * ignored.
+   */
+  public BigDecimal getMinimumPriceMargin() {
+    return minimumPriceMargin;
   }
 
-  public void setMinimumAmount(BigDecimal MinimumAmount) {
-    this.minimumAmount = checkNillablePositive(MinimumAmount);
+  public void setMinimumPriceMargin(BigDecimal minimumPriceMargin) {
+    this.minimumPriceMargin = checkPositive(minimumPriceMargin);
   }
 
-  public BigDecimal getMaximumAmount() {
-    return maximumAmount;
+  /**
+   * Indicates the maximum margin for a product. The margin is calculated by subtracting the
+   * original limit price from the newly calculated price. If this field contains 0.00 then it is
+   * ignored.
+   */
+  public BigDecimal getMaximumPriceMargin() {
+    return maximumPriceMargin;
   }
 
-  public void setMaximumAmount(BigDecimal MaximumAmount) {
-    this.maximumAmount = checkNillablePositive(MaximumAmount);
+  public void setMaximumPriceMargin(BigDecimal maximumPriceMargin) {
+    this.maximumPriceMargin = checkPositive(maximumPriceMargin);
   }
 
-  public BigDecimal getFixedAmount() {
-    return fixedAmount;
+  /** Fixes List Price (not calculated). */
+  public BigDecimal getFixedPrice() {
+    return fixedPrice;
   }
 
-  public void setFixedAmount(BigDecimal FixedAmount) {
-    this.fixedAmount = checkNillablePositive(FixedAmount);
+  public void setFixedPrice(BigDecimal fixedPrice) {
+    this.fixedPrice = checkPositive(fixedPrice);
   }
 }

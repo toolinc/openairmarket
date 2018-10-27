@@ -2,6 +2,7 @@ package com.openairmarket.pos.persistence.model.business;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.listener.Audit;
 import com.openairmarket.common.persistence.model.AbstractCatalogTenantModel;
 import com.openairmarket.pos.persistence.model.audit.business.OrganizationAudit;
@@ -57,7 +58,7 @@ public final class Organization extends AbstractCatalogTenantModel<Long> {
   }
 
   /** Builder class that creates instances of {@link Organization}. */
-  public static class Buider {
+  public static final class Buider implements Domain {
 
     private String referenceId;
     private String name;
