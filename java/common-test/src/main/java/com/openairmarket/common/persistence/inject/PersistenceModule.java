@@ -1,4 +1,4 @@
-package com.openairmarket.common.persistence.dao.inject;
+package com.openairmarket.common.persistence.inject;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Preconditions;
@@ -18,10 +18,12 @@ public abstract class PersistenceModule extends AbstractModule {
     install(jpaPersistModule());
   }
 
+  /** Creates a new instance of {@link Builder} with the default values. */
   public static Builder builder() {
     return new AutoValue_PersistenceModule.Builder();
   }
 
+  /** Constructs a new instance of {@link PersistenceModule}. */
   @AutoValue.Builder
   public abstract static class Builder {
     private static final String URL = "eclipselink.connection-pool.url";
@@ -57,22 +59,11 @@ public abstract class PersistenceModule extends AbstractModule {
           .jpaPersistModule()
           .properties(
               ImmutableMap.of(
-                  URL, String.format(H2_URL, databaseName), DdlGeneration.DDL, ddlGeneration.ddl));
+                  URL,
+                  String.format(H2_URL, databaseName),
+                  DdlGeneration.DDL,
+                  ddlGeneration.getDdl()));
       return persistenceModule;
-    }
-  }
-
-  public enum DdlGeneration {
-    CREATE_TABLES("create-tables"),
-    CREATE_OR_EXTEND_TABLES("create-or-extend-tables"),
-    DROP_CREATE_TABLES("drop-create-tables");
-
-    private static final String DDL = "eclipselink.ddl-generation";
-    private final String ddl;
-
-    private DdlGeneration(String ddl) {
-      Preconditions.checkState(!Strings.isNullOrEmpty(ddl));
-      this.ddl = ddl;
     }
   }
 }

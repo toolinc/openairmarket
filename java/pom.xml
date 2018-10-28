@@ -10,6 +10,7 @@
   <name>openairmarket</name>
 
   <modules>
+    <module>common-test</module>
     <module>common</module>
     <module>etl</module>
     <module>microservice</module>
