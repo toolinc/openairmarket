@@ -1,7 +1,6 @@
 package com.openairmarket.pos.persistence.model.product;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.model.AbstractCatalogTenantModel;
 import javax.persistence.Column;
@@ -83,8 +82,7 @@ public final class ProductMeasureUnit extends AbstractCatalogTenantModel<Long> {
     private Boolean expire;
 
     public Builder setReferenceId(String referenceId) {
-      Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
-      this.referenceId = referenceId;
+      this.referenceId = checkNotEmpty(referenceId);
       return this;
     }
 

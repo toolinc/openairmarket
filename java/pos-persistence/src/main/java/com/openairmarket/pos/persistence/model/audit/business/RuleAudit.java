@@ -1,7 +1,6 @@
 package com.openairmarket.pos.persistence.model.audit.business;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.openairmarket.common.persistence.model.audit.AbstractAuditCatalogTenantModel;
 import com.openairmarket.pos.persistence.model.business.Rule;
 import javax.persistence.CascadeType;
@@ -56,8 +55,7 @@ public abstract class RuleAudit extends AbstractAuditCatalogTenantModel {
 
   @Override
   public void setId(String id) {
-    Preconditions.checkState(!Strings.isNullOrEmpty(id));
-    this.id = id;
+    this.id = checkNotEmpty(id);
   }
 
   public Rule getRule() {

@@ -1,7 +1,6 @@
 package com.openairmarket.pos.persistence.model.audit.price;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveReferenceTenantModel;
 import com.openairmarket.pos.persistence.model.price.Price;
 import com.openairmarket.pos.persistence.model.price.PriceListSchema;
@@ -69,8 +68,7 @@ public final class PriceListSchemaDetailAudit extends AbstractAuditActiveReferen
 
   @Override
   public void setId(String id) {
-    Preconditions.checkState(!Strings.isNullOrEmpty(id));
-    this.id = id;
+    this.id = checkNotEmpty(id);
   }
 
   public PriceListSchemaDetail getPriceListSchemaDetail() {

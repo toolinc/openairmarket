@@ -2,7 +2,7 @@ package com.openairmarket.pos.persistence.model.business;
 
 /** Define the different types of taxes. */
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.listener.Audit;
 import com.openairmarket.common.persistence.listener.AuditListener;
 import com.openairmarket.pos.persistence.model.audit.business.TaxCategoryAudit;
@@ -26,21 +26,19 @@ public final class TaxCategory extends RuleOrganization {
   }
 
   /** Builder class that creates instances of {@link TaxCategory}. */
-  public static class Buider {
+  public static class Buider implements Domain {
 
     private String referenceId;
     private String name;
     private Organization organization;
 
     public Buider setReferenceId(String referenceId) {
-      Preconditions.checkState(Strings.isNullOrEmpty(referenceId));
-      this.referenceId = referenceId;
+      this.referenceId = checkNotEmpty(referenceId);
       return this;
     }
 
     public Buider setName(String name) {
-      Preconditions.checkState(Strings.isNullOrEmpty(name));
-      this.name = name;
+      this.name = checkNotEmpty(name);
       return this;
     }
 
