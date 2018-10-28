@@ -70,6 +70,24 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
   }
 
   @Override
+  public long count() {
+    QueryHelper<Long, T> qc =
+        QueryHelper.newQueryContainerCount(getEntityManager(), getEntityClass());
+    return qc.getSingleResult();
+  }
+
+  @Override
+  public void flush() {
+    getEntityManager().flush();
+  }
+
+  @Override
+  public boolean hasVersionChanged(T entity) {
+    Optional<T> found = find(getEntityIdClass().cast(entity.getId()), entity.getVersion());
+    return !found.isPresent();
+  }
+
+  @Override
   public Optional<T> find(S id) {
     return Optional.ofNullable(getEntityManager().find(getEntityClass(), id));
   }
@@ -87,24 +105,6 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
   public List<T> findRange(int start, int end) {
     QueryHelper<T, T> qc = QueryHelper.newQueryContainer(getEntityManager(), getEntityClass());
     return qc.getResultList(start, end - start);
-  }
-
-  @Override
-  public long count() {
-    QueryHelper<Long, T> qc =
-        QueryHelper.newQueryContainerCount(getEntityManager(), getEntityClass());
-    return qc.getSingleResult();
-  }
-
-  @Override
-  public void flush() {
-    getEntityManager().flush();
-  }
-
-  @Override
-  public boolean hasVersionChanged(T entity) {
-    Optional<T> found = find(getEntityIdClass().cast(entity.getId()), entity.getVersion());
-    return !found.isPresent();
   }
 
   private Class<T> getEntityClass() {

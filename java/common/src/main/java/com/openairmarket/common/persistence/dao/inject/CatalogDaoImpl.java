@@ -42,33 +42,6 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   }
 
   @Override
-  public T findByReferenceId(String referenceId) {
-    return findByReferenceId(referenceId, Boolean.TRUE);
-  }
-
-  @Override
-  public T findInactiveByReferenceId(String referenceId) {
-    return findByReferenceId(referenceId, Boolean.FALSE);
-  }
-
-  private T findByReferenceId(String referenceId, Boolean active) {
-    try {
-      QueryHelper<T, T> qc = QueryHelper.newQueryContainer(getEntityManager(), getEntityClass());
-      qc.getCriteriaQuery()
-          .where(
-              qc.getCriteriaBuilder()
-                  .and(
-                      qc.getCriteriaBuilder().equal(qc.getRoot().get(ACTIVE), active),
-                      qc.getCriteriaBuilder().equal(qc.getRoot().get(REFERENCE_ID), referenceId)));
-      return qc.getSingleResult();
-    } catch (NoResultException exc) {
-      logger.atWarning().log(
-          String.format(exc.getMessage().concat(" referenceId [%s]."), referenceId), exc);
-      return null;
-    }
-  }
-
-  @Override
   public void persist(T entity) {
     validatePersist(entity);
     activeDao.persist(entity);
@@ -100,13 +73,34 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   }
 
   @Override
-  public Optional<T> find(S id) {
-    return activeDao.find(id);
+  public Optional<T> find(String referenceId) {
+    return findByReferenceId(referenceId, true);
   }
 
   @Override
-  public Optional<T> find(S id, long version) throws DaoException {
-    return activeDao.find(id, version);
+  public Optional<T> find(String referenceId, long version) {
+    Optional<T> entity = findByReferenceId(referenceId, true);
+    if (entity.isPresent() && entity.get().getVersion() == version) {
+      return entity;
+    }
+    return Optional.empty();
+  }
+
+  private Optional<T> findByReferenceId(String referenceId, boolean active) {
+    try {
+      QueryHelper<T, T> qc = QueryHelper.newQueryContainer(getEntityManager(), getEntityClass());
+      qc.getCriteriaQuery()
+          .where(
+              qc.getCriteriaBuilder()
+                  .and(
+                      qc.getCriteriaBuilder().equal(qc.getRoot().get(ACTIVE), active),
+                      qc.getCriteriaBuilder().equal(qc.getRoot().get(REFERENCE_ID), referenceId)));
+      return Optional.ofNullable(qc.getSingleResult());
+    } catch (NoResultException exc) {
+      logger.atWarning().log(
+          String.format(exc.getMessage().concat(" referenceId [%s]."), referenceId), exc);
+      return Optional.empty();
+    }
   }
 
   @Override
@@ -117,11 +111,6 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   @Override
   public long count() {
     return activeDao.count();
-  }
-
-  @Override
-  public long countInactive() {
-    return activeDao.countInactive();
   }
 
   @Override

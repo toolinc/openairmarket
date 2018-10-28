@@ -46,23 +46,13 @@ final class TenantDaoImpl implements TenantDao {
   }
 
   @Override
-  public Optional<Tenant> find(Integer id) {
-    return catalogDao.find(id);
+  public Optional<Tenant> find(String referenceId) {
+    return catalogDao.find(referenceId);
   }
 
   @Override
-  public Optional<Tenant> find(Integer id, long version) {
-    return catalogDao.find(id, version);
-  }
-
-  @Override
-  public Tenant findByReferenceId(String referenceId) {
-    return catalogDao.findByReferenceId(referenceId);
-  }
-
-  @Override
-  public Tenant findInactiveByReferenceId(String referenceId) {
-    return catalogDao.findInactiveByReferenceId(referenceId);
+  public Optional<Tenant> find(String referenceId, long version) {
+    return catalogDao.find(referenceId, version);
   }
 
   @Override
@@ -73,11 +63,6 @@ final class TenantDaoImpl implements TenantDao {
   @Override
   public long count() {
     return catalogDao.count();
-  }
-
-  @Override
-  public long countInactive() {
-    return catalogDao.countInactive();
   }
 
   @Override
