@@ -16,13 +16,10 @@ import com.openairmarket.common.persistence.model.security.SystemUser;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-@RunWith(JUnit4.class)
 public final class TenantDaoImplTest {
 
   @Inject PersistService persistService;
@@ -31,7 +28,7 @@ public final class TenantDaoImplTest {
   @Inject private SystemUserDao systemUserDao;
   @Inject private TenantDao tenantDao;
 
-  @Before
+  @BeforeEach
   public void setUp() throws DaoException {
     Injector injector =
         Guice.createInjector(
@@ -58,7 +55,7 @@ public final class TenantDaoImplTest {
     injector.injectMembers(this);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     persistService.stop();
   }
