@@ -1,6 +1,5 @@
 package com.openairmarket.common.persistence.model.security;
 
-import com.google.common.base.Preconditions;
 import com.openairmarket.common.model.security.User;
 import com.openairmarket.common.persistence.model.AbstractTenantModel;
 import javax.persistence.Column;
@@ -32,7 +31,7 @@ public class SystemUser extends AbstractTenantModel<Long> implements User {
   }
 
   public void setId(Long id) {
-    this.id = Preconditions.checkNotNull(id);
+    this.id = checkPositive(id);
   }
 
   @Override
@@ -41,6 +40,6 @@ public class SystemUser extends AbstractTenantModel<Long> implements User {
   }
 
   public void setEmail(String email) {
-    this.email = Preconditions.checkNotNull(email);
+    this.email = checkNotEmpty(email);
   }
 }

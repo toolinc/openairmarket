@@ -1,7 +1,5 @@
 package com.openairmarket.common.persistence.model.tenant;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.persistence.listener.Audit;
 import com.openairmarket.common.persistence.listener.AuditListener;
@@ -83,8 +81,7 @@ public final class Tenant extends AbstractCatalogModel<Integer> {
     private String name;
 
     public Buider setReferenceId(String referenceId) {
-      Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
-      this.referenceId = referenceId;
+      this.referenceId = checkNotEmpty(referenceId);
       return this;
     }
 
