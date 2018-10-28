@@ -7,7 +7,6 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.Transactional;
-import com.google.inject.persist.UnitOfWork;
 import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.dao.security.SystemUserDao;
 import com.openairmarket.common.persistence.inject.DdlGeneration;
@@ -26,7 +25,6 @@ import org.junit.jupiter.api.Test;
 public final class SystemUserDaoImplTest {
 
   @Inject private static PersistService persistService;
-  @Inject private static Provider<UnitOfWork> unitOfWork;
   @Inject private static Provider<EntityManager> entityManager;
   @Inject private static Provider<SystemUserDao> systemUserDao;
   @Inject private static Provider<TransactionalObject> transactionalObject;

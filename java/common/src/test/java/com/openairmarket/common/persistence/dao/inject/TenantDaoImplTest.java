@@ -2,11 +2,9 @@ package com.openairmarket.common.persistence.dao.inject;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
-import com.google.inject.persist.UnitOfWork;
+import com.google.inject.persist.Transactional;
 import com.openairmarket.common.persistence.dao.DaoException;
-import com.openairmarket.common.persistence.dao.security.SystemUserDao;
 import com.openairmarket.common.persistence.dao.tenant.TenantDao;
 import com.openairmarket.common.persistence.inject.DdlGeneration;
 import com.openairmarket.common.persistence.inject.PersistenceModule;
@@ -16,58 +14,61 @@ import com.openairmarket.common.persistence.model.security.SystemUser;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** Test cases for the class {@link TenantDaoImpl}. */
 public final class TenantDaoImplTest {
 
-  @Inject PersistService persistService;
-  @Inject UnitOfWork unitOfWork;
-  @Inject Provider<EntityManager> entityManagerProvider;
-  @Inject private SystemUserDao systemUserDao;
-  @Inject private TenantDao tenantDao;
+  private static final SystemUser SYSTEM_USER =
+      SystemUser.newBuilder().setId(1L).setEmail("root@gmail.com").build();
+  @Inject private static PersistService persistService;
+  @Inject private static Provider<EntityManager> entityManager;
+  @Inject private static Provider<TenantDao> tenantDao;
+  @Inject private static Provider<TransactionalObject> transactionalObject;
+
+  @BeforeAll
+  public static void setUpTests() throws DaoException {
+    Guice.createInjector(
+        PersistenceModule.builder()
+            .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
+            .setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
+            .build(),
+        binder -> binder.bind(SystemUserDaoImplTest.TransactionalObject.class),
+        binder -> binder.requestStaticInjection(AuditListener.class),
+        binder -> binder.requestStaticInjection(TenantDaoImplTest.class),
+        new DaoModule());
+    persistService.start();
+    transactionalObject.get().insertUser(SYSTEM_USER);
+  }
+
+  @AfterAll
+  public static void tearDownTest() {
+    persistService.stop();
+  }
 
   @BeforeEach
   public void setUp() throws DaoException {
-    Injector injector =
-        Guice.createInjector(
-            PersistenceModule.builder()
-                .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
-                .setDatabaseName(getClass().getSimpleName())
-                .build(),
-            binder -> binder.requestStaticInjection(AuditListener.class),
-            new DaoModule());
-    injector.injectMembers(this);
-    persistService.start();
-    UnitOfWork unitOfWork = injector.getInstance(UnitOfWork.class);
-    unitOfWork.begin();
-    EntityManager entityManager = entityManagerProvider.get();
-    SystemUser systemUser = new SystemUser();
-    systemUser.setId(1L);
-    systemUser.setEmail("root@openairmarket.com");
-    systemUser.setActive(Boolean.TRUE);
-    entityManager.getTransaction().begin();
-    systemUserDao.persist(systemUser);
-    entityManager.getTransaction().commit();
-    unitOfWork.end();
-    ThreadLocalSystemUserHolder.registerTenancyContext(systemUser);
-    injector.injectMembers(this);
-  }
-
-  @AfterEach
-  public void tearDown() {
-    persistService.stop();
+    ThreadLocalSystemUserHolder.registerTenancyContext(SYSTEM_USER);
   }
 
   @Test
   public void test() throws DaoException {
-    unitOfWork.begin();
-    EntityManager em = entityManagerProvider.get();
-    em.getTransaction().begin();
+    entityManager.get().getTransaction().begin();
     Tenant tenant = Tenant.newBuilder().setName("k").setReferenceId("2").build();
-    tenantDao.persist(tenant);
-    em.getTransaction().commit();
-    unitOfWork.end();
+    tenantDao.get().persist(tenant);
+    entityManager.get().getTransaction().commit();
+  }
+
+  static class TransactionalObject {
+
+    @Inject private EntityManager entityManager;
+
+    @Transactional
+    public void insertUser(SystemUser systemUser) throws DaoException {
+      entityManager.persist(systemUser);
+    }
   }
 }
