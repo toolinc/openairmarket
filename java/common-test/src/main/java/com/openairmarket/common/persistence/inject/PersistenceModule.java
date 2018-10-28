@@ -22,16 +22,27 @@ public abstract class PersistenceModule extends AbstractModule {
 
   /** Creates a new instance of {@link Builder} with the default values. */
   public static Builder builder() {
-    return new AutoValue_PersistenceModule.Builder().setPersistenceUnitName(DEFAULT_UNIT_NAME);
+    return new AutoValue_PersistenceModule.Builder()
+        .setServerMode(false)
+        .setPersistenceUnitName(DEFAULT_UNIT_NAME);
   }
 
   /** Constructs a new instance of {@link PersistenceModule}. */
   @AutoValue.Builder
   public abstract static class Builder {
     private static final String URL = "eclipselink.connection-pool.url";
-    private static final String H2_URL = "jdbc:h2:file:./target/databases/%s;MULTI_THREADED=TRUE";
+    private static final String H2_EMBEDDED_URL =
+        "jdbc:h2:file:./target/databases/%s;MULTI_THREADED=TRUE";
+    private static final String H2_SERVER_URL =
+        "jdbc:h2:tcp://localhost:9092/%s;MULTI_THREADED=TRUE";
+    private boolean serverMode;
     private String databaseName;
     private DdlGeneration ddlGeneration;
+
+    public Builder setServerMode(boolean serverMode) {
+      this.serverMode = serverMode;
+      return this;
+    }
 
     public Builder setDatabaseName(String databaseName) {
       Preconditions.checkState(!Strings.isNullOrEmpty(databaseName));
@@ -59,13 +70,16 @@ public abstract class PersistenceModule extends AbstractModule {
       PersistenceModule persistenceModule = autoBuild();
       persistenceModule
           .jpaPersistModule()
-          .properties(
-              ImmutableMap.of(
-                  URL,
-                  String.format(H2_URL, databaseName),
-                  DdlGeneration.DDL,
-                  ddlGeneration.getDdl()));
+          .properties(ImmutableMap.of(URL, buildUrl(), DdlGeneration.DDL, ddlGeneration.getDdl()));
       return persistenceModule;
+    }
+
+    private String buildUrl() {
+      if (serverMode) {
+        return String.format(H2_SERVER_URL, databaseName);
+      } else {
+        return String.format(H2_EMBEDDED_URL, databaseName);
+      }
     }
   }
 }
