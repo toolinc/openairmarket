@@ -18,26 +18,23 @@ public interface Dao<S extends Serializable, T extends AbstractModel<S>> {
    * Persist the given entity.
    *
    * @param entity the instance that will be persisted.
-   * @throws DaoException -in case of errors; will be propagated to the caller.
    */
-  void persist(T entity) throws DaoException;
+  void persist(T entity);
 
   /**
    * Merge the given entity.
    *
    * @param entity the instance that will be merged.
    * @return the managed instance that the state was merged to
-   * @throws DaoException - in case of errors; will be propagated to the caller.
    */
-  T merge(T entity) throws DaoException;
+  T merge(T entity);
 
   /**
    * Removed the given entity.
    *
    * @param entity the instance that will be merged.
-   * @throws DaoException - in case of errors; will be propagated to the caller.
    */
-  void remove(T entity) throws DaoException;
+  void remove(T entity);
 
   /**
    * Refresh the given entity.
@@ -71,16 +68,15 @@ public interface Dao<S extends Serializable, T extends AbstractModel<S>> {
    * @param id the primary key of the instance that will be retrieved.
    * @param version the particular version of the entity that is being requested.
    * @return - instance
-   * @throws DaoException - in case of errors; will be propagated to the caller.
    */
-  Optional<T> find(S id, long version) throws DaoException;
+  Optional<T> find(S id, long version);
 
   /**
    * Retrieves a {@code List} of entities from a particular start point.
    *
    * @param start - specifies the start count.
    * @param count - specifies the number of entities that will be retrieved from the page.
-   * @return the {@code List} of entities found or an empty list.
+   * @return the {@link List} of entities found or an empty list.
    */
   List<T> findRange(int start, int count);
 
@@ -99,7 +95,6 @@ public interface Dao<S extends Serializable, T extends AbstractModel<S>> {
    *
    * @param entity - the instance that will be verified.
    * @return true if it has been changed by another transaction otherwise else.
-   * @throws DaoException - in case of errors; will be propagated to the caller.
    */
   boolean hasVersionChanged(T entity) throws DaoException;
 }

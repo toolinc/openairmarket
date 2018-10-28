@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /** Base exception that stores the {@code ErrorCode}. */
-public class ErrorCodeException extends Exception {
+public class ErrorCodeException extends RuntimeException {
 
   private final List<ErrorCode> errorCodes;
 

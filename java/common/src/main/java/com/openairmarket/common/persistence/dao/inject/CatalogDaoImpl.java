@@ -69,13 +69,13 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   }
 
   @Override
-  public void persist(T entity) throws DaoException {
+  public void persist(T entity) {
     validatePersist(entity);
     activeDao.persist(entity);
   }
 
   @Override
-  public T merge(T entity) throws DaoException {
+  public T merge(T entity) {
     if (entity.getId() == null) {
       validatePersist(entity);
     } else {
@@ -85,7 +85,7 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   }
 
   @Override
-  public void remove(T entity) throws DaoException {
+  public void remove(T entity) {
     activeDao.remove(entity);
   }
 
@@ -130,7 +130,7 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   }
 
   @Override
-  public boolean hasVersionChanged(T entity) throws DaoException {
+  public boolean hasVersionChanged(T entity) {
     return activeDao.hasVersionChanged(entity);
   }
 

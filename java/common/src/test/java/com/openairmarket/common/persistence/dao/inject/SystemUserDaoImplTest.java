@@ -14,6 +14,7 @@ import com.openairmarket.common.persistence.inject.PersistenceModule;
 import com.openairmarket.common.persistence.model.security.SystemUser;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.Test;
 /** Test cases for the class {@link SystemUserDaoImpl}. */
 public final class SystemUserDaoImplTest {
 
+  private static final String RESOURCE = "DaoResourceBundle";
   @Inject private static PersistService persistService;
   @Inject private static Provider<EntityManager> entityManager;
   @Inject private static Provider<SystemUserDao> systemUserDao;
@@ -32,6 +34,8 @@ public final class SystemUserDaoImplTest {
   @BeforeAll
   public static void setUpTests() {
     Guice.createInjector(
+        binder -> binder.bind(ResourceBundle.class).toInstance(ResourceBundle.getBundle(RESOURCE)),
+        binder -> binder.requestStaticInjection(DaoException.Builder.class),
         PersistenceModule.builder()
             .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
             .setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
@@ -48,14 +52,8 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
-  public void shouldPersist() throws DaoException {
-    entityManager.get().getTransaction().begin();
-    SystemUser systemUser = new SystemUser();
-    systemUser.setId(777L);
-    systemUser.setActive(Boolean.TRUE);
-    systemUser.setEmail("god@heaven.com");
-    systemUserDao.get().persist(systemUser);
-    entityManager.get().getTransaction().commit();
+  public void shouldPersist() {
+    SystemUser systemUser = transactionalObject.get().persist();
     // Asserting the system user
     SystemUser user = entityManager.get().find(SystemUser.class, 777L);
     assertThat(user).isEqualTo(systemUser);
@@ -65,7 +63,7 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
-  public void shouldMerge() throws DaoException {
+  public void shouldMerge() {
     String email = "merger@gmail.com".toUpperCase();
     SystemUser systemUser = transactionalObject.get().insert();
     systemUser.setEmail(email);
@@ -79,9 +77,7 @@ public final class SystemUserDaoImplTest {
   @Test
   public void shouldRefresh() {
     SystemUser systemUser = transactionalObject.get().refresh();
-    entityManager.get().getTransaction().begin();
     systemUserDao.get().refresh(systemUser);
-    entityManager.get().getTransaction().commit();
     assertThat(systemUser.getId()).isEqualTo(444L);
     assertThat(systemUser.getEmail()).isEqualTo("user-444@gmail.com".toUpperCase());
     assertThat(systemUser.getActive()).isTrue();
@@ -101,7 +97,7 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
-  public void shouldRemove() throws DaoException {
+  public void shouldRemove() {
     SystemUser systemUser = transactionalObject.get().remove();
     entityManager.get().getTransaction().begin();
     systemUserDao.get().remove(systemUser);
@@ -135,7 +131,7 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
-  public void shouldFindWithVersion() throws DaoException {
+  public void shouldFindWithVersion() {
     SystemUser systemUser = transactionalObject.get().findWithVersion();
     Optional<SystemUser> findUser = systemUserDao.get().find(999L, 1L);
     assertThat(findUser.isPresent()).isTrue();
@@ -146,6 +142,19 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
+  public void shouldNotFindWithVersion() {
+    Optional<SystemUser> optionalUser = systemUserDao.get().find(86756L, 1L);
+    assertThat(optionalUser.isPresent()).isFalse();
+  }
+
+  @Test
+  public void shouldNotFindWithVersionSinceIsInactive() {
+    transactionalObject.get().findWithVersionInactive();
+    Optional<SystemUser> optionalUser = systemUserDao.get().find(1002L);
+    assertThat(optionalUser.isPresent()).isFalse();
+  }
+
+  @Test
   public void shouldFindRange() {
     transactionalObject.get().findRange();
     List<SystemUser> usersRange = systemUserDao.get().findRange(0, 5);
@@ -153,7 +162,7 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
-  public void shouldHasVersionChangedNo() throws DaoException {
+  public void shouldHasVersionChangedNo() {
     SystemUser systemUser = transactionalObject.get().hasVersionChanged();
     assertThat(systemUserDao.get().hasVersionChanged(systemUser)).isFalse();
   }
@@ -174,13 +183,22 @@ public final class SystemUserDaoImplTest {
 
   static class TransactionalObject {
 
-    @Inject private Provider<EntityManager> entityManager;
+    @Inject private EntityManager entityManager;
+    @Inject private SystemUserDao systemUserDao;
+
+    @Transactional
+    public SystemUser persist() {
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(777L).setEmail("god@heaven.com").build();
+      systemUserDao.persist(systemUser);
+      return systemUser;
+    }
 
     @Transactional
     public SystemUser find() {
       SystemUser systemUser =
           SystemUser.newBuilder().setId(666L).setEmail("user-666@gmail.com".toUpperCase()).build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
       return systemUser;
     }
 
@@ -192,15 +210,26 @@ public final class SystemUserDaoImplTest {
               .setId(1001L)
               .setEmail("user-1001@gmail.com")
               .build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
     }
 
     @Transactional
     public SystemUser findWithVersion() {
       SystemUser systemUser =
           SystemUser.newBuilder().setId(999L).setEmail("user-999@gmail.com".toUpperCase()).build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
       return systemUser;
+    }
+
+    @Transactional
+    public void findWithVersionInactive() {
+      SystemUser systemUser =
+          SystemUser.newBuilder()
+              .setActive(false)
+              .setId(1002L)
+              .setEmail("user-1002@gmail.com")
+              .build();
+      entityManager.persist(systemUser);
     }
 
     @Transactional
@@ -213,7 +242,7 @@ public final class SystemUserDaoImplTest {
                 .setId(Long.valueOf(user))
                 .setEmail(String.format(email, user))
                 .build();
-        entityManager.get().persist(systemUser);
+        entityManager.persist(systemUser);
       }
     }
 
@@ -224,7 +253,7 @@ public final class SystemUserDaoImplTest {
               .setId(1000L)
               .setEmail("user-1000@gmail.com".toUpperCase())
               .build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
       return systemUser;
     }
 
@@ -232,7 +261,7 @@ public final class SystemUserDaoImplTest {
     public SystemUser insert() {
       SystemUser systemUser =
           SystemUser.newBuilder().setId(222L).setEmail("user-222@gmail.com".toUpperCase()).build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
       return systemUser;
     }
 
@@ -240,7 +269,7 @@ public final class SystemUserDaoImplTest {
     public void insertCountActive() {
       SystemUser systemUser =
           SystemUser.newBuilder().setId(333L).setEmail("user-333@gmail.com").build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
     }
 
     @Transactional
@@ -251,14 +280,14 @@ public final class SystemUserDaoImplTest {
               .setId(111L)
               .setEmail("dare@devil.com")
               .build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
     }
 
     @Transactional
     public SystemUser refresh() {
       SystemUser systemUser =
           SystemUser.newBuilder().setId(444L).setEmail("user-444@gmail.com".toUpperCase()).build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
       return systemUser;
     }
 
@@ -266,7 +295,7 @@ public final class SystemUserDaoImplTest {
     public SystemUser refreshWithLock() {
       SystemUser systemUser =
           SystemUser.newBuilder().setId(888L).setEmail("user-888@gmail.com".toUpperCase()).build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
       return systemUser;
     }
 
@@ -274,7 +303,7 @@ public final class SystemUserDaoImplTest {
     public SystemUser remove() {
       SystemUser systemUser =
           SystemUser.newBuilder().setId(555L).setEmail("user-555@gmail.com".toUpperCase()).build();
-      entityManager.get().persist(systemUser);
+      entityManager.persist(systemUser);
       return systemUser;
     }
   }

@@ -5,7 +5,6 @@ import com.openairmarket.common.exception.ErrorCodeException;
 import com.openairmarket.common.exception.ErrorCodeProperty;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Provider;
 
 /** Base data access object exception. */
@@ -26,7 +25,7 @@ public class DaoException extends ErrorCodeException {
   /** Builder that creates instances of {@code DaoException}. */
   public static class Builder {
 
-    private static ResourceBundle resourceBundle;
+    @Inject private static ResourceBundle resourceBundle;
     private static String SEPARATOR = ";";
 
     public static DaoException build(Provider<ErrorCodeProperty> errorCode) {
@@ -60,12 +59,6 @@ public class DaoException extends ErrorCodeException {
 
     public static String getSeparator() {
       return SEPARATOR;
-    }
-
-    @Inject
-    @Named("daoResourceBundle")
-    public static void setResourceBundle(ResourceBundle aResourceBundle) {
-      resourceBundle = aResourceBundle;
     }
   }
 }

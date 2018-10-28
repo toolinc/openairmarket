@@ -15,7 +15,6 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
 
 /**
  * Provides the implementation for {@link Dao} interface.
@@ -40,12 +39,12 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
   }
 
   @Override
-  public void persist(T entity) throws DaoException {
+  public void persist(T entity) {
     getEntityManager().persist(entity);
   }
 
   @Override
-  public T merge(T entity) throws DaoException {
+  public T merge(T entity) {
     if (entity.getId() == null) {
       persist(entity);
       return entity;
@@ -59,7 +58,7 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
   }
 
   @Override
-  public void remove(T entity) throws DaoException {
+  public void remove(T entity) {
     getEntityManager().remove(entity);
   }
 
@@ -75,26 +74,16 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
 
   @Override
   public Optional<T> find(S id) {
-    try {
-      return Optional.ofNullable(getEntityManager().find(getEntityClass(), id));
-    } catch (NoResultException exc) {
-      logger.atWarning().log(String.format(exc.getMessage().concat(" id [%s]."), id), exc);
-      return Optional.empty();
-    }
+    return Optional.ofNullable(getEntityManager().find(getEntityClass(), id));
   }
 
   @Override
-  public Optional<T> find(S id, long version) throws DaoException {
-    try {
-      T current = getEntityManager().find(getEntityClass(), id);
-      if (Optional.ofNullable(current).isPresent() && current.getVersion() == version) {
-        return Optional.ofNullable(current);
-      } else {
-        throw DaoException.Builder.build(DaoErrorCode.OPRIMISTIC_LOCKING);
-      }
-    } catch (NoResultException exc) {
-      throw DaoException.Builder.build(DaoErrorCode.NO_RESULT);
+  public Optional<T> find(S id, long version) {
+    Optional<T> current = find(id);
+    if (current.isPresent() && current.get().getVersion() != version) {
+      return Optional.empty();
     }
+    return current;
   }
 
   @Override
@@ -117,13 +106,8 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
 
   @Override
   public boolean hasVersionChanged(T entity) {
-    try {
-      find(getEntityIdClass().cast(entity.getId()), entity.getVersion());
-      return false;
-    } catch (DaoException ex) {
-      logger.atWarning().log(ex.getMessage());
-      return true;
-    }
+    Optional<T> found = find(getEntityIdClass().cast(entity.getId()), entity.getVersion());
+    return !found.isPresent();
   }
 
   private Class<T> getEntityClass() {
