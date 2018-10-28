@@ -2,7 +2,6 @@ package com.openairmarket.common.persistence.dao.inject;
 
 import com.google.common.base.Preconditions;
 import com.openairmarket.common.persistence.dao.CatalogDao;
-import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.dao.tenant.TenantDao;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import java.util.List;
@@ -21,18 +20,18 @@ final class TenantDaoImpl implements TenantDao {
   }
 
   @Override
-  public void persist(Tenant entity) throws DaoException {
+  public void persist(Tenant entity) {
     catalogDao.persist(entity);
   }
 
   @Override
-  public Tenant merge(Tenant entity) throws DaoException {
+  public Tenant merge(Tenant entity) {
     return catalogDao.merge(entity);
   }
 
   // TODO (edgarrico: needs to throw a DAOException)
   @Override
-  public void remove(Tenant entity) throws DaoException {
+  public void remove(Tenant entity) {
     catalogDao.remove(entity);
   }
 
@@ -52,7 +51,7 @@ final class TenantDaoImpl implements TenantDao {
   }
 
   @Override
-  public Optional<Tenant> find(Integer id, long version) throws DaoException {
+  public Optional<Tenant> find(Integer id, long version) {
     return catalogDao.find(id, version);
   }
 
@@ -87,7 +86,7 @@ final class TenantDaoImpl implements TenantDao {
   }
 
   @Override
-  public boolean hasVersionChanged(Tenant entity) throws DaoException {
+  public boolean hasVersionChanged(Tenant entity) {
     return catalogDao.hasVersionChanged(entity);
   }
 }
