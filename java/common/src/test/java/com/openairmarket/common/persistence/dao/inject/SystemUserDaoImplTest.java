@@ -2,6 +2,7 @@ package com.openairmarket.common.persistence.dao.inject;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.persist.PersistService;
@@ -12,6 +13,7 @@ import com.openairmarket.common.persistence.dao.security.SystemUserDao;
 import com.openairmarket.common.persistence.inject.DdlGeneration;
 import com.openairmarket.common.persistence.inject.PersistenceModule;
 import com.openairmarket.common.persistence.model.security.SystemUser;
+import java.util.List;
 import java.util.Optional;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
@@ -132,6 +134,19 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
+  public void shouldFindRange() {
+    transactionalObject.get().findRange();
+    List<SystemUser> usersRange = systemUserDao.get().findRange(0, 5);
+    assertThat(usersRange).hasSize(5);
+  }
+
+  @Test
+  public void shouldHasVersionChangedNo() throws DaoException {
+    SystemUser systemUser = transactionalObject.get().hasVersionChanged();
+    assertThat(systemUserDao.get().hasVersionChanged(systemUser)).isFalse();
+  }
+
+  @Test
   public void shouldCount() {
     transactionalObject.get().insertCountActive();
     long counter = systemUserDao.get().count();
@@ -164,6 +179,29 @@ public final class SystemUserDaoImplTest {
       SystemUser systemUser = new SystemUser();
       systemUser.setId(999L);
       systemUser.setEmail("user-999@gmail.com".toUpperCase());
+      systemUser.setActive(Boolean.TRUE);
+      entityManager.get().persist(systemUser);
+      return systemUser;
+    }
+
+    @Transactional
+    public void findRange() {
+      ImmutableList<String> users = ImmutableList.of("10", "20", "30", "40", "50");
+      String email = "user-%s@gmail.com";
+      for (String user : users) {
+        SystemUser systemUser = new SystemUser();
+        systemUser.setId(Long.valueOf(user));
+        systemUser.setEmail(String.format(email, user));
+        systemUser.setActive(Boolean.TRUE);
+        entityManager.get().persist(systemUser);
+      }
+    }
+
+    @Transactional
+    public SystemUser hasVersionChanged() {
+      SystemUser systemUser = new SystemUser();
+      systemUser.setId(1000L);
+      systemUser.setEmail("user-1000@gmail.com".toUpperCase());
       systemUser.setActive(Boolean.TRUE);
       entityManager.get().persist(systemUser);
       return systemUser;
