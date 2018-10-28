@@ -93,6 +93,18 @@ public final class SystemUserDaoImplTest {
     assertThat(counter).isEqualTo(1L);
   }
 
+  @Test
+  public void shouldRefresh() {
+    SystemUser systemUser = transactionalObject.get().refresh();
+    entityManager.get().getTransaction().begin();
+    systemUserDao.get().refresh(systemUser);
+    entityManager.get().getTransaction().commit();
+    assertThat(systemUser.getId()).isEqualTo(444L);
+    assertThat(systemUser.getEmail()).isEqualTo("user-444@gmail.com".toUpperCase());
+    assertThat(systemUser.getActive()).isTrue();
+    assertThat(systemUser.getVersion()).isEqualTo(1L);
+  }
+
   static class TransactionalObject {
 
     @Inject private Provider<EntityManager> entityManager;
@@ -122,6 +134,16 @@ public final class SystemUserDaoImplTest {
       systemUser.setEmail("dare@devil.com");
       systemUser.setActive(Boolean.FALSE);
       entityManager.get().persist(systemUser);
+    }
+
+    @Transactional
+    public SystemUser refresh() {
+      SystemUser systemUser = new SystemUser();
+      systemUser.setId(444L);
+      systemUser.setEmail("user-444@gmail.com");
+      systemUser.setActive(Boolean.TRUE);
+      entityManager.get().persist(systemUser);
+      return systemUser;
     }
   }
 }
