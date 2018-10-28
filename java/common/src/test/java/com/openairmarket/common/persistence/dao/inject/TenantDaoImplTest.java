@@ -36,7 +36,6 @@ public final class TenantDaoImplTest {
     Injector injector =
         Guice.createInjector(
             PersistenceModule.builder()
-                .setPersistenceUnitName("OpenAirMarket_PU")
                 .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
                 .setDatabaseName(getClass().getSimpleName())
                 .build(),

@@ -11,6 +11,8 @@ import com.google.inject.persist.jpa.JpaPersistModule;
 @AutoValue
 public abstract class PersistenceModule extends AbstractModule {
 
+  private static final String DEFAULT_UNIT_NAME = "OpenAirMarket_PU";
+
   abstract JpaPersistModule jpaPersistModule();
 
   @Override
@@ -20,7 +22,7 @@ public abstract class PersistenceModule extends AbstractModule {
 
   /** Creates a new instance of {@link Builder} with the default values. */
   public static Builder builder() {
-    return new AutoValue_PersistenceModule.Builder();
+    return new AutoValue_PersistenceModule.Builder().setPersistenceUnitName(DEFAULT_UNIT_NAME);
   }
 
   /** Constructs a new instance of {@link PersistenceModule}. */
