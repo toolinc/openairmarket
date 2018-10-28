@@ -16,4 +16,5 @@ common/src/main/java/.DS_Store
 common/src/main/java/com/.DS_Store
 common/src/main/java/com/openairmarket/.DS_Store
 common/src/main/java/com/openairmarket/common/.DS_Store
-
+java/common/createDDL.jdbc
+java/pos-persistence/createDDL.jdbc
