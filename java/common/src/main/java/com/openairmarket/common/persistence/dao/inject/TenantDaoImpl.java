@@ -52,7 +52,7 @@ final class TenantDaoImpl implements TenantDao {
   }
 
   @Override
-  public Tenant find(Integer id, long version) throws DaoException {
+  public Optional<Tenant> find(Integer id, long version) throws DaoException {
     return catalogDao.find(id, version);
   }
 

@@ -56,7 +56,7 @@ final class SystemUserDaoImpl implements SystemUserDao {
   }
 
   @Override
-  public SystemUser find(Long id, long version) throws DaoException {
+  public Optional<SystemUser> find(Long id, long version) throws DaoException {
     return activeDao.find(id, version);
   }
 

@@ -126,11 +126,12 @@ public final class SystemUserDaoImplTest {
   @Test
   public void shouldFindWithVersion() throws DaoException {
     SystemUser systemUser = transactionalObject.get().findWithVersion();
-    SystemUser findUser = systemUserDao.get().find(999L, 1L);
-    assertThat(findUser).isEqualTo(systemUser);
-    assertThat(findUser.getEmail()).isEqualTo(systemUser.getEmail());
-    assertThat(findUser.getActive()).isEqualTo(systemUser.getActive());
-    assertThat(findUser.getVersion()).isEqualTo(systemUser.getVersion());
+    Optional<SystemUser> findUser = systemUserDao.get().find(999L, 1L);
+    assertThat(findUser.isPresent()).isTrue();
+    assertThat(findUser.get()).isEqualTo(systemUser);
+    assertThat(findUser.get().getEmail()).isEqualTo(systemUser.getEmail());
+    assertThat(findUser.get().getActive()).isEqualTo(systemUser.getActive());
+    assertThat(findUser.get().getVersion()).isEqualTo(systemUser.getVersion());
   }
 
   @Test

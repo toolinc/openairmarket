@@ -73,7 +73,7 @@ public interface Dao<S extends Serializable, T extends AbstractModel<S>> {
    * @return - instance
    * @throws DaoException - in case of errors; will be propagated to the caller.
    */
-  T find(S id, long version) throws DaoException;
+  Optional<T> find(S id, long version) throws DaoException;
 
   /**
    * Retrieves a {@code List} of entities from a particular start point.

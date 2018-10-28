@@ -105,7 +105,7 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   }
 
   @Override
-  public T find(S id, long version) throws DaoException {
+  public Optional<T> find(S id, long version) throws DaoException {
     return activeDao.find(id, version);
   }
 

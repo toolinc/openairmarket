@@ -85,12 +85,12 @@ final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel<
   }
 
   @Override
-  public T find(S id, long version) throws DaoException {
-    T entity = dao.find(id, version);
-    if (entity.getActive()) {
+  public Optional<T> find(S id, long version) throws DaoException {
+    Optional<T> entity = dao.find(id, version);
+    if (entity.isPresent() && entity.get().getActive()) {
       return entity;
     }
-    return null;
+    return Optional.empty();
   }
 
   @Override
