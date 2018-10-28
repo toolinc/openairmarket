@@ -22,10 +22,13 @@ public interface Dao<S extends Serializable, T extends AbstractModel<S>> {
   void persist(T entity);
 
   /**
-   * Merge the given entity.
+   * Merge the given entity. If the entity does not exit it will be persisted. If the entity exist
+   * then this will be merge.
    *
    * @param entity the instance that will be merged.
    * @return the managed instance that the state was merged to
+   * @throws DaoException if the operation cannot be performed due to an {@link
+   *     javax.persistence.OptimisticLockException}
    */
   T merge(T entity);
 

@@ -19,6 +19,7 @@ import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -72,6 +73,29 @@ public final class SystemUserDaoImplTest {
     systemUserDao.get().flush();
     entityManager.get().getTransaction().commit();
     assertThat(userUpdated.getEmail()).isEqualTo(email);
+  }
+
+  @Test
+  public void shouldNotMergeOptimisticLocking() {
+    SystemUser.Builder builder =
+        SystemUser.newBuilder().setId(1234L).setEmail("user-1234@hotmail.com");
+    SystemUser oldUser = builder.build();
+    SystemUser recentUser = transactionalObject.get().merge(builder.build());
+    oldUser.setVersion(recentUser.getVersion());
+    recentUser.setEmail("usuario-1234@gmail.com");
+    recentUser = transactionalObject.get().update(recentUser);
+    assertThat(recentUser.getVersion()).isEqualTo(2);
+
+    entityManager.get().getTransaction().begin();
+    oldUser.setEmail("ewewew@jdsds.com");
+    DaoException daoException =
+        Assertions.assertThrows(
+            DaoException.class,
+            () -> {
+              systemUserDao.get().merge(oldUser);
+            });
+    entityManager.get().getTransaction().rollback();
+    assertThat(daoException.getErrorCode().code()).isEqualTo(110);
   }
 
   @Test
@@ -162,6 +186,20 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
+  public void shouldHasVersionChangedYes() {
+    SystemUser.Builder builder =
+        SystemUser.newBuilder().setId(4567L).setEmail("user-4567@gmail.com");
+    SystemUser oldUser = builder.build();
+    SystemUser recentUser = transactionalObject.get().merge(builder.build());
+    oldUser.setVersion(recentUser.getVersion());
+    recentUser.setEmail("user-4567@hotmail.com");
+    recentUser = transactionalObject.get().update(recentUser);
+    assertThat(recentUser.getVersion()).isEqualTo(2);
+
+    assertThat(systemUserDao.get().hasVersionChanged(oldUser)).isTrue();
+  }
+
+  @Test
   public void shouldHasVersionChangedNo() {
     SystemUser systemUser = transactionalObject.get().hasVersionChanged();
     assertThat(systemUserDao.get().hasVersionChanged(systemUser)).isFalse();
@@ -192,6 +230,16 @@ public final class SystemUserDaoImplTest {
           SystemUser.newBuilder().setId(777L).setEmail("god@heaven.com").build();
       systemUserDao.persist(systemUser);
       return systemUser;
+    }
+
+    @Transactional
+    public SystemUser merge(SystemUser systemUser) {
+      return entityManager.merge(systemUser);
+    }
+
+    @Transactional
+    public SystemUser update(SystemUser systemUser) {
+      return entityManager.merge(systemUser);
     }
 
     @Transactional

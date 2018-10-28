@@ -15,6 +15,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.OptimisticLockException;
 
 /**
  * Provides the implementation for {@link Dao} interface.
@@ -45,15 +46,11 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
 
   @Override
   public T merge(T entity) {
-    if (entity.getId() == null) {
-      persist(entity);
-      return entity;
-    } else {
-      if (!hasVersionChanged(entity)) {
-        return getEntityManager().merge(entity);
-      } else {
-        throw DaoException.Builder.build(DaoErrorCode.OPRIMISTIC_LOCKING);
-      }
+    try {
+      return getEntityManager().merge(entity);
+    } catch (OptimisticLockException exc) {
+      logger.atWarning().log(exc.getMessage());
+      throw DaoException.Builder.build(DaoErrorCode.OPRIMISTIC_LOCKING);
     }
   }
 
