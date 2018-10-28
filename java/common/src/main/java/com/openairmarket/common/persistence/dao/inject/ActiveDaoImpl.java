@@ -81,7 +81,7 @@ final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel<
     if (entity.isPresent() && entity.get().getActive()) {
       return entity;
     }
-    return entity;
+    return Optional.empty();
   }
 
   @Override

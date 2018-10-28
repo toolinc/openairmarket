@@ -87,7 +87,7 @@ final class DaoImpl<S extends Serializable, T extends AbstractModel<S>> implemen
   public Optional<T> find(S id, long version) throws DaoException {
     try {
       T current = getEntityManager().find(getEntityClass(), id);
-      if (current.getVersion() == version) {
+      if (Optional.ofNullable(current).isPresent() && current.getVersion() == version) {
         return Optional.ofNullable(current);
       } else {
         throw DaoException.Builder.build(DaoErrorCode.OPRIMISTIC_LOCKING);
