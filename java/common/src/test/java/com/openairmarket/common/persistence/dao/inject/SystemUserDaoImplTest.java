@@ -15,6 +15,7 @@ import com.openairmarket.common.persistence.model.security.SystemUser;
 import java.util.Optional;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -88,6 +89,18 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
+  public void shouldRefreshWithLock() {
+    SystemUser systemUser = transactionalObject.get().refreshWithLock();
+    entityManager.get().getTransaction().begin();
+    systemUserDao.get().refresh(systemUser, LockModeType.OPTIMISTIC);
+    entityManager.get().getTransaction().commit();
+    assertThat(systemUser.getId()).isEqualTo(888L);
+    assertThat(systemUser.getEmail()).isEqualTo("user-888@gmail.com".toUpperCase());
+    assertThat(systemUser.getActive()).isTrue();
+    assertThat(systemUser.getVersion()).isEqualTo(1L);
+  }
+
+  @Test
   public void shouldRemove() throws DaoException {
     SystemUser systemUser = transactionalObject.get().remove();
     entityManager.get().getTransaction().begin();
@@ -104,6 +117,18 @@ public final class SystemUserDaoImplTest {
     assertThat(optionalUser.isPresent()).isTrue();
     assertThat(optionalUser.get()).isEqualTo(systemUser);
     assertThat(optionalUser.get().getEmail()).isEqualTo(systemUser.getEmail());
+    assertThat(optionalUser.get().getActive()).isEqualTo(systemUser.getActive());
+    assertThat(optionalUser.get().getVersion()).isEqualTo(systemUser.getVersion());
+  }
+
+  @Test
+  public void shouldFindWithVersion() throws DaoException {
+    SystemUser systemUser = transactionalObject.get().findWithVersion();
+    SystemUser findUser = systemUserDao.get().find(999L, 1L);
+    assertThat(findUser).isEqualTo(systemUser);
+    assertThat(findUser.getEmail()).isEqualTo(systemUser.getEmail());
+    assertThat(findUser.getActive()).isEqualTo(systemUser.getActive());
+    assertThat(findUser.getVersion()).isEqualTo(systemUser.getVersion());
   }
 
   @Test
@@ -129,6 +154,16 @@ public final class SystemUserDaoImplTest {
       SystemUser systemUser = new SystemUser();
       systemUser.setId(666L);
       systemUser.setEmail("user-666@gmail.com".toUpperCase());
+      systemUser.setActive(Boolean.TRUE);
+      entityManager.get().persist(systemUser);
+      return systemUser;
+    }
+
+    @Transactional
+    public SystemUser findWithVersion() {
+      SystemUser systemUser = new SystemUser();
+      systemUser.setId(999L);
+      systemUser.setEmail("user-999@gmail.com".toUpperCase());
       systemUser.setActive(Boolean.TRUE);
       entityManager.get().persist(systemUser);
       return systemUser;
@@ -167,6 +202,16 @@ public final class SystemUserDaoImplTest {
       SystemUser systemUser = new SystemUser();
       systemUser.setId(444L);
       systemUser.setEmail("user-444@gmail.com".toUpperCase());
+      systemUser.setActive(Boolean.TRUE);
+      entityManager.get().persist(systemUser);
+      return systemUser;
+    }
+
+    @Transactional
+    public SystemUser refreshWithLock() {
+      SystemUser systemUser = new SystemUser();
+      systemUser.setId(888L);
+      systemUser.setEmail("user-888@gmail.com".toUpperCase());
       systemUser.setActive(Boolean.TRUE);
       entityManager.get().persist(systemUser);
       return systemUser;
