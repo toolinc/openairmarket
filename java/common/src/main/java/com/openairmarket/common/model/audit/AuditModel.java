@@ -2,7 +2,7 @@ package com.openairmarket.common.model.audit;
 
 import com.openairmarket.common.model.Domain;
 import com.openairmarket.common.model.security.User;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Specifies the contract for a revision entity.
@@ -11,9 +11,9 @@ import java.util.Date;
  */
 public interface AuditModel<T extends User> extends Domain {
 
-  Date getCreatedDate();
+  LocalDateTime getCreatedDate();
 
-  public void setCreatedDate(Date createdDate);
+  public void setCreatedDate(LocalDateTime createdDate);
 
   public T getUser();
 

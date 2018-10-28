@@ -1,13 +1,13 @@
 package com.openairmarket.common.persistence.listener;
 
 import com.google.common.flogger.FluentLogger;
+import com.openairmarket.common.DateUtil;
 import com.openairmarket.common.model.audit.AuditType;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
 import com.openairmarket.common.persistence.model.AbstractModel;
 import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveModel;
 import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.common.persistence.model.audit.Auditable;
-import java.util.GregorianCalendar;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
@@ -50,7 +50,7 @@ public final class AuditListener {
   private void createAuditModel(AbstractActiveModel abstractActiveModel, AuditType auditType) {
     AuditActiveModel.Builder builder = createAuditModelBuilder(abstractActiveModel);
     Auditable auditable = new Auditable();
-    auditable.setCreatedDate(new GregorianCalendar().getTime());
+    auditable.setCreatedDate(DateUtil.nowLocalDateTime());
     auditable.setAuditType(auditType);
     auditable.setUser(ThreadLocalSystemUserHolder.getCurrentSystemUser());
     AbstractAuditActiveModel auditModel = builder.build(abstractActiveModel);

@@ -1,17 +1,14 @@
 package com.openairmarket.common;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
-/** Provides utility methods for {@code Date}. */
+/** Provides utility methods for date and time. */
 public class DateUtil {
 
-  /**
-   * Create a defensive copy of {@code Date}.
-   *
-   * @param date the {@code Date} that will be cloned.
-   * @return a new instance.
-   */
-  public static Date clone(Date date) {
-    return new Date(date.getTime());
+  private static final ZoneId ZONE_ID = ZoneId.of("PST8PDT");
+
+  public static LocalDateTime nowLocalDateTime() {
+    return LocalDateTime.now(ZONE_ID);
   }
 }

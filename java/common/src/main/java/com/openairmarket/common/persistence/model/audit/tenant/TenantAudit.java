@@ -2,7 +2,7 @@ package com.openairmarket.common.persistence.model.audit.tenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveModel;
+import com.openairmarket.common.persistence.model.audit.AbstractAuditCatalogModel;
 import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
 import javax.persistence.Column;
@@ -26,22 +26,16 @@ import org.eclipse.persistence.annotations.UuidGenerator;
     name = "tenantAudit",
     uniqueConstraints = {
       @UniqueConstraint(
-          name = "tenantHistoryUK",
-          columnNames = {"idTenant"})
+          name = "tenantAuditUK",
+          columnNames = {"idTenant", "createDate"})
     })
 @UuidGenerator(name = "tenantAudit_gen")
-public class TenantAudit extends AbstractAuditActiveModel {
+public class TenantAudit extends AbstractAuditCatalogModel {
 
   @Id
   @Column(name = "idTenantHistory")
   @GeneratedValue(generator = "tenantAudit_gen")
   private String id;
-
-  @Column(name = "idReference", nullable = false)
-  private String referenceId;
-
-  @Column(name = "name", nullable = false)
-  private String name;
 
   @JoinColumn(name = "idTenant", referencedColumnName = "idTenant", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
@@ -64,23 +58,6 @@ public class TenantAudit extends AbstractAuditActiveModel {
 
   public void setTenant(Tenant tenant) {
     this.tenant = Preconditions.checkNotNull(tenant);
-  }
-
-  public String getReferenceId() {
-    return referenceId;
-  }
-
-  public void setReferenceId(String referenceId) {
-    Preconditions.checkState(!Strings.isNullOrEmpty(referenceId));
-    this.referenceId = referenceId;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = checkNotEmpty(name);
   }
 
   /**
