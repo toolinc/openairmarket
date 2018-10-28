@@ -122,6 +122,19 @@ public final class SystemUserDaoImplTest {
   }
 
   @Test
+  public void shouldNotFindIt() {
+    Optional<SystemUser> optionalUser = systemUserDao.get().find(5678L);
+    assertThat(optionalUser.isPresent()).isFalse();
+  }
+
+  @Test
+  public void shouldNotFindSinceIsInactive() {
+    transactionalObject.get().findInactive();
+    Optional<SystemUser> optionalUser = systemUserDao.get().find(1001L);
+    assertThat(optionalUser.isPresent()).isFalse();
+  }
+
+  @Test
   public void shouldFindWithVersion() throws DaoException {
     SystemUser systemUser = transactionalObject.get().findWithVersion();
     Optional<SystemUser> findUser = systemUserDao.get().find(999L, 1L);
@@ -165,20 +178,27 @@ public final class SystemUserDaoImplTest {
 
     @Transactional
     public SystemUser find() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(666L);
-      systemUser.setEmail("user-666@gmail.com".toUpperCase());
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(666L).setEmail("user-666@gmail.com".toUpperCase()).build();
       entityManager.get().persist(systemUser);
       return systemUser;
     }
 
     @Transactional
+    public void findInactive() {
+      SystemUser systemUser =
+          SystemUser.newBuilder()
+              .setActive(false)
+              .setId(1001L)
+              .setEmail("user-1001@gmail.com")
+              .build();
+      entityManager.get().persist(systemUser);
+    }
+
+    @Transactional
     public SystemUser findWithVersion() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(999L);
-      systemUser.setEmail("user-999@gmail.com".toUpperCase());
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(999L).setEmail("user-999@gmail.com".toUpperCase()).build();
       entityManager.get().persist(systemUser);
       return systemUser;
     }
@@ -188,78 +208,72 @@ public final class SystemUserDaoImplTest {
       ImmutableList<String> users = ImmutableList.of("10", "20", "30", "40", "50");
       String email = "user-%s@gmail.com";
       for (String user : users) {
-        SystemUser systemUser = new SystemUser();
-        systemUser.setId(Long.valueOf(user));
-        systemUser.setEmail(String.format(email, user));
-        systemUser.setActive(Boolean.TRUE);
+        SystemUser systemUser =
+            SystemUser.newBuilder()
+                .setId(Long.valueOf(user))
+                .setEmail(String.format(email, user))
+                .build();
         entityManager.get().persist(systemUser);
       }
     }
 
     @Transactional
     public SystemUser hasVersionChanged() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(1000L);
-      systemUser.setEmail("user-1000@gmail.com".toUpperCase());
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder()
+              .setId(1000L)
+              .setEmail("user-1000@gmail.com".toUpperCase())
+              .build();
       entityManager.get().persist(systemUser);
       return systemUser;
     }
 
     @Transactional
     public SystemUser insert() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(222L);
-      systemUser.setEmail("user-222@gmail.com".toUpperCase());
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(222L).setEmail("user-222@gmail.com".toUpperCase()).build();
       entityManager.get().persist(systemUser);
       return systemUser;
     }
 
     @Transactional
     public void insertCountActive() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(333L);
-      systemUser.setEmail("user-333@gmail.com");
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(333L).setEmail("user-333@gmail.com").build();
       entityManager.get().persist(systemUser);
     }
 
     @Transactional
     public void insertCountInactive() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(111L);
-      systemUser.setEmail("dare@devil.com");
-      systemUser.setActive(Boolean.FALSE);
+      SystemUser systemUser =
+          SystemUser.newBuilder()
+              .setActive(Boolean.FALSE)
+              .setId(111L)
+              .setEmail("dare@devil.com")
+              .build();
       entityManager.get().persist(systemUser);
     }
 
     @Transactional
     public SystemUser refresh() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(444L);
-      systemUser.setEmail("user-444@gmail.com".toUpperCase());
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(444L).setEmail("user-444@gmail.com".toUpperCase()).build();
       entityManager.get().persist(systemUser);
       return systemUser;
     }
 
     @Transactional
     public SystemUser refreshWithLock() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(888L);
-      systemUser.setEmail("user-888@gmail.com".toUpperCase());
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(888L).setEmail("user-888@gmail.com".toUpperCase()).build();
       entityManager.get().persist(systemUser);
       return systemUser;
     }
 
     @Transactional
     public SystemUser remove() {
-      SystemUser systemUser = new SystemUser();
-      systemUser.setId(555L);
-      systemUser.setEmail("user-555@gmail.com".toUpperCase());
-      systemUser.setActive(Boolean.TRUE);
+      SystemUser systemUser =
+          SystemUser.newBuilder().setId(555L).setEmail("user-555@gmail.com".toUpperCase()).build();
       entityManager.get().persist(systemUser);
       return systemUser;
     }
