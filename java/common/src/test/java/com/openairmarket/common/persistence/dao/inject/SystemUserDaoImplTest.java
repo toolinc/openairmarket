@@ -5,8 +5,8 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.UnitOfWork;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import com.openairmarket.common.persistence.dao.DaoException;
+import com.openairmarket.common.persistence.dao.inject.PersistenceModule.DdlGeneration;
 import com.openairmarket.common.persistence.dao.security.SystemUserDao;
 import com.openairmarket.common.persistence.model.security.SystemUser;
 import javax.inject.Provider;
@@ -27,7 +27,13 @@ public class SystemUserDaoImplTest {
   @Before
   public void setUp() {
     Injector injector =
-        Guice.createInjector(new JpaPersistModule("OpenAirMarket_PU"), new DaoModule());
+        Guice.createInjector(
+            PersistenceModule.builder()
+                .setPersistenceUnitName("OpenAirMarket_PU")
+                .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
+                .setDatabaseName(getClass().getSimpleName())
+                .build(),
+            new DaoModule());
     injector.injectMembers(this);
     persistService.start();
   }
