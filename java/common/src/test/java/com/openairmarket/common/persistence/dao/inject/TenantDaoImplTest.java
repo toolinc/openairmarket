@@ -43,7 +43,7 @@ public final class TenantDaoImplTest {
             // .setServerMode(true)
             // .setDatabaseName("pos")
             .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
-            .setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
+            .setDatabaseName(TenantDaoImplTest.class.getSimpleName())
             .build(),
         binder -> binder.bind(TransactionalObject.class),
         binder -> binder.requestStaticInjection(TenantDaoImplTest.class),
