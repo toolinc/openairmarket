@@ -41,8 +41,6 @@ public final class TenantDaoPersistDuplicateReferenceTest {
         binder -> binder.requestStaticInjection(DaoException.Builder.class),
         PersistenceModule.builder()
             .setPoolMode(false)
-            // .setServerMode(true)
-            // .setDatabaseName("pos")
             .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
             .setDatabaseName(TenantDaoPersistDuplicateReferenceTest.class.getSimpleName())
             .build(),
