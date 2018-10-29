@@ -10,10 +10,10 @@ import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.dao.tenant.TenantDao;
 import com.openairmarket.common.persistence.inject.DdlGeneration;
 import com.openairmarket.common.persistence.inject.PersistenceModule;
-import com.openairmarket.common.persistence.listener.AuditListener;
 import com.openairmarket.common.persistence.listener.ThreadLocalSystemUserHolder;
 import com.openairmarket.common.persistence.model.security.SystemUser;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
@@ -43,10 +43,9 @@ public final class TenantDaoImplTest {
             .setServerMode(true)
             .setDatabaseName("pos")
             .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
-            //.setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
+            // .setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
             .build(),
-        binder -> binder.bind(SystemUserDaoImplTest.TransactionalObject.class),
-        binder -> binder.requestStaticInjection(AuditListener.class),
+        binder -> binder.bind(TransactionalObject.class),
         binder -> binder.requestStaticInjection(TenantDaoImplTest.class),
         new DaoModule());
     persistService.start();
@@ -71,49 +70,66 @@ public final class TenantDaoImplTest {
     entityManager.get().getTransaction().commit();
   }
 
-  @Test
+  //@Test
   public void shouldNotPersistDuplicateReferenceId() {
     Tenant.Buider buider = Tenant.newBuilder().setName("tenant 2").setReferenceId("2");
     transactionalObject.get().insert(buider.build());
-    entityManager.get().getTransaction().begin();
     DaoException daoException =
         Assertions.assertThrows(
             DaoException.class,
             () -> {
-              tenantDao.get().persist(buider.setName("tenant 4").build());
+              entityManager.get().getTransaction().begin();
+              tenantDao.get().persist(buider.setName("tenant 454").build());
+              entityManager.get().getTransaction().rollback();
             });
     assertThat(daoException.getErrorCode().code()).isEqualTo(150);
-    entityManager.get().getTransaction().rollback();
   }
 
-  @Test
+  //@Test
   public void shouldNotPersistDuplicateName() {
     Tenant.Buider buider = Tenant.newBuilder().setName("tenant 3").setReferenceId("3");
     transactionalObject.get().insert(buider.build());
-    entityManager.get().getTransaction().begin();
     DaoException daoException =
         Assertions.assertThrows(
             DaoException.class,
             () -> {
-              tenantDao.get().persist(buider.setReferenceId("4").build());
+              entityManager.get().getTransaction().begin();
+              tenantDao.get().persist(buider.setReferenceId("4444").build());
+              entityManager.get().getTransaction().rollback();
             });
     assertThat(daoException.getErrorCode().code()).isEqualTo(160);
-    entityManager.get().getTransaction().rollback();
+  }
+
+  @Test
+  public void shouldMerge() {
+    Tenant tenantOld = Tenant.newBuilder().setName("tenancy 4").setReferenceId("4").build();
+    transactionalObject.get().insert(tenantOld);
+    Optional<Tenant> optionalTenant = tenantDao.get().find("4");
+    assertThat(optionalTenant.isPresent()).isTrue();
+    tenantOld = optionalTenant.get();
+    tenantOld.setName("tenant 4 changed");
+    tenantOld = transactionalObject.get().merge(tenantOld);
+    assertThat(tenantOld.getVersion()).isEqualTo(2);
   }
 
   static class TransactionalObject {
 
-    @Inject private EntityManager entityManager;
-    @Inject private TenantDao tenantDao;
+    @Inject private Provider<EntityManager> entityManager;
+    @Inject private Provider<TenantDao> tenantDao;
 
     @Transactional
     public void insertUser(SystemUser systemUser) {
-      entityManager.persist(systemUser);
+      entityManager.get().persist(systemUser);
     }
 
     @Transactional
     public void insert(Tenant tenant) {
-      tenantDao.persist(tenant);
+      entityManager.get().persist(tenant);
+    }
+
+    @Transactional
+    public Tenant merge(Tenant tenant) {
+      return tenantDao.get().merge(tenant);
     }
   }
 }

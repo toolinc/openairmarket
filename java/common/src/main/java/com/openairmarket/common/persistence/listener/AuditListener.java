@@ -8,9 +8,6 @@ import com.openairmarket.common.persistence.model.AbstractModel;
 import com.openairmarket.common.persistence.model.audit.AbstractAuditActiveModel;
 import com.openairmarket.common.persistence.model.audit.AuditActiveModel;
 import com.openairmarket.common.persistence.model.audit.Auditable;
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.persistence.EntityManager;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
@@ -21,7 +18,6 @@ import javax.persistence.PreUpdate;
  */
 public final class AuditListener {
 
-  @Inject private static Provider<EntityManager> entityManagerProvider;
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   /** Creates a revision entity with the {@link AuditType#CREATE}. */
@@ -55,7 +51,7 @@ public final class AuditListener {
     auditable.setUser(ThreadLocalSystemUserHolder.getCurrentSystemUser());
     AbstractAuditActiveModel auditModel = builder.build(abstractActiveModel);
     auditModel.setAuditable(auditable);
-    entityManagerProvider.get().persist(auditModel);
+    logger.atInfo().log(auditModel.toString());
   }
 
   private AuditActiveModel.Builder createAuditModelBuilder(AbstractModel abstractModel) {

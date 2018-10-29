@@ -1,6 +1,5 @@
 package com.openairmarket.common.persistence.dao;
 
-import com.openairmarket.common.persistence.dao.DaoException;
 import com.openairmarket.common.persistence.model.AbstractModel;
 import java.io.Serializable;
 import javax.persistence.LockModeType;
@@ -26,8 +25,8 @@ public interface BaseDao<S extends Serializable, T extends AbstractModel<S>> {
    *
    * @param entity the instance that will be merged.
    * @return the managed instance that the state was merged to
-   * @throws DaoException if the operation cannot be performed due to an {@link
-   *     javax.persistence.OptimisticLockException}
+   * @throws com.openairmarket.common.persistence.dao.DaoException if the operation cannot be
+   *     performed due to an {@link javax.persistence.OptimisticLockException}
    */
   T merge(T entity);
 
