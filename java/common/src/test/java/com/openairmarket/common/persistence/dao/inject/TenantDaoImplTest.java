@@ -137,6 +137,17 @@ public final class TenantDaoImplTest {
     assertThat(tenant.getVersion()).isEqualTo(1);
   }
 
+  @Test
+  public void shouldRemove() {
+    Tenant tenant = Tenant.newBuilder().setName("tenant 6").setReferenceId("6").build();
+    transactionalObject.get().insert(tenant);
+    tenant = tenantDao.get().find("6").get();
+    entityManager.get().getTransaction().begin();
+    tenantDao.get().remove(tenant);
+    entityManager.get().getTransaction().commit();
+    assertThat(tenantDao.get().find("6").isPresent()).isFalse();
+  }
+
   static class TransactionalObject {
 
     @Inject private Provider<EntityManager> entityManager;
@@ -149,7 +160,7 @@ public final class TenantDaoImplTest {
 
     @Transactional
     public void insert(Tenant tenant) {
-      entityManager.get().persist(tenant);
+      tenantDao.get().persist(tenant);
     }
 
     @Transactional(rollbackOn = DaoException.class)
