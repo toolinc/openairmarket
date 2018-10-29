@@ -1,6 +1,5 @@
 package com.openairmarket.common.persistence.listener;
 
-import com.google.common.flogger.FluentLogger;
 import com.openairmarket.common.DateUtil;
 import com.openairmarket.common.model.audit.AuditType;
 import com.openairmarket.common.persistence.model.AbstractActiveModel;
@@ -17,8 +16,6 @@ import javax.persistence.PreUpdate;
  * mechanism.
  */
 public final class AuditListener {
-
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   /** Creates a revision entity with the {@link AuditType#CREATE}. */
   @PrePersist
@@ -51,7 +48,6 @@ public final class AuditListener {
     auditable.setUser(ThreadLocalSystemUserHolder.getCurrentSystemUser());
     AbstractAuditActiveModel auditModel = builder.build(abstractActiveModel);
     auditModel.setAuditable(auditable);
-    logger.atInfo().log(auditModel.toString());
   }
 
   private AuditActiveModel.Builder createAuditModelBuilder(AbstractModel abstractModel) {
