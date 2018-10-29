@@ -18,7 +18,7 @@ import javax.persistence.MappedSuperclass;
       name = "user",
       joinColumns = @JoinColumn(name = "idSystemUser", referencedColumnName = "idSystemUser"))
 })
-public abstract class AbstractAuditActiveModel extends AbstractActiveModel<String>
+public abstract class AbstractAuditActiveModel extends AbstractActiveModel<Long>
     implements AuditActiveModel {
 
   @Embedded private Auditable auditable;

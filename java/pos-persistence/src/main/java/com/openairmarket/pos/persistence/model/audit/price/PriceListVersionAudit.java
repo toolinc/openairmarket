@@ -13,6 +13,7 @@ import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -22,7 +23,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import org.eclipse.persistence.annotations.UuidGenerator;
 
 /** Define the revision for the {@link PriceListVersion} entities. */
 @Entity
@@ -35,13 +35,12 @@ import org.eclipse.persistence.annotations.UuidGenerator;
     })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING, length = 50)
-@UuidGenerator(name = "priceListVersionAudit _gen")
 public abstract class PriceListVersionAudit extends AbstractAuditActiveReferenceTenantModel {
 
   @Id
   @Column(name = "idPriceListVersionAudit")
-  @GeneratedValue(generator = "priceListVersionAudit _gen")
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @JoinColumn(
       name = "idPriceListVersion",
@@ -68,13 +67,13 @@ public abstract class PriceListVersionAudit extends AbstractAuditActiveReference
   private String description;
 
   @Override
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
   @Override
-  public void setId(String id) {
-    this.id = checkNotEmpty(id);
+  public void setId(Long id) {
+    this.id = checkPositive(id);
   }
 
   public PriceListVersion getPriceListVersion() {

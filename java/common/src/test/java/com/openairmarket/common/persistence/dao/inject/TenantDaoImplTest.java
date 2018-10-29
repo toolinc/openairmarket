@@ -40,10 +40,10 @@ public final class TenantDaoImplTest {
         binder -> binder.bind(ResourceBundle.class).toInstance(ResourceBundle.getBundle(RESOURCE)),
         binder -> binder.requestStaticInjection(DaoException.Builder.class),
         PersistenceModule.builder()
-            .setServerMode(true)
-            .setDatabaseName("pos")
+            // .setServerMode(true)
+            // .setDatabaseName("pos")
             .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
-            // .setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
+            .setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
             .build(),
         binder -> binder.bind(TransactionalObject.class),
         binder -> binder.requestStaticInjection(TenantDaoImplTest.class),
@@ -70,7 +70,7 @@ public final class TenantDaoImplTest {
     entityManager.get().getTransaction().commit();
   }
 
-  //@Test
+  // @Test
   public void shouldNotPersistDuplicateReferenceId() {
     Tenant.Buider buider = Tenant.newBuilder().setName("tenant 2").setReferenceId("2");
     transactionalObject.get().insert(buider.build());
@@ -85,7 +85,7 @@ public final class TenantDaoImplTest {
     assertThat(daoException.getErrorCode().code()).isEqualTo(150);
   }
 
-  //@Test
+  // @Test
   public void shouldNotPersistDuplicateName() {
     Tenant.Buider buider = Tenant.newBuilder().setName("tenant 3").setReferenceId("3");
     transactionalObject.get().insert(buider.build());

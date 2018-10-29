@@ -13,6 +13,7 @@ import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -20,7 +21,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import org.eclipse.persistence.annotations.UuidGenerator;
 
 /** Define the revision for the {@link PriceList} entities. */
 @Entity
@@ -33,13 +33,12 @@ import org.eclipse.persistence.annotations.UuidGenerator;
     })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING, length = 50)
-@UuidGenerator(name = "priceListAudit_gen")
 public abstract class PriceListAudit extends AbstractAuditActiveReferenceTenantModel {
 
   @Id
   @Column(name = "idPriceListAudit")
-  @GeneratedValue(generator = "priceListAudit_gen")
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @JoinColumn(name = "idPriceList", referencedColumnName = "idPriceList", nullable = false)
   @ManyToOne(cascade = CascadeType.REFRESH)
@@ -63,13 +62,13 @@ public abstract class PriceListAudit extends AbstractAuditActiveReferenceTenantM
   private Boolean taxIncluded;
 
   @Override
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
   @Override
-  public void setId(String id) {
-    this.id = checkNotEmpty(id);
+  public void setId(Long id) {
+    this.id = checkPositive(id);
   }
 
   public PriceList getPriceList() {

@@ -9,35 +9,35 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import org.eclipse.persistence.annotations.UuidGenerator;
 
 /** Define the revision for the {@link Tenant} entities. */
 @Entity
 @Table(name = "tenantAudit")
-@UuidGenerator(name = "tenantAudit_gen")
+// @UuidGenerator(name = "tenantAudit_gen")
 public class TenantAudit extends AbstractAuditCatalogModel {
 
   @Id
   @Column(name = "idTenantHistory", updatable = false)
-  @GeneratedValue(generator = "tenantAudit_gen")
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @JoinColumn(name = "idTenant", referencedColumnName = "idTenant", nullable = false)
   @ManyToOne(cascade = CascadeType.PERSIST)
   private Tenant tenant;
 
   @Override
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
   @Override
-  public void setId(String id) {
-    this.id = checkNotEmpty(id);
+  public void setId(Long id) {
+    this.id = checkPositive(id);
   }
 
   public Tenant getTenant() {

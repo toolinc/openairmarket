@@ -13,12 +13,12 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import org.eclipse.persistence.annotations.UuidGenerator;
 
 /** Define the revision for the {@link PriceListSchemaDetail} entities. */
 @Entity
@@ -29,13 +29,12 @@ import org.eclipse.persistence.annotations.UuidGenerator;
           name = "priceListSchemaDetailAuditUK",
           columnNames = {"idPriceListSchemaDetail", "createDate"})
     })
-@UuidGenerator(name = "priceListSchemaDetailAudit_gen")
 public final class PriceListSchemaDetailAudit extends AbstractAuditActiveReferenceTenantModel {
 
   @Id
   @Column(name = "idPriceListSchemaDetailAudit")
-  @GeneratedValue(generator = "priceListSchemaDetailAudit_gen")
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @JoinColumn(
       name = "idPriceListSchemaDetail",
@@ -62,13 +61,13 @@ public final class PriceListSchemaDetailAudit extends AbstractAuditActiveReferen
   @Embedded private Price price;
 
   @Override
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
   @Override
-  public void setId(String id) {
-    this.id = checkNotEmpty(id);
+  public void setId(Long id) {
+    this.id = checkPositive(id);
   }
 
   public PriceListSchemaDetail getPriceListSchemaDetail() {

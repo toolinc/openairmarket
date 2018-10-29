@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 /** Specifies the behavior of the audit of the entities ({@code SimpleCatalogModel}). */
 @MappedSuperclass
 public abstract class AbstractAuditActiveReferenceModel extends AbstractAuditActiveModel
-    implements ActiveReferenceModel<String> {
+    implements ActiveReferenceModel<Long> {
 
   @Column(name = "idReference", nullable = false)
   private String referenceId;

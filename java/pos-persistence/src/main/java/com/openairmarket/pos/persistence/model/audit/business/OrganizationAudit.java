@@ -8,12 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import org.eclipse.persistence.annotations.UuidGenerator;
 
 /** Define the revision for the {@link Organization} entities. */
 @Entity
@@ -24,26 +24,25 @@ import org.eclipse.persistence.annotations.UuidGenerator;
           name = "organizationAuditUK",
           columnNames = {"idOrganization", "createDate"})
     })
-@UuidGenerator(name = "organizationAudit_gen")
 public final class OrganizationAudit extends AbstractAuditCatalogTenantModel {
 
   @Id
-  @GeneratedValue(generator = "organizationAudit_gen")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "idOrganizationAudit")
-  private String id;
+  private Long id;
 
   @JoinColumn(name = "idOrganization", referencedColumnName = "idOrganization", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private Organization organization;
 
   @Override
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
   @Override
-  public void setId(String id) {
-    this.id = checkNotEmpty(id);
+  public void setId(Long id) {
+    this.id = checkPositive(id);
   }
 
   public Organization getOrganization() {
