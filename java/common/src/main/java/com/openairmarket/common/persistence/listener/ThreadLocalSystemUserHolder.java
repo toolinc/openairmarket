@@ -21,7 +21,7 @@ public final class ThreadLocalSystemUserHolder {
   public static void registerTenancyContext(SystemUser systemUser) {
     Preconditions.checkNotNull(systemUser);
     Thread thread = Thread.currentThread();
-    logger.atWarning().log(
+    logger.atFiner().log(
         String.format(
             "Registering [%s] for ThreadId [%d].", systemUser.getEmail(), thread.getId()));
     contextHolder.set(systemUser);

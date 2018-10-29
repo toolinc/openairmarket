@@ -50,7 +50,7 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
   @Override
   public T merge(T entity) {
     if (entity.getId() == null) {
-      validatePersist(entity);
+      persist(entity);
     } else {
       validateMerge(entity);
     }

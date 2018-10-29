@@ -17,7 +17,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,16 +51,31 @@ public final class TenantDaoImplTest {
         new DaoModule());
     persistService.start();
     transactionalObject.get().insertUser(SYSTEM_USER);
-  }
-
-  @AfterAll
-  public static void tearDownTest() {
     persistService.stop();
   }
 
   @BeforeEach
   public void setUp() {
     ThreadLocalSystemUserHolder.registerTenancyContext(SYSTEM_USER);
+    Guice.createInjector(
+        binder -> binder.bind(ResourceBundle.class).toInstance(ResourceBundle.getBundle(RESOURCE)),
+        binder -> binder.requestStaticInjection(DaoException.Builder.class),
+        PersistenceModule.builder()
+            .setPoolMode(false)
+            // .setServerMode(true)
+            // .setDatabaseName("pos")
+            .setDdlGeneration(DdlGeneration.NONE)
+            .setDatabaseName(TenantDaoImplTest.class.getSimpleName())
+            .build(),
+        binder -> binder.bind(TransactionalObject.class),
+        binder -> binder.requestStaticInjection(TenantDaoImplTest.class),
+        new DaoModule());
+    persistService.start();
+  }
+
+  @AfterEach
+  public void tearDown() {
+    persistService.stop();
   }
 
   @Test
@@ -71,15 +87,54 @@ public final class TenantDaoImplTest {
   }
 
   @Test
+  public void shouldNotPersistDuplicateReferenceId() {
+    Tenant.Buider buider = Tenant.newBuilder().setName("tenant 2").setReferenceId("2");
+    transactionalObject.get().insert(buider.build());
+    DaoException daoException =
+        Assertions.assertThrows(
+            DaoException.class,
+            () -> {
+              entityManager.get().getTransaction().begin();
+              tenantDao.get().persist(buider.setName("tenant 454").build());
+              entityManager.get().getTransaction().rollback();
+            });
+    assertThat(daoException.getErrorCode().code()).isEqualTo(150);
+  }
+
+  @Test
+  public void shouldNotPersistDuplicateName() {
+    Tenant.Buider buider = Tenant.newBuilder().setName("tenant 3").setReferenceId("3");
+    transactionalObject.get().insert(buider.build());
+    DaoException daoException =
+        Assertions.assertThrows(
+            DaoException.class,
+            () -> {
+              entityManager.get().getTransaction().begin();
+              tenantDao.get().persist(buider.setReferenceId("4444").build());
+              entityManager.get().getTransaction().rollback();
+            });
+    assertThat(daoException.getErrorCode().code()).isEqualTo(160);
+  }
+
+  @Test
   public void shouldMerge() {
-    Tenant tenantOld = Tenant.newBuilder().setName("tenancy 4").setReferenceId("4").build();
+    Tenant tenantOld = Tenant.newBuilder().setName("tenant 4").setReferenceId("4").build();
     transactionalObject.get().insert(tenantOld);
     Optional<Tenant> optionalTenant = tenantDao.get().find("4");
     assertThat(optionalTenant.isPresent()).isTrue();
     tenantOld = optionalTenant.get();
-    tenantOld.setName("tenant 4 changed");
+    tenantOld.setName("tenant 2 changed");
     tenantOld = transactionalObject.get().merge(tenantOld);
     assertThat(tenantOld.getVersion()).isEqualTo(2);
+  }
+
+  @Test
+  public void shouldMergeNewInstance() {
+    Tenant tenant = Tenant.newBuilder().setName("tenant 5").setReferenceId("5").build();
+    entityManager.get().getTransaction().begin();
+    tenant = tenantDao.get().merge(tenant);
+    entityManager.get().getTransaction().commit();
+    assertThat(tenant.getVersion()).isEqualTo(1);
   }
 
   static class TransactionalObject {
@@ -97,7 +152,7 @@ public final class TenantDaoImplTest {
       entityManager.get().persist(tenant);
     }
 
-    @Transactional
+    @Transactional(rollbackOn = DaoException.class)
     public Tenant merge(Tenant tenant) {
       return tenantDao.get().merge(tenant);
     }
