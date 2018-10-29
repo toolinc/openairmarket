@@ -13,18 +13,19 @@ import com.openairmarket.common.persistence.inject.PersistenceModule;
 import com.openairmarket.common.persistence.listener.ThreadLocalSystemUserHolder;
 import com.openairmarket.common.persistence.model.security.SystemUser;
 import com.openairmarket.common.persistence.model.tenant.Tenant;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/** Test cases for the class {@link TenantDaoImpl}. */
-public final class TenantDaoImplTest {
-
+/**
+ * Test cases for the class {@link TenantDaoImpl}. that should not persist a duplicate reference id.
+ */
+public final class TenantDaoPersistDuplicateReferenceTest {
   private static final String RESOURCE = "DaoResourceBundle";
   private static final SystemUser SYSTEM_USER =
       SystemUser.newBuilder().setId(1L).setEmail("root@gmail.com").build();
@@ -43,10 +44,10 @@ public final class TenantDaoImplTest {
             // .setServerMode(true)
             // .setDatabaseName("pos")
             .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
-            .setDatabaseName(TenantDaoImplTest.class.getSimpleName())
+            .setDatabaseName(TenantDaoPersistDuplicateReferenceTest.class.getSimpleName())
             .build(),
         binder -> binder.bind(TransactionalObject.class),
-        binder -> binder.requestStaticInjection(TenantDaoImplTest.class),
+        binder -> binder.requestStaticInjection(TenantDaoPersistDuplicateReferenceTest.class),
         new DaoModule());
     persistService.start();
     transactionalObject.get().insertUser(SYSTEM_USER);
@@ -63,23 +64,18 @@ public final class TenantDaoImplTest {
   }
 
   @Test
-  public void shouldPersist() {
-    entityManager.get().getTransaction().begin();
-    Tenant tenant = Tenant.newBuilder().setName("root").setReferenceId("1").build();
-    tenantDao.get().persist(tenant);
-    entityManager.get().getTransaction().commit();
-  }
-
-  @Test
-  public void shouldMerge() {
-    Tenant tenantOld = Tenant.newBuilder().setName("tenancy 4").setReferenceId("4").build();
-    transactionalObject.get().insert(tenantOld);
-    Optional<Tenant> optionalTenant = tenantDao.get().find("4");
-    assertThat(optionalTenant.isPresent()).isTrue();
-    tenantOld = optionalTenant.get();
-    tenantOld.setName("tenant 4 changed");
-    tenantOld = transactionalObject.get().merge(tenantOld);
-    assertThat(tenantOld.getVersion()).isEqualTo(2);
+  public void shouldNotPersistDuplicateReferenceId() {
+    Tenant.Buider buider = Tenant.newBuilder().setName("tenant 2").setReferenceId("2");
+    transactionalObject.get().insert(buider.build());
+    DaoException daoException =
+        Assertions.assertThrows(
+            DaoException.class,
+            () -> {
+              entityManager.get().getTransaction().begin();
+              tenantDao.get().persist(buider.setName("tenant 454").build());
+              entityManager.get().getTransaction().rollback();
+            });
+    assertThat(daoException.getErrorCode().code()).isEqualTo(150);
   }
 
   static class TransactionalObject {
@@ -94,12 +90,7 @@ public final class TenantDaoImplTest {
 
     @Transactional
     public void insert(Tenant tenant) {
-      entityManager.get().persist(tenant);
-    }
-
-    @Transactional
-    public Tenant merge(Tenant tenant) {
-      return tenantDao.get().merge(tenant);
+      tenantDao.get().persist(tenant);
     }
   }
 }

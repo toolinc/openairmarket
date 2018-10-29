@@ -23,6 +23,7 @@ public abstract class PersistenceModule extends AbstractModule {
   /** Creates a new instance of {@link Builder} with the default values. */
   public static Builder builder() {
     return new AutoValue_PersistenceModule.Builder()
+        .setPoolMode(true)
         .setServerMode(false)
         .setPersistenceUnitName(DEFAULT_UNIT_NAME);
   }
@@ -30,14 +31,21 @@ public abstract class PersistenceModule extends AbstractModule {
   /** Constructs a new instance of {@link PersistenceModule}. */
   @AutoValue.Builder
   public abstract static class Builder {
-    private static final String URL = "eclipselink.connection-pool.url";
+    private static final String URL = "javax.persistence.jdbc.url";
+    private static final String POOL_URL = "eclipselink.connection-pool.url";
     private static final String H2_EMBEDDED_URL =
         "jdbc:h2:file:./target/databases/%s;MULTI_THREADED=TRUE";
     private static final String H2_SERVER_URL =
         "jdbc:h2:tcp://localhost:9092/%s;MULTI_THREADED=TRUE";
+    private boolean poolMode;
     private boolean serverMode;
     private String databaseName;
     private DdlGeneration ddlGeneration;
+
+    public Builder setPoolMode(boolean poolMode) {
+      this.poolMode = poolMode;
+      return this;
+    }
 
     public Builder setServerMode(boolean serverMode) {
       this.serverMode = serverMode;
@@ -70,11 +78,21 @@ public abstract class PersistenceModule extends AbstractModule {
       PersistenceModule persistenceModule = autoBuild();
       persistenceModule
           .jpaPersistModule()
-          .properties(ImmutableMap.of(URL, buildUrl(), DdlGeneration.DDL, ddlGeneration.getDdl()));
+          .properties(
+              ImmutableMap.of(
+                  buildUrlProperty(), buildUrlValue(), DdlGeneration.DDL, ddlGeneration.getDdl()));
       return persistenceModule;
     }
 
-    private String buildUrl() {
+    private String buildUrlProperty() {
+      if (poolMode) {
+        return POOL_URL;
+      } else {
+        return URL;
+      }
+    }
+
+    private String buildUrlValue() {
       if (serverMode) {
         return String.format(H2_SERVER_URL, databaseName);
       } else {

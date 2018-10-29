@@ -38,6 +38,7 @@ public final class SystemUserDaoImplTest {
         binder -> binder.bind(ResourceBundle.class).toInstance(ResourceBundle.getBundle(RESOURCE)),
         binder -> binder.requestStaticInjection(DaoException.Builder.class),
         PersistenceModule.builder()
+            .setPoolMode(false)
             .setDdlGeneration(DdlGeneration.CREATE_OR_EXTEND_TABLES)
             .setDatabaseName(SystemUserDaoImplTest.class.getSimpleName())
             .build(),
