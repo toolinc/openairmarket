@@ -7,7 +7,8 @@ import com.google.common.base.Strings;
 public enum DdlGeneration {
   CREATE_TABLES("create-tables"),
   CREATE_OR_EXTEND_TABLES("create-or-extend-tables"),
-  DROP_CREATE_TABLES("drop-create-tables");
+  DROP_CREATE_TABLES("drop-create-tables"),
+  NONE("none");
 
   public static final String DDL = "eclipselink.ddl-generation";
   private final String ddl;
