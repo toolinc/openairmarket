@@ -84,12 +84,14 @@ public final class TenantDaoImplTest {
     Tenant tenant = Tenant.newBuilder().setName("root").setReferenceId("1").build();
     tenantDao.get().persist(tenant);
     entityManager.get().getTransaction().commit();
+    assertTwoTenants(tenant, "1", 1);
   }
 
   @Test
   public void shouldNotPersistDuplicateReferenceId() {
     Tenant.Buider buider = Tenant.newBuilder().setName("tenant 2").setReferenceId("2");
-    transactionalObject.get().insert(buider.build());
+    Tenant tenant = buider.build();
+    transactionalObject.get().insert(tenant);
     DaoException daoException =
         Assertions.assertThrows(
             DaoException.class,
@@ -99,12 +101,14 @@ public final class TenantDaoImplTest {
               entityManager.get().getTransaction().rollback();
             });
     assertThat(daoException.getErrorCode().code()).isEqualTo(150);
+    assertTwoTenants(tenant, "2", 1);
   }
 
   @Test
   public void shouldNotPersistDuplicateName() {
     Tenant.Buider buider = Tenant.newBuilder().setName("tenant 3").setReferenceId("3");
-    transactionalObject.get().insert(buider.build());
+    Tenant tenant = buider.build();
+    transactionalObject.get().insert(tenant);
     DaoException daoException =
         Assertions.assertThrows(
             DaoException.class,
@@ -114,6 +118,7 @@ public final class TenantDaoImplTest {
               entityManager.get().getTransaction().rollback();
             });
     assertThat(daoException.getErrorCode().code()).isEqualTo(160);
+    assertTwoTenants(tenant, "3", 1);
   }
 
   @Test
@@ -125,7 +130,7 @@ public final class TenantDaoImplTest {
     tenantOld = optionalTenant.get();
     tenantOld.setName("tenant 2 changed");
     tenantOld = transactionalObject.get().merge(tenantOld);
-    assertThat(tenantOld.getVersion()).isEqualTo(2);
+    assertTwoTenants(tenantOld, "4", 2);
   }
 
   @Test
@@ -135,6 +140,7 @@ public final class TenantDaoImplTest {
     tenant = tenantDao.get().merge(tenant);
     entityManager.get().getTransaction().commit();
     assertThat(tenant.getVersion()).isEqualTo(1);
+    assertTwoTenants(tenant, "5", 1);
   }
 
   @Test
@@ -167,5 +173,13 @@ public final class TenantDaoImplTest {
     public Tenant merge(Tenant tenant) {
       return tenantDao.get().merge(tenant);
     }
+  }
+
+  private static void assertTwoTenants(Tenant tenant, String referenceId, long version) {
+    Tenant tenantStored = tenantDao.get().find(referenceId, version).get();
+    assertThat(tenantStored.getId()).isNotNull();
+    assertThat(tenantStored.getActive()).isTrue();
+    assertThat(tenantStored.getReferenceId()).isEqualTo(tenant.getReferenceId());
+    assertThat(tenantStored.getName()).ignoringCase().isEqualTo(tenant.getName());
   }
 }
