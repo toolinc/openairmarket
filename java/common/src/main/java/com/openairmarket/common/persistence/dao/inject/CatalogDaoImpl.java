@@ -79,7 +79,7 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
 
   @Override
   public Optional<T> find(String referenceId, long version) {
-    Optional<T> entity = findByReferenceId(referenceId, true);
+    Optional<T> entity = find(referenceId);
     if (entity.isPresent() && entity.get().getVersion() == version) {
       return entity;
     }
