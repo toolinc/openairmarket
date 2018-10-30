@@ -288,6 +288,16 @@ public final class TenantDaoImplTest {
     entityManager.get().getTransaction().commit();
   }
 
+  @Test
+  public void shouldCountGreaterThanZero() {
+    Tenant tenant = Tenant.newBuilder().setName("tenant 21").setReferenceId("21").build();
+    entityManager.get().getTransaction().begin();
+    tenantDao.get().persist(tenant);
+    entityManager.get().getTransaction().commit();
+    assertThat(tenantDao.get().count()).isGreaterThan(0L);
+    assertTwoTenants(tenant, "21", 1);
+  }
+
   static class TransactionalObject {
 
     @Inject private Provider<EntityManager> entityManager;
