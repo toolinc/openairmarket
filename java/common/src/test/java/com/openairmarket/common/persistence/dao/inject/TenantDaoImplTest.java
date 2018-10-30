@@ -229,14 +229,29 @@ public final class TenantDaoImplTest {
   }
 
   @Test
+  public void shouldValidateMerge() {
+    transactionalObject
+        .get()
+        .insert(Tenant.newBuilder().setName("tenant 14").setReferenceId("14").build());
+    transactionalObject
+        .get()
+        .insert(Tenant.newBuilder().setName("tenant 15").setReferenceId("15").build());
+    final Tenant tenant14 = tenantDao.get().find("14").get();
+    final Tenant tenant15 = tenantDao.get().find("15").get();
+    entityManager.get().getTransaction().begin();
+    tenantDao.get().validateMerge(tenant15.getId(), tenant15.getReferenceId(), "NEW");
+    entityManager.get().getTransaction().commit();
+  }
+
+  @Test
   public void shouldRemove() {
-    Tenant tenant = Tenant.newBuilder().setName("tenant 14").setReferenceId("14").build();
+    Tenant tenant = Tenant.newBuilder().setName("tenant 16").setReferenceId("16").build();
     transactionalObject.get().insert(tenant);
-    tenant = tenantDao.get().find("14").get();
+    tenant = tenantDao.get().find("16").get();
     entityManager.get().getTransaction().begin();
     tenantDao.get().remove(tenant);
     entityManager.get().getTransaction().commit();
-    assertThat(tenantDao.get().find("14").isPresent()).isFalse();
+    assertThat(tenantDao.get().find("16").isPresent()).isFalse();
   }
 
   static class TransactionalObject {
