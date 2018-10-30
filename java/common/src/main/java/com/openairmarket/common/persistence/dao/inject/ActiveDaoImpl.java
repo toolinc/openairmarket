@@ -53,6 +53,7 @@ final class ActiveDaoImpl<S extends Serializable, T extends AbstractActiveModel<
   public T merge(T entity) throws DaoException {
     if (entity.getId() == null) {
       persist(entity);
+      return entity;
     }
     return dao.merge(entity);
   }
