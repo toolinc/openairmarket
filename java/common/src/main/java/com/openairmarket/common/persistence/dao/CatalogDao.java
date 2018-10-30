@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface CatalogDao<S extends Serializable, T extends AbstractCatalogModel<S>>
     extends BaseDao<S, T> {
 
+  public static final String ID = "id";
   public static final String ACTIVE = "active";
   public static final String REFERENCE_ID = "referenceId";
   public static final String NAME = "name";
@@ -45,4 +46,16 @@ public interface CatalogDao<S extends Serializable, T extends AbstractCatalogMod
    * @return the {@link List} of entities found or an empty list.
    */
   List<T> findRange(int start, int count);
+
+  /**
+   * Validates that the referenceId and name are valid for a specific entity that wants to be
+   * merged.
+   *
+   * @param id - specifies the id of the entity to validate.
+   * @param referenceId - specifies the new or old referenceId.
+   * @param name - specifies the new or old name.
+   * @throws DaoException this is thrown if the values provided cannot be updated due to conflicts
+   *     on the database.
+   */
+  void validateMerge(S id, String referenceId, String name);
 }

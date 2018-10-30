@@ -18,10 +18,10 @@ import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 
 /**
- * Provides the implementation for {@code CatalogDAO} interface.
+ * Provides the implementation for {@link CatalogDao} interface.
  *
- * @param <S> specifies the {@code Serializable} identifier of the {@code AbstractActiveModel}.
- * @param <T> specifies the {@code AbstractActiveModel} of the data access object.
+ * @param <S> specifies the {@link Serializable} identifier of the {@link AbstractCatalogModel}.
+ * @param <T> specifies the {@link AbstractCatalogModel} of the data access object.
  */
 final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogModel<S>>
     implements CatalogDao<S, T> {
@@ -53,8 +53,22 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
       persist(entity);
       return entity;
     }
-    validateMerge(entity);
     return activeDao.merge(entity);
+  }
+
+  public void validateMerge(S id, String referenceId, String name) {
+    long uniqueId = countEntitiesWithSameNameButDiffReferenceId(id, referenceId);
+    long uniqueName = countEntitiesWithName(name);
+    if (uniqueId > 0 || uniqueName > 0) {
+      DaoException daoException = null;
+      if (uniqueId > 0) {
+        daoException = DaoException.Builder.build(getErrorCodeUniqueReferenceId());
+      }
+      if (uniqueName > 0) {
+        daoException = DaoException.Builder.build(getErrorCodeUniqueName(), daoException);
+      }
+      throw daoException;
+    }
   }
 
   @Override
@@ -123,7 +137,7 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
     return activeDao.hasVersionChanged(entity);
   }
 
-  private void validatePersist(T entity) throws DaoException {
+  private void validatePersist(T entity) {
     long uniqueId = countEntitiesWithReferenceId(entity.getReferenceId());
     long uniqueName = countEntitiesWithName(entity.getName());
     if (uniqueId > 0 || uniqueName > 0) {
@@ -135,13 +149,6 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
         daoException = DaoException.Builder.build(getErrorCodeUniqueName(), daoException);
       }
       throw daoException;
-    }
-  }
-
-  private void validateMerge(T entity) throws DaoException {
-    long count = countEntitiesWithSameNameButDiffReferenceId(entity);
-    if (count > 0) {
-      throw DaoException.Builder.build(getErrorCodeUniqueName());
     }
   }
 
@@ -160,16 +167,14 @@ final class CatalogDaoImpl<S extends Serializable, T extends AbstractCatalogMode
     return qc.getSingleResult();
   }
 
-  private Long countEntitiesWithSameNameButDiffReferenceId(T entity) {
+  private Long countEntitiesWithSameNameButDiffReferenceId(S id, String refId) {
     QueryHelper<Long, T> qc =
         QueryHelper.newQueryContainerCount(getEntityManager(), getEntityClass());
     qc.getCriteriaQuery()
         .where(
             qc.getCriteriaBuilder()
-                .and(
-                    qc.getCriteriaBuilder().equal(qc.getRoot().get(NAME), entity.getName()),
-                    qc.getCriteriaBuilder()
-                        .notEqual(qc.getRoot().get(REFERENCE_ID), entity.getReferenceId())));
+                .and(qc.getCriteriaBuilder().equal(qc.getRoot().get(REFERENCE_ID), refId)),
+            qc.getCriteriaBuilder().notEqual(qc.getRoot().get(ID), id));
     return qc.getSingleResult();
   }
 

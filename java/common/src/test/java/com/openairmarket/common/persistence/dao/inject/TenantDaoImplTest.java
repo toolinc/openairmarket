@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -144,14 +145,98 @@ public final class TenantDaoImplTest {
   }
 
   @Test
+  public void shouldNotMergeDuplicateReferenceId() {
+    Tenant.Buider buider = Tenant.newBuilder().setName("tenant 6").setReferenceId("6");
+    Tenant tenant6 = buider.build();
+    transactionalObject.get().insert(tenant6);
+    Tenant tenant7 = Tenant.newBuilder().setName("tenant 7").setReferenceId("7").build();
+    transactionalObject.get().insert(tenant7);
+    final Tenant tenant = tenantDao.get().find("7").get();
+    PersistenceException exception =
+        Assertions.assertThrows(
+            PersistenceException.class,
+            () -> {
+              entityManager.get().getTransaction().begin();
+              tenant.setReferenceId("6");
+              tenantDao.get().merge(tenant);
+              entityManager.get().getTransaction().commit();
+            });
+    assertThat(exception.getMessage()).contains("Unique");
+  }
+
+  @Test
+  public void shouldNotMergeDuplicateName() {
+    Tenant.Buider buider = Tenant.newBuilder().setName("tenant 8").setReferenceId("8");
+    Tenant tenant8 = buider.build();
+    transactionalObject.get().insert(tenant8);
+    Tenant tenant9 = Tenant.newBuilder().setName("tenant 9").setReferenceId("9").build();
+    transactionalObject.get().insert(tenant9);
+    final Tenant tenant = tenantDao.get().find("9").get();
+    PersistenceException exception =
+        Assertions.assertThrows(
+            PersistenceException.class,
+            () -> {
+              entityManager.get().getTransaction().begin();
+              tenant.setName("tenant 8");
+              tenantDao.get().merge(tenant);
+              entityManager.get().getTransaction().commit();
+            });
+    assertThat(exception.getMessage()).contains("Unique");
+  }
+
+  @Test
+  public void shouldThrowDaoExceptionWhileValidateMergeExistingRefId() {
+    Tenant.Buider buider = Tenant.newBuilder().setName("tenant 10").setReferenceId("10");
+    Tenant tenant10 = buider.build();
+    transactionalObject.get().insert(tenant10);
+    Tenant tenant11 = Tenant.newBuilder().setName("tenant 11").setReferenceId("11").build();
+    transactionalObject.get().insert(tenant11);
+    final Tenant tenant = tenantDao.get().find("11").get();
+    DaoException daoException =
+        Assertions.assertThrows(
+            DaoException.class,
+            () -> {
+              entityManager.get().getTransaction().begin();
+              tenantDao
+                  .get()
+                  .validateMerge(tenant.getId(), tenant10.getReferenceId(), tenant.getName());
+              entityManager.get().getTransaction().commit();
+            });
+    assertThat(daoException.getErrorCode().code()).isEqualTo(150);
+  }
+
+  @Test
+  public void shouldThrowDaoExceptionWhileValidateMergeExistingName() {
+    transactionalObject
+        .get()
+        .insert(Tenant.newBuilder().setName("tenant 12").setReferenceId("12").build());
+    transactionalObject
+        .get()
+        .insert(Tenant.newBuilder().setName("tenant 13").setReferenceId("13").build());
+    final Tenant tenant12 = tenantDao.get().find("12").get();
+    final Tenant tenant13 = tenantDao.get().find("13").get();
+    DaoException daoException =
+        Assertions.assertThrows(
+            DaoException.class,
+            () -> {
+              entityManager.get().getTransaction().begin();
+              tenantDao
+                  .get()
+                  .validateMerge(tenant12.getId(), tenant12.getReferenceId(), tenant13.getName());
+              entityManager.get().getTransaction().commit();
+            });
+    assertThat(daoException.getErrorCode().code()).isEqualTo(160);
+  }
+
+  @Test
   public void shouldRemove() {
-    Tenant tenant = Tenant.newBuilder().setName("tenant 6").setReferenceId("6").build();
+    Tenant tenant = Tenant.newBuilder().setName("tenant 14").setReferenceId("14").build();
     transactionalObject.get().insert(tenant);
-    tenant = tenantDao.get().find("6").get();
+    tenant = tenantDao.get().find("14").get();
     entityManager.get().getTransaction().begin();
     tenantDao.get().remove(tenant);
     entityManager.get().getTransaction().commit();
-    assertThat(tenantDao.get().find("6").isPresent()).isFalse();
+    assertThat(tenantDao.get().find("14").isPresent()).isFalse();
   }
 
   static class TransactionalObject {

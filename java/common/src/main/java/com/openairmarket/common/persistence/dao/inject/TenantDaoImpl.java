@@ -29,6 +29,11 @@ final class TenantDaoImpl implements TenantDao {
     return catalogDao.merge(entity);
   }
 
+  @Override
+  public void validateMerge(Integer id, String referenceId, String name) {
+    catalogDao.validateMerge(id, referenceId, name);
+  }
+
   // TODO (edgarrico: needs to throw a DAOException)
   @Override
   public void remove(Tenant entity) {
