@@ -254,6 +254,40 @@ public final class TenantDaoImplTest {
     assertThat(tenantDao.get().find("16").isPresent()).isFalse();
   }
 
+  @Test
+  public void shouldFindWithVersion() {
+    Tenant tenant = Tenant.newBuilder().setName("tenant 17").setReferenceId("17").build();
+    transactionalObject.get().insert(tenant);
+    Optional<Tenant> optionalTenant = tenantDao.get().find("17", 1);
+    assertThat(optionalTenant.isPresent()).isTrue();
+    assertTwoTenants(tenant, "17", 1);
+  }
+
+  @Test
+  public void shouldNotFindDifferentVersion() {
+    Tenant tenant = Tenant.newBuilder().setName("tenant 18").setReferenceId("18").build();
+    transactionalObject.get().insert(tenant);
+    Optional<Tenant> optionalTenant = tenantDao.get().find("18", 2);
+    assertThat(optionalTenant.isPresent()).isFalse();
+  }
+
+  @Test
+  public void shouldNotFindWithVersion() {
+    Optional<Tenant> optionalTenant = tenantDao.get().find("19", 1);
+    assertThat(optionalTenant.isPresent()).isFalse();
+  }
+
+  @Test
+  public void shouldFlush() {
+    Tenant tenant = Tenant.newBuilder().setName("tenant 20").setReferenceId("20").build();
+    entityManager.get().getTransaction().begin();
+    tenantDao.get().persist(tenant);
+    tenantDao.get().flush();
+    tenant = tenantDao.get().find("20").get();
+    assertTwoTenants(tenant, "20", 1);
+    entityManager.get().getTransaction().commit();
+  }
+
   static class TransactionalObject {
 
     @Inject private Provider<EntityManager> entityManager;
